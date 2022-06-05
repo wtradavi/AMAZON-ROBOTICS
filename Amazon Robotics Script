@@ -94,7 +94,7 @@ function drive_menu {															#MENU-DRIVE
 	g="Check Time & Date               ";n="                                          ";
 	#OPTIONS
 	a1=ping_drive;h1="";o1="";
-	b1=diagnostics;i1="";p1="";
+	b1=dusc_util;i1="";p1="";
 	c1="";j1="";q1="";
 	d1="";k1="";r1="";
 	e1="";l1="";s1="";
@@ -120,7 +120,7 @@ function remote_menu {															#MENU-REMOTE
 	#OPTIONS
 	a1=ping_drive;h1="";o1="";
 	b1=ssh_connect;i1=firmware_update_remote;p1="";
-	c1=charge_drive;j1="";q1="";
+	c1=charge_drive;j1=dusc_util;q1="";
 	d1="";k1="";r1="";
 	e1=resetwifiremote;l1="";s1="";
 	f1="";m1="";
@@ -351,10 +351,6 @@ function firmware_update_remote {
 	prompt_version
 }
 
-function diagnostics {
-	dusc-util -m
-}
-
 function resetwifiremote {
 	function prompt_drive {
 		echo -e $RS"What is the Drive Number That You Would like to Reset The Wifi on?"$CE
@@ -367,6 +363,16 @@ function resetwifiremote {
 			fi
 		}
 	sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$drive_unit -c 'reset_wifi_config; exit;' -P 50
+}
+
+function dusc_util {
+    echo """
+                              0=normal
+                              1=Slowing
+                              2=Limited
+                              3=Stopping
+                              4=immobilized unpowered"""
+    dusc-util -m
 }
 
 #---------------------------------------------------------------------------------------------------------
