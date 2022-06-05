@@ -1,0 +1,17 @@
+ksk2=$(ssh root@kdu-drive_unit md5sum /etc/ksk/ksk.txt)
+pem2=$(ssh root@kdu-drive_unit md5sum /etc/wpa_supplicant/amazon.pem)
+wpa2=$(ssh root@kdu-drive_unit md5sum /etc/wpa_supplicant/wpa_supplicant.conf)
+
+
+
+
+
+
+
+
+
+
+
+
+AutoProvision REMOTE
+scp root@kdu-$drive_unit1:/etc/ksk/ksk.txt root@kdu-$drive_unit2:/etc/ksk/ksk.txt
