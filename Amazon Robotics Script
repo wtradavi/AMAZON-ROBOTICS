@@ -1,12 +1,4 @@
-setopt interactive_comments &&
-YNYES="( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
-YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
-YNONLY="($YSy$CE/$YSn$CE)"
-PAKT="Press $YSany key$CE to"
-P0TE="Press $YS0$CE to exit..."
-PBTGB="Press $YS[b]$CE to go back..."
-NUM="Choose: "
-
+setopt interactive_comments 
 
 function logo {
 	FONTC=$YS
@@ -131,7 +123,13 @@ function remote_menu {															#MENU-REMOTE
 }
 
 #---------Prompts-----------------------------------------------------
-
+YNYES="( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
+YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
+YNONLY="($YSy$CE/$YSn$CE)"
+PAKT="Press $YSany key$CE to"
+P0TE="Press $YS0$CE to exit..."
+PBTGB="Press $YS[b]$CE to go back..."
+NUM="Choose: "
 
 function read_input() {
 	read -k 1 ANSWER
@@ -375,6 +373,6 @@ function dusc_util {
     dusc-util -m
 }
 
-#---------------------------------------------------------------------------------------------------------
+#-------Execution--------------------------------------------------------------------------------------------------
 clear
 main_menu
