@@ -1,0 +1,81 @@
+cd /apollo/env/FCXInfra/var/fcxfw/22.0 && sudo -u kivasvs ./update_drive.sh kdu-665474  (to update firmware in PUTTY, make sure you pick the right drive that needs update)
+
+dusc-util -m (to check PUTTY hardware health)
+
+ssh root@kdu-
+
+ping kdu-
+
+ip address 
+nslookup   (check ip address, if none exists use AutoProvision)
+
+history
+
+reboot
+
+clear
+
+cat /etc/ksk/ksk.txt (to view KSK files in PUTTY, should have 3 lines)
+
+ksk.location=AMZN/SYR1/paKivaA02(<< make sure its the right floor #)
+mrc.receive.host=7.2.0.201
+mrc.receive.port=32001
+
+
+vi /etc/ksk/ksk.txt (to edit KSK files: "i" for input> insert files > "ESC" > ":wq" > "Enter")
+
+
+
+(updating firmware for replaced components using PUTTY)
+
+subsystem-update --version --all/BMS/ODS/etc. (version of ALL or BMS,ODS,etc.)
+
+subsystem-update --help (command list)
+
+subsystem-update --force --all/BMS/ODS/etc. (force updaate on ALL or BMS, ODS,etc.)
+
+
+
+(Use EEPROM when replacing the BACKPLANE to write the new LICENSE PLATE of the DU to the BP)
+
+
+
+hwclock, timedatectl or date (to check time)
+
+
+date -s YYYY.MM.DD-HH:MM
+hwclock  --systohc                                                                                                                            
+reboot                      (to change time)
+
+                                                                                                
+timedatectl
+date -s $(ssh root@kdu-553096 "timedatectl | grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc  (to correct time and date type in the node, the drive # in the command should be the active drive on the floor youre syncing time from)
+
+sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u [username] -c AMZN -w SYR1 -z [floor] -drive [drive number] -charger [charger ID] -t [time] (to force drive to charger, time in seconds 180max)
+
+sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u orkhangn -c AMZN -w SYR1 -z paKivaA04 -drive 578814 -charger 42 -t 10 (for example)
+
+(DT Shortcuts)
+
+p() {
+ping kdu-"$1"
+};
+connect() {
+ssh root@kdu-$1
+};
+correcttime() {
+date -s $(
+ssh root@kdu-$1 "timedatectl | grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
+};
+update() {
+cd /apollo/env/FCXInfra/var/fcxfw/22.0 && ./update_drive.sh kdu-$1
+};
+diag() {
+dusc-util -m
+};
+help() {
+echo "\n     Command     Arguments       Description\n        p       Active Drive #   Pings the drive to see if it is connected\n     connect        Drive #      Connects to a Drive via SSH\n   correcttime   Good Drive #    Corrects the time by using a Good Drive\n     update    Desired Drive #   Pushes an update to a Drive from the node\n      diag     Desired Drive #   Runs a diagnostic check on a Drive\n"
+}
+
+help
+

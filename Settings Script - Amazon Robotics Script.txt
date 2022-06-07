@@ -1,0 +1,147 @@
+
+#function settings_menu {														#MENU-SETTINGS
+	back=main_menu
+	home=settings_menu
+	a="Edit Menus";h="";o="";
+	b="Change The Color";i="";p="";
+	c="";j="";q="";
+	d="";k="";r="";
+	e="";l="";s="";
+	f="";m="";
+	g="";n="";
+	#OPTIONS
+	a1=settings_menu_edit;h1="";o1="";
+	b1=color_change;i1="";p1="";
+	c1="";j1="";q1="";
+	d1="";k1="";r1="";
+	e1="";l1="";s1="";
+	f1="";m1="";
+	g1="";n1="";
+	menu_list
+	read_input
+	options
+}
+
+function color_change {															#MENU-SETTINGS SUBMENU-COLOR CHANGE
+	back=setting_menu
+	home=color_change
+	logo
+	echo $FONTC 1- Change Font Color $CE
+	echo $FONTC 2- Change Logo Color $CE
+	echo "Choose:"
+	read_input
+	if [ "$ANSWER" = "1" ]; then
+		theme=FONT
+		line=1
+	elif [ "$ANSWER" = "2" ]; then
+		theme=LOGO
+		line=2
+	else
+		prompt_num
+		color_change
+	fi
+	echo "$YS"  1- Change To Yellow "$CE $RS"  8- Change To Red "$CE $CYS"  15- Change To Cyan "$CE
+	echo "$BS"  2- Change To Blue "$CE $DRS"  9- Change To Dark Red "$CE $LCYS"  16- Change To Light Cyan "$CE
+	echo $LBS"  3- Change To Light Blue "$CE $GNS"  10- Change To Green "$CE
+	echo "$BLS"  4- Change To Black $CE $LGNS"  11- Change To Light Green "$CE
+	echo "$DGYS"  5- Change To Dark Grey "$CE $WHS"  12- Change To White "$CE
+	echo $LGYS"  6- Change To Light Grey "$CE $PS"  13- Change To Purple "$CE $BS" b "$CE- Go Back
+	echo "$BRS"  7- Change To Brown "$CE $LPS"  14- Change To Light Purple "$CE $BS" 0 "$CE- Exit
+	echo "Choose:"
+	read_input
+	function options1 {
+		if [[ "$ANSWER" = "0" ]]; then
+			exit
+		elif [[ "$ANSWER" = "1" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$YS/' aru.sh
+		elif [[ "$ANSWER" = "2" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$BS/' aru.sh
+		elif [[ "$ANSWER" = "3" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$LBS/' aru.sh
+		elif [[ "$ANSWER" = "4" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$BLS/' aru.sh
+		elif [[ "$ANSWER" = "5" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$DGYS/' aru.sh
+		elif [[ "$ANSWER" = "6" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$LGYS/' aru.sh
+		elif [[ "$ANSWER" = "7" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$BRS/' aru.sh
+		elif [[ "$ANSWER" = "8" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$RS/' aru.sh
+		elif [[ "$ANSWER" = "9" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$DRS/' aru.sh
+		elif [[ "$ANSWER" = "10" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$GNS/' aru.sh
+		elif [[ "$ANSWER" = "11" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$LGNS/' aru.sh
+		elif [[ "$ANSWER" = "12" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$WHS/' aru.sh
+		elif [[ "$ANSWER" = "13" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$PS/' aru.sh
+		elif [[ "$ANSWER" = "14" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$LPS/' aru.sh
+		elif [[ "$ANSWER" = "15" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$CYS/' aru.sh
+		elif [[ "$ANSWER" = "16" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$LCYS/' aru.sh
+		elif [[ "$ANSWER" = "17" ]]; then
+			sed -i ''$line's/.*/	'$theme'C=$YS/' aru.sh
+		elif [[ "$ANSWER" = "b" ]]; then
+			$back
+		else
+		error_msg_num
+		read_input
+		options1
+		fi
+		}
+	#zsh aru.sh
+}
+
+#function settings_menu_edit {														#MENU-SETTINGS SUBMENU-EDIT MENUS
+	back=settings_menu
+	home=settings_menu_edit
+	a=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' -e'/SUBMENU/d' | sed -n 1p | cut -d "-" -f 2);h="";o="";
+	b=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' -e'/SUBMENU/d' | sed -n 2p | cut -d "-" -f 2);i="";p="";
+	c=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' -e'/SUBMENU/d' | sed -n 3p | cut -d "-" -f 2);j="";q="";
+	d=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' -e'/SUBMENU/d' | sed -n 4p | cut -d "-" -f 2);k="";r="";
+	e=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' -e'/SUBMENU/d' | sed -n 5p | cut -d "-" -f 2);l="";s="";
+	f=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' -e'/SUBMENU/d' | sed -n 6p | cut -d "-" -f 2);m="";
+	g=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' -e'/SUBMENU/d' | sed -n 7p | cut -d "-" -f 2);n="";
+	#OPTIONS
+	a1="";h1="";o1="";
+	b1="";i1="";p1="";
+	c1="";j1="";q1="";
+	d1=settings_menu_edit_submenus;k1="";r1="";
+	e1="";l1="";s1="";
+	f1="";m1="";
+	g1="";n1="";
+	menu_list
+	read_input
+	options
+}
+
+
+
+#function settings_menu_edit_submenus {														#MENU-SETTINGS SUBMENU-EDIT SUBMENUS
+	back=settings_menu_edit
+	home=settings_menu_edit_submenus
+	a=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' | grep "SUBMENU-" | cut -d "-" -f 3 | sed -n 1p) ;h="";o="";
+	b=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' | grep "SUBMENU-" | cut -d "-" -f 3 | sed -n 2p);i="";p="";
+	c=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' | grep "SUBMENU-" | cut -d "-" -f 3 | sed -n 3p);j="";q="";
+	d=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' | grep "SUBMENU-" | cut -d "-" -f 3 | sed -n 4p);k="";r="";
+	e=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' | grep "SUBMENU-" | cut -d "-" -f 3 | sed -n 5p);l="";s="";
+	f=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' | grep "SUBMENU-" | cut -d "-" -f 3 | sed -n 6p);m="";
+	g=$(grep "#MENU-" aru.sh | sed -e '/grep \"#MENU-/d' | grep "SUBMENU-" | cut -d "-" -f 3 | sed -n 7p);n="";
+	-OPTIONS
+	a1="";h1="";o1="";
+	b1="";i1="";p1="";
+	c1="";j1="";q1="";
+	d1="";k1="";r1="";
+	e1="";l1="";s1="";
+	f1="";m1="";
+	g1="";n1="";
+	read_input
+	options
+}
+
+
