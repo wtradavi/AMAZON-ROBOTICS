@@ -1,4 +1,4 @@
-setopt interactive_comments
+setopt interactive_comments 
 
 function logo {
 	FONTC=$YS
@@ -229,6 +229,8 @@ function options() {
 	fi
 }
 
+
+
 #---------Functions-----------------------------------------------------
 function go_back_or_exit {
 	echo $PBTGB
@@ -371,6 +373,6 @@ function dusc_util {
     dusc-util -m
 }
 
-#-----Execute----------------------------------------------------------------------------------------------
+#-------Execution--------------------------------------------------------------------------------------------------
 clear
 main_menu
