@@ -1,6 +1,6 @@
 function check_provision {
   function prompt_drive1 {
-    echo -e $RS"Active Drive on Same Floor: "$CE
+    center  $RS"Active Drive on Same Floor: "$CE"
     read drive_unit1
     if [ $(echo $drive_unit1 | wc -c) -ne 7 ]; then
       echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -10,7 +10,7 @@ function check_provision {
     fi
   }
   function prompt_drive2 {
-    echo -e $RS"Drive Unit To Check: "$CE
+    center  $RS"Drive Unit To Check: "$CE"
     read drive_unit2
     if [ $(echo $drive_unit2 | wc -c) -ne 7 ]; then
       echo "The Drive Number is a Six-Digit Number. Please Try Agan."
