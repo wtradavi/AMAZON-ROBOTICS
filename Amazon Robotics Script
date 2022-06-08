@@ -48,7 +48,7 @@ function menu_list {
 	echo -e "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - $g"; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - $n"; else echo " " ; fi)" "$BS" 0"$CE- Exit"
 	echo "Choose:" }
 
-function main_menu() {															#MENU-MAIN
+function main_menu() {															"""MENUMAIN"""
 	a="Drive Menu                       ";h="                                         ";o="";
 	b="Remote Menu                      ";i="                                         ";p="";
 	c="                                 ";j="                                         ";q="";
@@ -56,7 +56,6 @@ function main_menu() {															#MENU-MAIN
 	e="                                 ";l="                                         ";s="";
 	f="                                 ";m="                                         ";
 	g="                                 ";n="                                         ";
-	#OPTIONS
 	a1=drive_menu;h1="";o1="";
 	b1=remote_menu;i1="";p1="";
 	c1=;j1="";q1="";
@@ -71,7 +70,7 @@ function main_menu() {															#MENU-MAIN
 
 
 
-function drive_menu {															#MENU-DRIVE
+function drive_menu {															"""MENUDRIVE"""
 	back=main_menu
 	home=drive_menu
 	a="Ping a Drive                    ";h="Reset Wifi                                ";o="";
@@ -81,14 +80,13 @@ function drive_menu {															#MENU-DRIVE
 	e="Switch Port Connection          ";l="                                          ";s="";
 	f="Camera Logs                     ";m="                                          ";
 	g="Check Time & Date               ";n="                                          ";
-	#OPTIONS
 	a1=ping_drive;h1="";o1="";
 	b1=dusc_util;i1=reboot;p1="";
 	c1="";j1="";q1="";
 	d1="";k1="";r1="";
 	e1="";l1="";s1="";
 	f1="";m1="";
-	g1="";n1="";
+	g1=check_time;n1="";
 	menu_list
 	read_input
 	options
@@ -96,7 +94,7 @@ function drive_menu {															#MENU-DRIVE
 
 
 
-function remote_menu {															#MENU-REMOTE
+function remote_menu {															"""MENUREMOTE"""
 	back=main_menu
 	home=remote_menu
 	a="Ping a Drive                   ";h="Reboot Drive                                ";o="";
@@ -106,7 +104,6 @@ function remote_menu {															#MENU-REMOTE
 	e="Reset Drive's Wifi Config      ";l="                                            ";s="";
 	f="Put Drive To Sleep             ";m="                                            ";
 	g="Unregister Drive               ";n="                                            ";
-	#OPTIONS
 	a1=ping_drive;h1="";o1="";
 	b1=ssh_connect;i1=firmware_update_remote;p1="";
 	c1=charge_drive;j1=dusc_util;q1="";
@@ -124,7 +121,7 @@ YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
 YNONLY="($YSy$CE/$YSn$CE)"
 PAKT="Press $YSany key$CE to"
 P0TE="Press $YS0$CE to exit..."
-PBTGB="Press $YS[b]$CE to go back..."
+PBTGB="Press $YS b $CE to go back..."
 NUM="Choose: "
 
 function read_input() {
@@ -232,6 +229,12 @@ function go_back_or_exit {
 		exit
 	fi
 }
+
+function center { 
+	var=$1
+	print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])var}
+}
+
 
 function ping_drive {
   echo -e $RS"1- Hide The Bullshit"$CE
@@ -361,6 +364,38 @@ function dusc_util {
                               3=Stopping
                               4=immobilized unpowered"""
     dusc-util -m
+}
+
+function check_time (){
+	echo -e $RS"Active Drive:"$CE
+  	read drive_unit
+  	if [[ $(echo $drive_unit | wc -c) -ne 7 ]]; then
+  		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
+  		check_time
+  	else
+        good_time=$(ssh root@kdu-$drive_unit "timedatectl")
+        bad_time=$(timedatectl)
+        clear
+        header=$(echo "                         "$RS Drive Being Checked $CE "                         " $GNS Active Drive On Floor $CE); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])header}
+        line1=$(echo $(echo $bad_time | grep Local)"               " $(echo $good_time | grep Local)); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line1}
+        line2=$(echo $(echo $bad_time | grep Universal)"               " $(echo $good_time | grep Universal)); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line2}
+        line3=$(echo $(echo $bad_time | grep "RTC time")"               "$(echo $good_time | grep "RTC time")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line3}
+        line4=$(echo $(echo $bad_time | grep "Time zone")"               "$(echo $good_time | grep "Time zone")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line4}
+        line5=$(echo $(echo $bad_time | grep "synchronized")"               "$(echo $good_time | grep "synchronized")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line5}
+        line6=$(echo $(echo $bad_time | grep "Time zone")"               "$(echo $good_time | grep "Time zone")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line6}
+        line7=$(echo $(echo $bad_time | grep "NTP")"               "$(echo $good_time | grep "NTP")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line7}
+        line8=$(echo $(echo $bad_time | grep "local TZ")"               "$(echo $good_time | grep "local TZ")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line8}
+        echo "Would You Like To Sync The Time Between These Drives? y/N"
+        read -k 1 ANSWER
+        if [ $ANSWER = "y" ] || [ $ANSWER = "Y"]; then 
+            change_time
+        fi
+	fi
+    
+}
+
+function change_time (){
+    date -s $(ssh root@kdu-$drive_unit "timedatectl | grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc 
 }
 
 clear
