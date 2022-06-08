@@ -1,4 +1,4 @@
-setopt interactive_comments 
+setopt interactive_comments
 
 function logo {
 	FONTC=$YS
@@ -48,9 +48,6 @@ function menu_list {
 	echo -e "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - $g"; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - $n"; else echo " " ; fi)" "$BS" 0"$CE- Exit"
 	echo "Choose:" }
 
-
-#--------Main-Menus-----------------------------------------------------
-
 function main_menu() {															#MENU-MAIN
 	a="Drive Menu                       ";h="                                         ";o="";
 	b="Remote Menu                      ";i="                                         ";p="";
@@ -86,7 +83,7 @@ function drive_menu {															#MENU-DRIVE
 	g="Check Time & Date               ";n="                                          ";
 	#OPTIONS
 	a1=ping_drive;h1="";o1="";
-	b1=dusc_util;i1="";p1="";
+	b1=dusc_util;i1=reboot;p1="";
 	c1="";j1="";q1="";
 	d1="";k1="";r1="";
 	e1="";l1="";s1="";
@@ -122,7 +119,6 @@ function remote_menu {															#MENU-REMOTE
 	options
 }
 
-#---------Prompts-----------------------------------------------------
 YNYES="( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
 YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
 YNONLY="($YSy$CE/$YSn$CE)"
@@ -156,7 +152,6 @@ function prompt_num() {
 	read_input
 }
 
-#---------Error-Messages-----------------------------------------------------
 
 function error_msg_ynno() {
 	logo
@@ -175,8 +170,6 @@ function error_msg_num() {
 	echo $RS"YOU DID NOT MAKE A CORRECT SELECTION."$CE
 	echo $PBTGB
 }
-
-#---------Menu-Options-----------------------------------------------------
 
 function options() {
 	if [[ "$ANSWER" = "0" ]]; then
@@ -229,9 +222,6 @@ function options() {
 	fi
 }
 
-
-
-#---------Functions-----------------------------------------------------
 function go_back_or_exit {
 	echo $PBTGB
 	echo $PAKTE
@@ -373,6 +363,5 @@ function dusc_util {
     dusc-util -m
 }
 
-#-------Execution--------------------------------------------------------------------------------------------------
 clear
 main_menu
