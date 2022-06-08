@@ -21,21 +21,21 @@ function logo {
 	LGYS="\e[0;37m"
 	WHS="\e[1;37m"
 	clear
-	echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    : "$CE
-	echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   : "$CE
-	echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  : "$CE
-	echo -e $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : : "$CE
-	echo -e $LOGOC"                  :     : :    : :    :  :     :    : :   :: "$CE
-	echo -e $LOGOC"                  :     : :    : :    : ::::::  ::::  :    : "$CE
-	echo -e $LOGOC"                                                                    "$CE
-	echo -e $LOGOC"              ::::::                                             "$CE
-	echo -e $LOGOC"              :     :  ::::  :::::   ::::  ::::: :  ::::   ::::  "$CE
-	echo -e $LOGOC"              :     : :    : :    : :    :   :   : :    : :      "$CE
-	echo -e $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE
-	echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE
-	echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE
-	echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"}
-
+	center "$(echo $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    : "$CE)"
+	center "$(echo $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   : "$CE)"
+	center "$(echo $LOGOC"                  :     : : :: : :    :    :   :    : : :  : "$CE)"
+	center "$(echo $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : : "$CE)"
+	center "$(echo $LOGOC"                  :     : :    : :    :  :     :    : :   :: "$CE)"
+	center "$(echo $LOGOC"                  :     : :    : :    : ::::::  ::::  :    : "$CE)"
+	center "$(echo $LOGOC"                                                                    "$CE)"
+	center "$(echo $LOGOC"              ::::::                                             "$CE)"
+	center "$(echo $LOGOC"              :     :  ::::  :::::   ::::  ::::: :  ::::   ::::  "$CE)"
+	center "$(echo $LOGOC"              :     : :    : :    : :    :   :   : :    : :      "$CE)"
+	center "$(echo $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE)"
+	center "$(echo $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE)"
+	center "$(echo $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE)"
+	center "$(echo $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE)" by DAVID TRAVERS""
+	}
 
 function menu_list {
 	logo
@@ -90,6 +90,7 @@ function drive_menu {															"""MENUDRIVE"""
 	menu_list
 	read_input
 	options
+	back=drive_menu
 }
 
 
@@ -114,6 +115,7 @@ function remote_menu {															"""MENUREMOTE"""
 	menu_list
 	read_input
 	options
+	back=remote_menu
 }
 
 YNYES="( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
@@ -237,23 +239,23 @@ function center {
 
 
 function ping_drive {
-  echo -e $RS"1- Hide The Bullshit"$CE
-  echo -e $RS"2- Show Everything"$CE
-  prompt_num
+	logo
+	echo -e $RS"1- Hide The Bullshit"$CE
+	echo -e $RS"2- Show Everything"$CE
+	prompt_num
+	logo
 	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
 	read drive_unit
-  logo
-  if [[ $ANSWER = 1 ]]; then
-    echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $(ping -c 3 kdu-$drive_unit | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"$CE $FONTC" of Packets that It Transmitted."$CE
-  elif [[ $ANSWER = 2 ]]; then
-    ping -c 3 kdu-$drive_unit
-  else
-    echo -e $RS"Something Went Wrong"
-    go_back_or_exit
-  fi
-	go_back_or_exit
+	lost_packets=$(ping -c 3 kdu-$drive_unit | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
+	if [ $ANSWER = 1 ]; then
+		echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $lost_packets))"%"$CE $FONTC" of Packets that It Transmitted."$CE || echo "Something Went Wrong. Please Try Again." && sleep 2 && $back 
+	elif [ $ANSWER = 2 ]; then
+		ping -c 3 kdu-$drive_unit
+	else
+		logo
+		$back
+	fi
 }
-
 function ssh_connect {
 	echo -e $RS"What is the Drive Number That You Would like to SSH Into?"$CE
 	read drive_unit
@@ -367,36 +369,39 @@ function dusc_util {
 }
 
 function check_time (){
+	logo
 	echo -e $RS"Active Drive:"$CE
   	read drive_unit
   	if [[ $(echo $drive_unit | wc -c) -ne 7 ]]; then
+	  	logo
   		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
   		check_time
   	else
-        good_time=$(ssh root@kdu-$drive_unit "timedatectl")
+        good_time=$(ssh -p 55555 obsidial@localhost "timedatectl")
         bad_time=$(timedatectl)
-        clear
-        header=$(echo "                         "$RS Drive Being Checked $CE "                         " $GNS Active Drive On Floor $CE); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])header}
-        line1=$(echo $(echo $bad_time | grep Local)"               " $(echo $good_time | grep Local)); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line1}
-        line2=$(echo $(echo $bad_time | grep Universal)"               " $(echo $good_time | grep Universal)); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line2}
-        line3=$(echo $(echo $bad_time | grep "RTC time")"               "$(echo $good_time | grep "RTC time")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line3}
-        line4=$(echo $(echo $bad_time | grep "Time zone")"               "$(echo $good_time | grep "Time zone")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line4}
-        line5=$(echo $(echo $bad_time | grep "synchronized")"               "$(echo $good_time | grep "synchronized")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line5}
-        line6=$(echo $(echo $bad_time | grep "Time zone")"               "$(echo $good_time | grep "Time zone")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line6}
-        line7=$(echo $(echo $bad_time | grep "NTP")"               "$(echo $good_time | grep "NTP")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line7}
-        line8=$(echo $(echo $bad_time | grep "local TZ")"               "$(echo $good_time | grep "local TZ")); print -r - ${(l[COLUMNS/2][ ]r[COLUMNS-COLUMNS/2][ ])line8}
+        logo
+        center "$(echo "                         "$RS Drive Being Checked $CE "                         " $GNS Active Drive On Floor $CE)"
+        center "$(echo $(echo $bad_time | grep Local)"               " $(echo $good_time | grep Local))"
+        center "$(echo $(echo $bad_time | grep Universal)"               " $(echo $good_time | grep Universal))"
+        center "$(echo $(echo $bad_time | grep "RTC time")"               "$(echo $good_time | grep "RTC time"))"
+        center "$(echo $(echo $bad_time | grep "Time zone")"               "$(echo $good_time | grep "Time zone"))"
+        center "$(echo $(echo $bad_time | grep "synchronized")"               "$(echo $good_time | grep "synchronized"))"
+        center "$(echo $(echo $bad_time | grep "NTP")"               "$(echo $good_time | grep "NTP"))"
+        center "$(echo $(echo $bad_time | grep "local TZ")"               "$(echo $good_time | grep "local TZ"))"
         echo "Would You Like To Sync The Time Between These Drives? y/N"
         read -k 1 ANSWER
         if [ $ANSWER = "y" ] || [ $ANSWER = "Y"]; then 
             change_time
+		else 
+			$back
         fi
 	fi
-    
+    function change_time (){
+    	date -s $(ssh -p 55555 obsidial@localhost "timedatectl | grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc && echo "Successfully Completed" || echo "Something Went Wrong. Please Try Again" && sleep 2 && $back
+	}
 }
 
-function change_time (){
-    date -s $(ssh root@kdu-$drive_unit "timedatectl | grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc 
-}
+
 
 clear
 main_menu
