@@ -1,3 +1,5 @@
+#!/bin/sh
+
 set opt interactive_comments
 
 function logo {
@@ -47,7 +49,8 @@ function menu_list {
 	echo -e "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - $e"; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - $l"; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - $s"; else echo " " ; fi)"
 	echo -e "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - $f"; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - $m"; else echo " " ; fi)" "$BS" b"$CE- Go Back"
 	echo -e "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - $g"; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - $n"; else echo " " ; fi)" "$BS" 0"$CE- Exit"
-	echo "Choose:" }
+	echo "Choose:"
+  }
 
 
 #--------Main-Menus-----------------------------------------------------
