@@ -79,6 +79,3 @@ function check_provision {
 prompt_drive1
 check_ksk
 }
-
-
-
