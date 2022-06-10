@@ -252,6 +252,7 @@ function columnize {
   shift
   colwidth=$(echo -e "scale=0; $COLUMNS / $columns" | bc)
   printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@";
+}
 
 center(){                       # Justifies Text to Center
     local x
