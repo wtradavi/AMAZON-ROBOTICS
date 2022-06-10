@@ -1,5 +1,6 @@
 function check_provision {
   function prompt_drive1 {
+    logo
     echo -e $RS"Active Drive on Same Floor: "$CE
     read drive_unit1
     if [ $(echo $drive_unit1 | wc -c) -ne 7 ]; then
@@ -10,6 +11,7 @@ function check_provision {
     fi
   }
   function prompt_drive2 {
+    logo
     echo -e $RS"Drive Unit To Check: "$CE
     read drive_unit2
     if [ $(echo $drive_unit2 | wc -c) -ne 7 ]; then
@@ -30,6 +32,7 @@ function check_provision {
     wpa2=$(echo $files2 | cut -d " " -f 5);
   }
   function check_ksk {
+    logo
     if [ $ksk1 = $ksk2 ]; then
       echo "The KSK file is good"
       check_pem
@@ -46,6 +49,7 @@ function check_provision {
     fi
   }
   function check_pem {
+    logo
     if [ $pem1 = $pem2 ]; then
       echo "The Pem file is good"
       check_wpa
@@ -62,6 +66,7 @@ function check_provision {
     fi
   }
   function check_wpa {
+    logo
     if [ $wpa1 = $wpa2 ]; then
       echo "The WPA file is good."
     else

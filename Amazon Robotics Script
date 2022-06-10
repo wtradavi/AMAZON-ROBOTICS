@@ -1,3 +1,5 @@
+#!/bin/sh
+
 set opt interactive_comments
 
 function logo {
