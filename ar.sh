@@ -247,7 +247,20 @@ function go_back_or_exit {
 	fi
 }
 
-function columnize { columns=$1; shift; colwidth=$(echo -e "scale=0; $COLUMNS / $columns" | bc) ; printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@"; }
+function columnize {
+  columns=$1
+  shift
+  colwidth=$(echo -e "scale=0; $COLUMNS / $columns" | bc)
+  printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@";
+
+center(){                       # Justifies Text to Center
+    local x
+    local y
+    text="$*"
+    x=$(( ($(tput cols) - ${#text}) / 2))
+    echo -ne "\E[6n";read -sdR y; y=$(echo -ne "${y#*[}" | cut -d';' -f1)
+    echo -ne "\033[${y};${x}f$*\n"
+}
 
 function ping_drive {
   logo
