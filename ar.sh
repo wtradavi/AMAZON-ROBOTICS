@@ -254,7 +254,7 @@ function columnize {
   printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@";
 }
 
-center(){                     
+function center {                     
     local x
     local y
     text="$*"
