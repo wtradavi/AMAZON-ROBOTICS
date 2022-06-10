@@ -49,7 +49,7 @@ function menu_list {
 	echo -e "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - $e"; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - $l"; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - $s"; else echo " " ; fi)"
 	echo -e "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - $f"; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - $m"; else echo " " ; fi)" "$BS" b"$CE- Go Back"
 	echo -e "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - $g"; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - $n"; else echo " " ; fi)" "$BS" 0"$CE- Exit"
-	echo "Choose:"
+	echo -e "Choose: \c"
   }
 
 function main_menu() {															#MENU-MAIN
@@ -135,7 +135,7 @@ YNONLY="($YSy$CE/$YSn$CE)"
 PAKT="Press $YSany key$CE to"
 P0TE="Press $YS0$CE to exit..."
 PBTGB="Press $YS[b]$CE to go back..."
-NUM="Choose: "
+NUM="Choose: \c"
 
 function read_input() {
 	read -n 1 ANSWER
@@ -246,6 +246,8 @@ function go_back_or_exit {
 		exit
 	fi
 }
+
+function columnize { columns=$1; shift; colwidth=$(echo -e "scale=0; $COLUMNS / $columns" | bc) ; printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@"; }
 
 function ping_drive {
   logo
@@ -475,6 +477,7 @@ check_ksk
 
 function check_time (){
 	logo
+  rm /tmp/good_time /tmp/bad_time
 	echo -e $RS"Active Drive:"$CE
 	read drive_unit
 	if [ $(echo $drive_unit | wc -c) -ne 7 ]; then
@@ -485,14 +488,7 @@ function check_time (){
 		ssh -p 55555 obsidial@localhost "timedatectl" >>/tmp/good_time
 		timedatectl >> /tmp/bad_time
 		logo
-		echo -e  $RS Drive Being Checked $CE"                    "$GNS Active Drive On Floor $CE
-		echo -e  $(grep Local /tmp/bad_time)"                    "$( grep Local/tmp/good_time)
-		echo -e  $(grep Universal /tmp/bad_time)"                    "$( grep Universal/tmp/good_time)
-		echo -e  $(grep "RTC time" /tmp/bad_time)"                    "$( grep "RTC time"/tmp/good_time)
-		echo -e  $(grep "Time zone" /tmp/bad_time)"                    "$( grep "Time zone"/tmp/good_time)
-		echo -e  $(grep "synchronized" /tmp/bad_time)"                    "$( grep "synchronized"/tmp/good_time)
-		echo -e  $(grep "NTP" /tmp/bad_time)"                    "$( grep "NTP"/tmp/good_time)
-		echo -e  $(grep "local TZ" /tmp/bad_time)"                    "$( grep "local TZ"/tmp/good_time)
+		columnize 2  "                          Drive Being Checked" "                         Active Drive On Floor" "  $(grep "Local" /tmp/bad_time)" " $(grep "Local" /tmp/good_time)" "      $(grep "Universal" /tmp/bad_time)" "     $(grep "Universal" /tmp/good_time)" "$(grep "RTC time" /tmp/bad_time)" "$(grep "RTC time" /tmp/good_time)" " $(grep "Time zone" /tmp/bad_time)" " $(grep "Time zone" /tmp/good_time)" "                 $(grep "synchronized" /tmp/bad_time)" "          $(grep "synchronized" /tmp/good_time)" "   $(grep "NTP" /tmp/bad_time)" "$(grep "NTP" /tmp/good_time)" "       $(grep "local TZ" /tmp/bad_time)" "$(grep "local TZ" /tmp/good_time)"
 		rm /tmp/good_time /tmp/bad_time
 		echo "Would You Like To Sync The Time Between These Drives? y/N"
 		read -n 1 ANSWER
