@@ -1,0 +1,1 @@
+printf "$(echo -e $(for i in $(seq 1 2); do echo -e "%-40s "; done))\n" "" "0=normal" "" "1=Slowing" "" "2=Limited" "" "3=Stopping" "" "4=immobilized unpowered"; dusc-util -m

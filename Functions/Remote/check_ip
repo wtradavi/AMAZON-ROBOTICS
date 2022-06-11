@@ -1,0 +1,1 @@
+echo -n "Drive: "; read -r du; nslookup kdu-$du

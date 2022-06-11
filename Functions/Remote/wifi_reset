@@ -1,0 +1,1 @@
+echo -n "Drive #: "; read -r du; sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c 'reset_wifi_config; exit;' -P 50

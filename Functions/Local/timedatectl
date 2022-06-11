@@ -1,0 +1,1 @@
+echo -n "Good Drive #: "; read -r du; ssh root@kdu-$du "timedatectl | grep -n 1"; timedatectl | grep -n 1

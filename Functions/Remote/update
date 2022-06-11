@@ -1,0 +1,1 @@
+echo -n "Drive #: "; read -r du; echo -n "Version #: "; read -r ver; cd /apollo/env/FCXInfra/var/fcxfw/$du && sudo -u kivasvs ./update_drive.sh kdu-$ver

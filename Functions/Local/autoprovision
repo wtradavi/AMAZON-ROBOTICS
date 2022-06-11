@@ -1,0 +1,1 @@
+echo -n "Good Drive #: "; read -r du; a=/etc; b=/ksk; c=/wpa_supplicant; scp root@kdu-$du:$a$b$b.txt $a$c$c.conf $a$c/amazon.pem /tmp; mv /tmp/amazon.pem $a$c/amazon.pem; mv /tmp$b.txt $a$b$b.txt; mv /tmp$c.conf $a$c$c.conf

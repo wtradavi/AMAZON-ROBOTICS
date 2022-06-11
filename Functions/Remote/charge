@@ -1,0 +1,1 @@
+echo -n "Floor #(fu-5): "; read -r fu; echo -n "Drive #: "; read -r du; echo -n "Charger #: "; read -r cu; echo -n "Charging Time (1-180)"; read -r ct; sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -c AMZN -w SYR1 -z $(if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi) -drive $du -charger $cu -t $ct
