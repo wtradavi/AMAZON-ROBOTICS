@@ -1,3 +1,5 @@
 function timechange {
-  echo -n "Good Drive #: "; read -r du; date -s $(ssh root@kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
+  echo -n "Good Drive #: ";
+  read -r du;
+  date -s $(ssh root@kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
 }

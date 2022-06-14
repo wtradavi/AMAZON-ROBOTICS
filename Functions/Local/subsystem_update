@@ -1,3 +1,6 @@
 function subsystem_update {
-  subsystem_update -l; echo -n "Subsystem Component(--all): "; read -r sc; subsystem_update -f $sc
+  subsystem_update -l;
+  echo -n "Subsystem Component(--all): ";
+  read -r sc;
+  subsystem_update -f $sc
 }

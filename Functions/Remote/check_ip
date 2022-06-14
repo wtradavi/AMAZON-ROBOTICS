@@ -1,3 +1,5 @@
 function check_ip {
-  echo -n "Drive: "; read -r du; nslookup kdu-$du
+  echo -n "Drive: ";
+  read -r du;
+  nslookup kdu-$du
 }
