@@ -1,1 +1,3 @@
-echo -n "Station #: "; read -r su; echo -n "Floor: "; read -r fu; sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.syr1-$(if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com
+fucntion station_ssh {
+  echo -n "Station #: "; read -r su; echo -n "Floor: "; read -r fu; sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.syr1-$(if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com
+}

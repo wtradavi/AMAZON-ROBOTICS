@@ -1,1 +1,3 @@
-sudo -u kivasvs tail –f xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.log
+function fw_log {
+  sudo -u kivasvs tail –f xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.log
+}

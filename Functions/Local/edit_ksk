@@ -1,1 +1,3 @@
-vi /etc/ksk/ksk.txt
+function edit_ksk {
+  vi /etc/ksk/ksk.txt
+}

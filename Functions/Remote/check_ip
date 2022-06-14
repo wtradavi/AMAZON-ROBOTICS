@@ -1,1 +1,3 @@
-echo -n "Drive: "; read -r du; nslookup kdu-$du
+function check_ip {
+  echo -n "Drive: "; read -r du; nslookup kdu-$du
+}

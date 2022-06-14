@@ -1,0 +1,9 @@
+function center {                       # Justifies Text to Center
+    local x
+    local y
+    text="$*"
+    x=$(( ($(tput cols) - ${#text}) / 2))
+    echo -ne "\E[6n";read -sdR y; y=$(echo -ne "${y#*[}" | cut
+-d';' -f1)
+    echo -ne "\033[${y};${x}f$*\n"
+}

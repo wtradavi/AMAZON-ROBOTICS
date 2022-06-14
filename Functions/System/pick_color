@@ -1,12 +1,3 @@
-function center {                       # Justifies Text to Center
-    local x
-    local y
-    text="$*"
-    x=$(( ($(tput cols) - ${#text}) / 2))
-    echo -ne "\E[6n";read -sdR y; y=$(echo -ne "${y#*[}" | cut -d';' -f1)
-    echo -ne "\033[${y};${x}f$*\n"
-}
-
 function pick_color {
 	clear
   echo "Enter Your Text Here:"
@@ -231,4 +222,3 @@ function pick_color {
   clear
 	echo "echo -e '\e[$effect;$text;$background'" "'$TEXT'" "'\e[0m'"
 }
-pick_color
