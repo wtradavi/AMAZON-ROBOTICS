@@ -97,9 +97,8 @@ function pick_color {
 		;;
 
 	esac
-
-	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[4$n;$text;0m""$n. $TEXT""\e[0m"; echo -e "\e[0;10$n;30m""1$n. $TEXT""\e[0m"; done
-
+  clear
+	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[0;4$n;30m""$n. $TEXT""\e[0m"; echo -e "\e[0;10$n;30m""1$n. $TEXT""\e[0m"; done
 	echo -n "Please Select The Color of Your Background: "
 	read ANSWER
 
@@ -184,6 +183,7 @@ function pick_color {
 			background=109m
 		;;
 	esac
+  clear
 	for n in 0 1 2 3 4 5  7 8 9 21; do  echo -e "\e[$n;$text;$background""$n.  $TEXT""\e[0m"; done
 	echo -n "Please Select The Effect of Your Text: "
 	read ANSWER
@@ -228,6 +228,7 @@ function pick_color {
 			effect=21;
 		;;
 	esac
+  clear
 	echo "echo -e '\e[$effect;$text;$background'" "'$TEXT'" "'\e[0m'"
 }
 pick_color
