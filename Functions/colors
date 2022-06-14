@@ -9,15 +9,17 @@ function center {                       # Justifies Text to Center
 
 function pick_color {
 	clear
-	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[0;3$n;40m""$n.  This is the Text Color""\e[0m"; echo -e "\e[0;9$n;40m""1$n. This is the Text Color""\e[0m"; done
+  echo "Enter Your Text Here:"
+  read TEXT
+	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[0;3$n;40m""$n.  $TEXT""\e[0m"; echo -e "\e[0;9$n;40m""1$n. $TEXT""\e[0m"; done
 	echo -n "Please Select The Color of Your Text: "
 	read ANSWER
 
-	case $ANSWER in 
+	case $ANSWER in
 		0)
 			text=30;
 		;;
-		
+
 		1)
 			text=31;
 		;;
@@ -96,16 +98,16 @@ function pick_color {
 
 	esac
 
-	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[0;4$n;$textm""$n. This is the Background Color""\e[0m"; echo -e "\e[0;10$n;30m""1$n. This is the Background Color""\e[0m"; done
+	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[0;4$n;$text m""$n. $TEXT""\e[0m"; echo -e "\e[0;10$n;30m""1$n. $TEXT""\e[0m"; done
 
 	echo -n "Please Select The Color of Your Background: "
 	read ANSWER
 
-	case $ANSWER in 
+	case $ANSWER in
 		0)
 			background=40m
 		;;
-		
+
 		1)
 			background=41m
 		;;
@@ -182,7 +184,7 @@ function pick_color {
 			background=109m
 		;;
 	esac
-	for n in 0 1 2 3 4 5  7 8 9 21; do  echo -e "\e[$n;$text;$background""$n.  This is the Effect""\e[0m"; done
+	for n in 0 1 2 3 4 5  7 8 9 21; do  echo -e "\e[$n;$text;$background""$n.  $TEXT""\e[0m"; done
 	echo -n "Please Select The Effect of Your Text: "
 	read ANSWER
 	case $ANSWER in
@@ -217,16 +219,15 @@ function pick_color {
 		8)
 			effect=8;
 		;;
-		
+
 		9)
 			effect=9;
 		;;
-		
+
 		21)
 			effect=21;
 		;;
 	esac
-	echo "echo -e '\e[$effect;$text;$background'" "'Your Text Goes Here'" "'\e[0m'"
+	echo "echo -e '\e[$effect;$text;$background'" "'$TEXT'" "'\e[0m'"
 }
 pick_color
-
