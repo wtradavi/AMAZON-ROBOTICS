@@ -98,7 +98,7 @@ function pick_color {
 
 	esac
 
-	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[0;4$n;$text m""$n. $TEXT""\e[0m"; echo -e "\e[0;10$n;30m""1$n. $TEXT""\e[0m"; done
+	for n in 0 1 2 3 4 5 6 7 8 9; do  echo -e "\e[4$n;$text;0m""$n. $TEXT""\e[0m"; echo -e "\e[0;10$n;30m""1$n. $TEXT""\e[0m"; done
 
 	echo -n "Please Select The Color of Your Background: "
 	read ANSWER
