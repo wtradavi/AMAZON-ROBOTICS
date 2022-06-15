@@ -221,4 +221,5 @@ function pick_color {
 	esac
   clear
 	echo "echo -e '\e[$effect;$text;$background'" "'$TEXT'" "'\e[0m'"
+	echo "center '\e[$effect;$text;$background'" "'$TEXT'" "'\e[0m'"
 }

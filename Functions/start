@@ -1,1 +1,3 @@
-source /home/obsidial/AMAZON-ROBOTICS/Functions/*/*
+for f in /tmp/Functions/System/*; do source $f; done
+for f in /tmp/Functions/Local/*; do source $f; done
+for f in /tmp/Funcitons/Remote/*; do source $f; done
