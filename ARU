@@ -1,5 +1,3 @@
-#!/bin/sh
-
 set opt interactive_comments
 
 function logo {
@@ -23,6 +21,7 @@ function logo {
   LGYS="\e[0;37m"
   WHS="\e[1;37m" &&
   clear
+  echo -e $GNS" Logged Into $HOSTNAME"$CE
   echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    : "$CE
   echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   : "$CE
   echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  : "$CE
@@ -47,15 +46,12 @@ function menu_list {
 	echo -e "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)"
 	echo -e "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)"
 	echo -e "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)"
-	echo -e "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$BS" b"$CE- Go Back"
-	echo -e "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$BS" 0"$CE- Exit"
+	echo -e "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo "                                          " ; fi)" "$BS" b"$CE- Go Back"
+	echo -e "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo "                                          " ; fi)" "$BS" 0"$CE- Exit"
 	echo "Choose:"
   }
 
-
-#--------Main-Menus-----------------------------------------------------
-
-function main_menu() {															#MENU-MAIN
+function menu {
 	a="Drive Menu                       ";h="                                         ";o="";
 	b="Remote Menu                      ";i="                                         ";p="";
 	c="                                 ";j="                                         ";q="";
@@ -66,36 +62,36 @@ function main_menu() {															#MENU-MAIN
 	#OPTIONS
 	a1=drive_menu;h1="";o1="";
 	b1=remote_menu;i1="";p1="";
-	c1=;j1="";q1="";
-	d1="";k1="";r1="";
-	e1="";l1="";s1="";
-	f1="";m1="";
-	g1="";n1="";
-	menu_list
-	read_input
-	options
-}
-
-
-
-function drive_menu {															#MENU-DRIVE
-	back=main_menu
-	home=drive_menu
-	a="Ping a Drive                    ";h="Reset Wifi                                ";o="";
-	b="Diagnostics/DUSC                ";i="Reboot                                    ";p="";
-	c="Check Config Files              ";j="                                          ";q="";
-	d="Error Codes                     ";k="                                          ";r="";
-	e="Switch Port Connection          ";l="                                          ";s="";
-	f="Camera Logs                     ";m="                                          ";
-	g="Check Time & Date               ";n="                                          ";
-	#OPTIONS
-	a1=ping_drive;h1="";o1="";
-	b1=dusc_util;i1="";p1="";
 	c1="";j1="";q1="";
 	d1="";k1="";r1="";
 	e1="";l1="";s1="";
 	f1="";m1="";
 	g1="";n1="";
+  menu_list
+  read_input
+  options
+}
+
+
+
+function drive_menu {
+	back=menu
+	home=drive_menu
+	a="Ping a Drive                    ";h="Reset Wifi                                ";o="";
+	b="Diagnostics/DUSC                ";i="Reboot                                    ";p="";
+	c="Edit KSK File                   ";j="AutoProvision                             ";q="";
+	d="Error Codes                     ";k="Correct Date & Time                       ";r="";
+	e="Switch Port Connection          ";l="Subsytem Update                           ";s="";
+	f="Camera Logs                     ";m="Check IP Address                          ";
+	g="Check Time & Date               ";n="                                          ";
+	#OPTIONS
+	a1=ping_drive;h1=resetwifiremote;o1="";
+	b1=dusc_util;i1=reboot;p1="";
+	c1=edit_ksk;j1=autoprovision;q1="";
+	d1=not_installed;k1=timechange;r1="";
+	e1=not_installed;l1=subsystem_update;s1="";
+	f1=camera_logs;m1=check_ip;
+	g1=timecheck;n1="";
 	menu_list
 	read_input
 	options
@@ -103,24 +99,24 @@ function drive_menu {															#MENU-DRIVE
 
 
 
-function remote_menu {															#MENU-REMOTE
-	back=main_menu
+function remote_menu {
+	back=menu
 	home=remote_menu
 	a="Ping a Drive                   ";h="Reboot Drive                                ";o="";
-	b="SSH Into A Drive               ";i="Firmware                                    ";p="";
+	b="SSH Into A Drive               ";i="Firmware Update                             ";p="";
 	c="Send Drive To Charger          ";j="Diagnostics/DUSC                            ";q="";
-	d="Error Codes                    ";k="                                            ";r="";
-	e="Reset Drive's Wifi Config      ";l="                                            ";s="";
-	f="Put Drive To Sleep             ";m="                                            ";
+	d="Error Codes                    ";k="SSH Into A Station                          ";r="";
+	e="Reset Drive's Wifi Config      ";l="Firmware Error Logs                         ";s="";
+	f="Put Drive To Sleep             ";m="Transfer This Menu To A Drive               ";
 	g="Unregister Drive               ";n="                                            ";
 	#OPTIONS
-	a1=ping_drive;h1="";o1="";
+	a1=ping_drive;h1=reboot_remote;o1="";
 	b1=ssh_connect;i1=firmware_update_remote;p1="";
 	c1=charge_drive;j1=dusc_util;q1="";
-	d1="";k1="";r1="";
-	e1=resetwifiremote;l1="";s1="";
-	f1="";m1="";
-	g1="";
+	d1=not_installed;k1=station_ssh;r1="";
+	e1=resetwifiremote;l1=fw_log;s1="";
+	f1=not_installed;m1=transfer_aru;
+	g1=not_installed;n1="";
 	menu_list
 	read_input
 	options
@@ -132,58 +128,65 @@ YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
 YNONLY="($YSy$CE/$YSn$CE)"
 PAKT="Press $YSany key$CE to"
 P0TE="Press $YS0$CE to exit..."
-PBTGB="Press $YS[b]$CE to go back..."
+PBTGB="Press $YS [b] $CE to go back..."
 NUM="Choose: "
 
-function read_input() {
-	read -k 1 ANSWER
+function read_input {
+	read -r ANSWER
 	clear
 }
 
-function prompt_connection() {
+function prompt_connection {
 	echo -e $RS"Are You Plugged Into A Drive?"$CE
-	echo $YNNO
+	printf "($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
+  read_input
 }
 
-function prompt_ynyes() {
-	echo $YNYES
+function prompt_ynyes {
+	printf "( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
 	read_input
 }
 
-function prompt_ynno() {
-	echo $YNNO
+function prompt_ynno {
+	printf "($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
 	read_input
 }
 
-function prompt_num() {
+function prompt_num {
 	echo $NUM
 	read_input
 }
 
 #---------Error-Messages-----------------------------------------------------
 
-function error_msg_ynno() {
+function error_msg_ynno {
 	logo
-	echo $RS"YOU DID NOT MAKE A CORRECT SELECTION."$CE
-	echo $YNNO
+	echo -e $RS"YOU DID NOT MAKE A CORRECT SELECTION."$CE
+	printf "($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
 }
 
-function error_msg_ynyes() {
+function error_msg_ynyes {
 	logo
-	echo $RS"YOU DID NOT MAKE A CORRECT SELECTION."$CE
-	echo $YNYES
+	echo -e $RS"YOU DID NOT MAKE A CORRECT SELECTION."$CE
+	printf "( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
 }
 
-function error_msg_num() {
+function error_msg_num {
 	logo
-	echo $RS"YOU DID NOT MAKE A CORRECT SELECTION."$CE
-	echo $PBTGB
+	echo -e $RS"YOU DID NOT MAKE A CORRECT SELECTION."$CE
+	go_back_or_exit
+}
+
+function not_installed {
+  logo
+  echo -e $RS"This Tool has Not Been Configured Yet. Sorry :)"
+  go_back_or_exit
 }
 
 #---------Menu-Options-----------------------------------------------------
 
-function options() {
-	if [[ "$ANSWER" = "0" ]]; then
+function options {
+  if [[ "$ANSWER" = "0" ]]; then
 		exit
 	elif [[ "$ANSWER" = "1" ]]; then
 		$a1
@@ -225,11 +228,12 @@ function options() {
 		$s1
 	elif [[ "$ANSWER" = "b" ]]; then
 		$back
+  elif [[ "$ANSWER" = "" ]]; then
+    menu
 	else
-	echo $PBTGB
-	error_msg_num
-	read_input
-	options
+  	error_msg_num
+  	read_input
+  	options
 	fi
 }
 
@@ -237,9 +241,13 @@ function options() {
 
 #---------Functions-----------------------------------------------------
 function go_back_or_exit {
-	echo $PBTGB
-	echo $PAKTE
-	read_input
+	printf "Press $YS [b] $CE to go back...\n"
+	printf "Press $YS any key $CE to exit\n"
+  if [ "$HOST" = ar-movement-syr1-node1.syr1.amazon.com ]; then
+    read -k 1 ANSWER
+  else
+    read -n 1 ANSWER
+  fi
 	if [[ "$ANSWER" = "b" ]]; then
 		$back
 	else
@@ -248,9 +256,11 @@ function go_back_or_exit {
 }
 
 function ping_drive {
+  logo
   echo -e $RS"1- Hide The Bullshit"$CE
   echo -e $RS"2- Show Everything"$CE
   prompt_num
+  logo
 	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
 	read drive_unit
   logo
@@ -266,16 +276,19 @@ function ping_drive {
 }
 
 function ssh_connect {
-	echo -e $RS"What is the Drive Number That You Would like to SSH Into?"$CE
+  logo
+	echo -e $RS"\nWhat is the Drive Number That You Would like to SSH Into?"$CE
 	read drive_unit
 	logo
+  scp /tmp/ARU root@kdu-$drive_unit:/tmp/ARU
 	ssh root@kdu-$drive_unit
-	main_menu
+	menu
 }
 
 function charge_drive {
 	function prompt_floor {
-		echo -e $RS"What Floor is The Drive On [i.e., 1-5]?"$CE
+    logo
+		echo -e $RS"\nWhat Floor is The Drive On [i.e., 1-5]?"$CE
   	read floor
   	if [ $floor -ge 6 ]; then
 	  	clear
@@ -286,7 +299,8 @@ function charge_drive {
 		fi
 	}
 	function prompt_drive {
-		echo -e $RS"What is the Drive Number That You Would like to Send To The Charger?"$CE
+    logo
+		echo -e $RS"\nWhat is the Drive Number That You Would like to Send To The Charger?"$CE
   	read drive_unit
   	if [ $(echo $drive_unit | wc -c) -ne 7 ]; then
   		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -296,7 +310,8 @@ function charge_drive {
 		fi
 	}
 	function prompt_charger {
-		echo -e $RS"What Charger Would You like to Send It To?"$CE
+    logo
+		echo -e $RS"\nWhat Charger Would You like to Send It To?"$CE
 		read charger_unit
 		if [ $charger_unit = "" ]; then
 		  	clear
@@ -307,7 +322,8 @@ function charge_drive {
 		fi
 	}
 	function prompt_time {
-		echo -e $RS"How Long Do You Want It To Charge For?"$CE
+    logo
+		echo -e $RS"\nHow Long Do You Want It To Charge For?"$CE
 		read time
 		if [ $time -ge 180 ]; then
 		  	clear
@@ -326,7 +342,8 @@ function charge_drive {
 
 function firmware_update_remote {
 	function prompt_drive {
-		echo -e $RS"What is the Drive Number That You Would like to Update?"$CE
+    logo
+		echo -e $RS"\nWhat is the Drive Number That You Would like to Update?"$CE
 	  	read drive_unit
 	  	if [ $(echo $drive_unit | wc -c) -ne 7 ]; then
 	  		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -336,7 +353,8 @@ function firmware_update_remote {
 		fi
 	}
 	function prompt_version {
-		echo -e $RS"What is the Current Version of Firmware You Are Updating The Drive To [Default=22.0]?"$CE
+      logo
+		  echo -e $RS"\nWhat is the Current Version of Firmware You Are Updating The Drive To [Default=22.0]?"$CE
 	  	read version
 	  	if [[ $version -eq 0 ]]; then
 	  		version=22.0
@@ -346,6 +364,7 @@ function firmware_update_remote {
 		fi
 	}
 	function execute {
+    logo
 		cd /apollo/env/FCXInfra/var/fcxfw/$version && ./update_drive.sh kdu-$drive_unit && echo "The Update was Successful"
 		go_back_or_exit
 	}
@@ -355,7 +374,8 @@ function firmware_update_remote {
 
 function resetwifiremote {
 	function prompt_drive {
-		echo -e $RS"What is the Drive Number That You Would like to Reset The Wifi on?"$CE
+    logo
+		echo -e $RS"\nWhat is the Drive Number That You Would like to Reset The Wifi on?"$CE
 			read drive_unit
 			if [ $(echo $drive_unit | wc -c) -ne 7 ]; then
 				echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -368,6 +388,7 @@ function resetwifiremote {
 }
 
 function dusc_util {
+    logo
     echo """
                               0=normal
                               1=Slowing
@@ -375,9 +396,94 @@ function dusc_util {
                               3=Stopping
                               4=immobilized unpowered"""
     dusc-util -m
+    go_back_or_exit
+}
+
+function camera_logs {
+  logo
+  echo -ne $RS"\nDrive #: "$CE;
+  read -r du;
+  cd /tmp && sudo -u kivasvs /apollo/env/FCXInfra/fwbin/get-hercules-logs.sh $du
+}
+
+function autoprovision {
+  logo
+	echo -ne $RS"\nGood Drive #: "$CE;
+	read -r du;
+	scp root@kdu-$du:/etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp;
+	mv /tmp/amazon.pem /etc/wpa_supplicant/amazon.pem;
+	mv /tmp/ksk.txt ksk.txt;
+	mv /tmp/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+}
+
+function subsystem_update {
+  logo
+  subsystem-update -l;
+  echo -ne $RS"Subsystem Component(--all): "$CE;
+  read -r sc;
+  subsystem-update -f $sc
+}
+
+function timechange {
+  logo
+  echo -ne $RS"\nGood Drive #: "$CE;
+  read -r du;
+  date -s $(ssh root@kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
+}
+
+function edit_ksk {
+  vi /etc/ksk/ksk.txt
+}
+
+function timecheck {
+  logo
+  echo -ne $RS"\nGood Drive #: "$CE;
+  read -r du;
+  ssh root@kdu-$du "timedatectl | grep -n 1";
+  timedatectl | grep -n 1
+}
+
+function check_ip {
+  logo
+	ip address
+}
+
+function fw_log {
+  logo
+  sudo -u kivasvs tail –f xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.log
+}
+
+function station_ssh {
+  logo
+  echo -ne $RS"\nStation #: "$CE;
+  read -r su;
+  logo
+  echo -ne $RS"\nFloor: "$CE;
+  read -r fu;
+  logo
+  sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com
+}
+
+function reboot {
+  reboot
+}
+
+function reboot_remote {
+  logo
+  echo -ne $RS"\nDrive: ";
+  read -r du;
+  ssh root@kdu-$du "reboot"
+}
+
+function transfer_aru {
+  logo
+  echo -ne $RS"\nDrive: "
+  read du
+  scp /tmp/ARU root@kdu-$du:/tmp/ARU
+  go_back_or_exit
 }
 
 #-------Execution--------------------------------------------------------------------------------------------------
 clear
 logo
-main_menu
+menu

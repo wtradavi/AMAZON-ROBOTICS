@@ -1,5 +1,0 @@
-function ping {
-  echo -n "Drive #: ";
-  read -r du;
-  echo "$reg$rt$gb\n$(ping -c 3 kdu-$du | grep "packets" | cut -d "," -f "3")$reg\n"
-}

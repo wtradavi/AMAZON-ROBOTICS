@@ -1,3 +1,0 @@
-fucntio ssh {
-  echo -n "Drive #: "; read -r du; ssh -p 55555 root@kdu-$du
-}
