@@ -185,7 +185,7 @@ function options {
 		if [ $HOSTNAME != "ar-movement-syr1-node1.syr1.amazon.com" ]; then
       exit;
     else
-      $SHELL;
+      kill $$;
     fi
 	elif [[ "$ANSWER" = "1" ]]; then
 		$a1
