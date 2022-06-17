@@ -187,7 +187,11 @@ function not_installed {
 
 function options {
   if [[ "$ANSWER" = "0" ]]; then
-		exit
+		if [ $HOSTNAME != "ar-movement-syr1-node1.syr1.amazon.com" ]; then
+      exit;
+    else 
+      $SHELL;
+    fi
 	elif [[ "$ANSWER" = "1" ]]; then
 		$a1
 	elif [[ "$ANSWER" = "2" ]]; then
