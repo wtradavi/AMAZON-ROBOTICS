@@ -22,6 +22,7 @@ function logo {
   WHS="\e[1;37m" &&
   clear
   echo -e $GNS" Logged Into $HOSTNAME"$CE
+  echo ""
   echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    : "$CE
   echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   : "$CE
   echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  : "$CE
