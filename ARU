@@ -386,6 +386,7 @@ function resetwifiremote {
 			fi
 		}
 	sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$drive_unit -c 'reset_wifi_config; exit;' -P 50
+  go_back_or_exit
 }
 
 function dusc_util {
@@ -423,6 +424,7 @@ function subsystem_update {
   echo -ne $RS"Subsystem Component(--all): "$CE;
   read -r sc;
   subsystem-update -f $sc
+  go_back_or_exit
 }
 
 function timechange {
@@ -442,6 +444,7 @@ function timecheck {
   read -r du;
   ssh root@kdu-$du "timedatectl | grep -n 1";
   timedatectl | grep -n 1
+  go_back_or_exit
 }
 
 function check_ip {
@@ -453,6 +456,7 @@ function check_ip {
 function fw_log {
   logo
   sudo -u kivasvs tail –f xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.log
+  go_back_or_exit
 }
 
 function station_ssh {
@@ -475,6 +479,7 @@ function reboot_remote {
   echo -ne $RS"\nDrive: ";
   read -r du;
   ssh root@kdu-$du "reboot"
+  go_back_or_exit
 }
 
 function transfer_aru {
