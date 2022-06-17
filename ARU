@@ -36,8 +36,14 @@ function logo {
   echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE
   echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE
   echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"
-  }
+}
 
+function columnize {
+  columns=$1
+  shift
+  colwidth=$(echo -e "scale=0; $COLUMNS / $columns" | bc)
+  printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@";
+}
 
 function menu_list {
 	logo
