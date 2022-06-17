@@ -52,9 +52,10 @@ function menu_list {
 	columnize 3 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)"
 	columnize 3 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)"
 	columnize 3 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)"
-	columnize 3 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo "                                          " ; fi)" 
+	columnize 3 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo "                                          " ; fi)"
 	columnize 3 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo "                                          " ; fi)"
   echo -e "$BS" b"$CE- Go Back"
+  echo -e "$BS" m"$CE- Main Menu"
   echo -e "$BS" 0"$CE- Exit"
 	echo "Choose:"
   }
@@ -236,7 +237,7 @@ function options {
 		$s1
 	elif [[ "$ANSWER" = "b" ]]; then
 		$back
-  elif [[ "$ANSWER" = "" ]]; then
+  elif [[ "$ANSWER" = "m" ]]; then
     menu
 	else
   	error_msg_num
