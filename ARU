@@ -74,13 +74,13 @@ function menu {
 function drive_menu {
 	back=menu
 	home=drive_menu
-	a="Ping a Drive                    ";h="Reset Wifi                                ";o="";
-	b="Diagnostics/DUSC                ";i="Reboot                                    ";p="";
-	c="Edit KSK File                   ";j="AutoProvision                             ";q="";
-	d="Error Codes                     ";k="Correct Date & Time                       ";r="";
-	e="Switch Port Connection          ";l="Subsytem Update                           ";s="";
-	f="Camera Logs                     ";m="Check IP Address                          ";
-	g="Check Time & Date               ";n="                                          ";
+	a="Ping a Drive";h="Reset Wifi";o="";
+	b="Diagnostics/DUSC";i="Reboot";p="";
+	c="Edit KSK File";j="AutoProvision";q="";
+	d="Error Codes";k="Correct Date & Time";r="";
+	e="Switch Port Connection";l="Subsytem Update";s="";
+	f="Camera Logs";m="Check IP Address";
+	g="Check Time & Date";n="";
 	#OPTIONS
 	a1=ping_drive;h1=resetwifiremote;o1="";
 	b1=dusc_util;i1=reboot;p1="";
@@ -99,13 +99,13 @@ function drive_menu {
 function remote_menu {
 	back=menu
 	home=remote_menu
-	a="Ping a Drive                   ";h="Reboot Drive                                ";o="";
-	b="SSH Into A Drive               ";i="Firmware Update                             ";p="";
-	c="Send Drive To Charger          ";j="Diagnostics/DUSC                            ";q="";
-	d="Error Codes                    ";k="SSH Into A Station                          ";r="";
-	e="Reset Drive's Wifi Config      ";l="Firmware Error Logs                         ";s="";
-	f="Put Drive To Sleep             ";m="Transfer This Menu To A Drive               ";
-	g="Unregister Drive               ";n="                                            ";
+	a="Ping a Drive";h="Reboot Drive";o="";
+	b="SSH Into A Drive";i="Firmware Update";p="";
+	c="Send Drive To Charger";j="Diagnostics/DUSC";q="";
+	d="Error Codes";k="SSH Into A Station";r="";
+	e="Reset Drive's Wifi Config";l="Firmware Error Logs";s="";
+	f="Put Drive To Sleep";m="Transfer This Menu To A Drive";
+	g="Unregister Drive";n="";
 	#OPTIONS
 	a1=ping_drive;h1=reboot_remote;o1="";
 	b1=ssh_connect;i1=firmware_update_remote;p1="";
