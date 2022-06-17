@@ -37,6 +37,7 @@ function logo {
   echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE
   echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE
   echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"
+  echo ""
 }
 
 function columnize {
