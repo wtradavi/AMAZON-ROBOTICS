@@ -52,24 +52,11 @@ function menu_list {
   }
 
 function menu {
-	a="Drive Menu                       ";h="                                         ";o="";
-	b="Remote Menu                      ";i="                                         ";p="";
-	c="                                 ";j="                                         ";q="";
-	d="                                 ";k="                                         ";r="";
-	e="                                 ";l="                                         ";s="";
-	f="                                 ";m="                                         ";
-	g="                                 ";n="                                         ";
-	#OPTIONS
-	a1=drive_menu;h1="";o1="";
-	b1=remote_menu;i1="";p1="";
-	c1="";j1="";q1="";
-	d1="";k1="";r1="";
-	e1="";l1="";s1="";
-	f1="";m1="";
-	g1="";n1="";
-  menu_list
-  read_input
-  options
+  if [ $HOSTNAME != "ar-movement-syr1-node1.syr1.amazon.com" ]; then
+    drive_menu;
+  else
+    remote_menu;
+  fi
 }
 
 
@@ -189,7 +176,7 @@ function options {
   if [[ "$ANSWER" = "0" ]]; then
 		if [ $HOSTNAME != "ar-movement-syr1-node1.syr1.amazon.com" ]; then
       exit;
-    else 
+    else
       $SHELL;
     fi
 	elif [[ "$ANSWER" = "1" ]]; then
