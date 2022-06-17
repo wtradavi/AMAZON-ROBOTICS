@@ -36,27 +36,18 @@ function logo {
   echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE
   echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE
   echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"
-}
+  }
 
-function columnize {
-  columns=$1
-  shift
-  colwidth=$(echo -e "scale=0; $COLUMNS / $columns" | bc)
-  printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@";
-}
 
 function menu_list {
 	logo
-	columnize 3 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)"
-	columnize 3 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)"
-	columnize 3 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)"
-	columnize 3 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)"
-	columnize 3 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)"
-	columnize 3 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo "                                          " ; fi)"
-	columnize 3 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo "                                          " ; fi)"
-  echo -e "$RS" b"$CE- Go Back"
-  echo -e "$RS" m"$CE- Main Menu"
-  echo -e "$RS" 0"$CE- Exit"
+	echo -e "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)"
+	echo -e "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)"
+	echo -e "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)"
+	echo -e "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)"
+	echo -e "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)"
+	echo -e "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo "                                          " ; fi)" "$BS" b"$CE- Go Back"
+	echo -e "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo "                                          " ; fi)" "$BS" 0"$CE- Exit"
 	echo "Choose:"
   }
 
@@ -237,7 +228,7 @@ function options {
 		$s1
 	elif [[ "$ANSWER" = "b" ]]; then
 		$back
-  elif [[ "$ANSWER" = "m" ]]; then
+  elif [[ "$ANSWER" = "" ]]; then
     menu
 	else
   	error_msg_num
