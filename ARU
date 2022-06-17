@@ -447,6 +447,7 @@ function timecheck {
 function check_ip {
   logo
 	ip address
+  go_back_or_exit
 }
 
 function fw_log {
@@ -482,6 +483,10 @@ function transfer_aru {
   read du
   scp /tmp/ARU root@kdu-$du:/tmp/ARU
   go_back_or_exit
+}
+
+function aru {
+  rm /tmp/ARU && vi /tmp/ARU && . /tmp/ARU
 }
 
 #-------Execution--------------------------------------------------------------------------------------------------
