@@ -83,7 +83,7 @@ function drive_menu {
 	g="Check Time & Date";n="";
 	#OPTIONS
 	a1=ping_drive;h1=resetwifiremote;o1="";
-	b1=dusc_util;i1=reboot;p1="";
+	b1=dusc_util;i1=reboot_local;p1="";
 	c1=edit_ksk;j1=autoprovision;q1="";
 	d1=not_installed;k1=timechange;r1="";
 	e1=not_installed;l1=subsystem_update;s1="";
@@ -475,7 +475,7 @@ function station_ssh {
   sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com
 }
 
-function reboot {
+function reboot_local {
   reboot
 }
 
@@ -483,7 +483,7 @@ function reboot_remote {
   logo
   echo -ne $RS"\nDrive: ";
   read -r du;
-  ssh root@kdu-$du "reboot"
+  echo "reboot\n" | ssh root@kdu-$du
   go_back_or_exit
 }
 
