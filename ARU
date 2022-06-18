@@ -415,9 +415,9 @@ function autoprovision {
 	echo -ne $RS"\nGood Drive #: "$CE;
 	read -r du;
 	scp root@kdu-$du:/etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp;
-	mv /tmp/amazon.pem /etc/wpa_supplicant/amazon.pem;
-	mv /tmp/ksk.txt ksk.txt;
-	mv /tmp/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+	mv /tmp/amazon.pem /etc/wpa_supplicant/;
+	mv /tmp/ksk.txt /etc/ksk/;
+	mv /tmp/wpa_supplicant.conf /etc/wpa_supplicant/
 }
 
 function subsystem_update {
