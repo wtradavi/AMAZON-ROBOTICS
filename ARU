@@ -79,7 +79,7 @@ function drive_menu {
 	c="Edit KSK File";j="AutoProvision";q="";
 	d="Error Codes";k="Correct Date & Time";r="";
 	e="Switch Port Connection";l="Subsytem Update";s="";
-	f="Camera Logs";m="Check IP Address";
+	f="";m="Check IP Address";
 	g="Check Time & Date";n="";
 	#OPTIONS
 	a1=ping_drive;h1=resetwifiremote;o1="";
@@ -87,7 +87,7 @@ function drive_menu {
 	c1=edit_ksk;j1=autoprovision;q1="";
 	d1=not_installed;k1=timechange;r1="";
 	e1=not_installed;l1=subsystem_update;s1="";
-	f1=camera_logs;m1=check_ip;
+	f1="";m1=check_ip;
 	g1=timecheck;n1="";
 	menu_list
 	read_input
@@ -104,16 +104,16 @@ function remote_menu {
 	c="Send Drive To Charger";j="Diagnostics/DUSC";q="";
 	d="Error Codes";k="SSH Into A Station";r="";
 	e="Reset Drive's Wifi Config";l="Firmware Error Logs";s="";
-	f="Put Drive To Sleep";m="Transfer This Menu To A Drive";
-	g="Unregister Drive";n="";
+	f="Put Drive To Sleep";m="Camera Logs";
+	g="Unregister Drive";n="Transfer This Menu To A Drive";
 	#OPTIONS
 	a1=ping_drive;h1=reboot_remote;o1="";
 	b1=ssh_connect;i1=firmware_update_remote;p1="";
 	c1=charge_drive;j1=dusc_util;q1="";
 	d1=not_installed;k1=station_ssh;r1="";
 	e1=resetwifiremote;l1=fw_log;s1="";
-	f1=not_installed;m1=transfer_aru;
-	g1=not_installed;n1="";
+	f1=not_installed;m1=camera_logs;
+	g1=not_installed;n1=transfer_aru;
 	menu_list
 	read_input
 	options
@@ -337,7 +337,7 @@ function charge_drive {
 		fi
 	}
 	function execute {
-		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "saKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $drive_unit -charger $charger_unit -t $time && echo "The Command Has Succesfully Been Sent"				:Real Code
+		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "saKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $drive_unit -charger $charger_unit -t $time && echo "The Command Has Succesfully Been Sent"
 		go_back_or_exit
 	}
 	prompt_floor
