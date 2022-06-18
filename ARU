@@ -337,7 +337,7 @@ function charge_drive {
 		fi
 	}
 	function execute {
-		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKiva0"$floor; elif [ $floor -eq 1 ]; then echo "saKiva0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $drive_unit -charger $charger_unit -t $time && echo "The Command Has Succesfully Been Sent"				:Real Code
+		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "saKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $drive_unit -charger $charger_unit -t $time && echo "The Command Has Succesfully Been Sent"				:Real Code
 		go_back_or_exit
 	}
 	prompt_floor
@@ -489,7 +489,7 @@ function reboot_remote {
 
 function transfer_aru {
   logo
-  echo -ne $RS"\nDrive: "
+  echo -ne $RS"\nDrive: "$CE
   read du
   scp /tmp/ARU root@kdu-$du:/tmp/ARU
   go_back_or_exit
