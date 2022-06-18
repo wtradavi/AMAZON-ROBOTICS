@@ -421,8 +421,10 @@ function autoprovision {
 }
 
 function subsystem_update {
-  logo
+  logo;
+  echo "";
   subsystem-update -l;
+  echo "";
   echo -ne $RS"Subsystem Component(--all): "$CE;
   read -r sc;
   subsystem-update -f $sc
