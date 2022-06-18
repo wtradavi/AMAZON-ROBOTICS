@@ -79,7 +79,7 @@ function drive_menu {
 	c="Edit KSK File";j="AutoProvision";q="";
 	d="Error Codes";k="Correct Date & Time";r="";
 	e="Switch Port Connection";l="Subsytem Update";s="";
-	f="";m="Check IP Address";
+	f="Check IP Address";m="";
 	g="Check Time & Date";n="";
 	#OPTIONS
 	a1=ping_drive;h1=resetwifiremote;o1="";
@@ -87,7 +87,7 @@ function drive_menu {
 	c1=edit_ksk;j1=autoprovision;q1="";
 	d1=not_installed;k1=timechange;r1="";
 	e1=not_installed;l1=subsystem_update;s1="";
-	f1="";m1=check_ip;
+	f1=check_ip;m1="";
 	g1=timecheck;n1="";
 	menu_list
 	read_input
