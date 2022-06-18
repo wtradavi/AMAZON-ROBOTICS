@@ -423,6 +423,7 @@ function autoprovision {
 function subsystem_update {
   logo;
   echo "";
+  echo -e $RS"Available Components To Update:"$CE
   subsystem-update -l;
   echo "";
   echo -ne $RS"Subsystem Component(--all): "$CE;
