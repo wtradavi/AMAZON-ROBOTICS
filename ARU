@@ -272,7 +272,6 @@ function ping_drive {
 	read du
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
   logo
   if [[ $ANSWER = 1 ]]; then
@@ -293,7 +292,6 @@ function ssh_connect {
 	read du
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
 	logo
   scp /tmp/ARU root@kdu-$du:/tmp/ARU
@@ -321,7 +319,6 @@ function charge_drive {
   	read du
     if [[ $du = "last" ]]; then
       du=$last
-    else
     fi
   	if [ $(echo $du | wc -c) -ne 7 ]; then
   		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -369,7 +366,6 @@ function firmware_update_remote {
   	read du
     if [[ $du = "last" ]]; then
       du=$last
-    else
     fi
   	if [ $(echo $du | wc -c) -ne 7 ]; then
   		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -406,7 +402,6 @@ function resetwifiremote {
 		read du
     if [[ $du = "last" ]]; then
       du=$last
-    else
     fi
 		if [ $(echo $du | wc -c) -ne 7 ]; then
 			echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -438,7 +433,6 @@ function camera_logs {
   read -r du;
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
   cd /tmp && sudo -u kivasvs /apollo/env/FCXInfra/fwbin/get-hercules-logs.sh $du
 }
@@ -450,7 +444,6 @@ function autoprovision {
 	read -r du;
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
 	scp root@kdu-$du:/etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp;
 	mv /tmp/amazon.pem /etc/wpa_supplicant/;
@@ -477,7 +470,6 @@ function timechange {
   read -r du;
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
   date -s $(ssh root@kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
 }
@@ -493,7 +485,6 @@ function timecheck {
   read -r du;
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
   ssh root@kdu-$du "timedatectl | grep -n 1";
   timedatectl | grep -n 1
@@ -519,7 +510,6 @@ function station_ssh {
   read -r su;
   if [[ $du = "last" ]]; then
     su=$last
-  else
   fi
   logo
   echo -ne $RS"\nFloor: "$CE;
@@ -539,7 +529,6 @@ function reboot_remote {
   read -r du;
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
   ssh root@kdu-$du reboot
   go_back_or_exit
@@ -552,7 +541,6 @@ function transfer_aru {
   read du
   if [[ $du = "last" ]]; then
     du=$last
-  else
   fi
   scp /tmp/ARU root@kdu-$du:/tmp/ARU
   go_back_or_exit
