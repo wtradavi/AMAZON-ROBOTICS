@@ -23,6 +23,9 @@ function logo {
   clear
   echo -e $GNS" Logged Into $HOSTNAME"$CE
   echo ""
+  columnize 3 " " "$(echo -e $RS '****NEW FEATURE**** ' $CE)" " "
+  echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered!"$CE
+  echo " "
   echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    : "$CE
   echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   : "$CE
   echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  : "$CE
@@ -264,13 +267,18 @@ function ping_drive {
   echo -e $RS"2- Show Everything"$CE
   prompt_num
   logo
+  last=$du
 	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
-	read drive_unit
+	read du
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
   logo
   if [[ $ANSWER = 1 ]]; then
-    echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $(ping -c 3 kdu-$drive_unit | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"$CE $FONTC" of Packets that It Transmitted."$CE
+    echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $(ping -c 3 kdu-$du | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"$CE $FONTC" of Packets that It Transmitted."$CE
   elif [[ $ANSWER = 2 ]]; then
-    ping -c 3 kdu-$drive_unit
+    ping -c 3 kdu-$du
   else
     echo -e $RS"Something Went Wrong"
     go_back_or_exit
@@ -280,11 +288,16 @@ function ping_drive {
 
 function ssh_connect {
   logo
+  last=$du
 	echo -e $RS"\nWhat is the Drive Number That You Would like to SSH Into?"$CE
-	read drive_unit
+	read du
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
 	logo
-  scp /tmp/ARU root@kdu-$drive_unit:/tmp/ARU
-	ssh root@kdu-$drive_unit
+  scp /tmp/ARU root@kdu-$du:/tmp/ARU
+	ssh root@kdu-$du
 	menu
 }
 
@@ -303,9 +316,14 @@ function charge_drive {
 	}
 	function prompt_drive {
     logo
+    last=$du
 		echo -e $RS"\nWhat is the Drive Number That You Would like to Send To The Charger?"$CE
-  	read drive_unit
-  	if [ $(echo $drive_unit | wc -c) -ne 7 ]; then
+  	read du
+    if [[ $du = "last" ]]; then
+      du=$last
+    else
+    fi
+  	if [ $(echo $du | wc -c) -ne 7 ]; then
   		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
   		prompt_drive
   	else
@@ -337,7 +355,7 @@ function charge_drive {
 		fi
 	}
 	function execute {
-		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "saKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $drive_unit -charger $charger_unit -t $time && echo "The Command Has Succesfully Been Sent"
+		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "saKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $du -charger $charger_unit -t $time && echo "The Command Has Succesfully Been Sent"
 		go_back_or_exit
 	}
 	prompt_floor
@@ -346,13 +364,18 @@ function charge_drive {
 function firmware_update_remote {
 	function prompt_drive {
     logo
-		echo -e $RS"\nWhat is the Drive Number That You Would like to Update?"$CE
-	  	read drive_unit
-	  	if [ $(echo $drive_unit | wc -c) -ne 7 ]; then
-	  		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
-	  		prompt_drive
-	  	else
-		  	prompt_version
+    last=$du
+  	echo -e $RS"\nWhat is the Drive Number That You Would like to Update?"$CE
+  	read du
+    if [[ $du = "last" ]]; then
+      du=$last
+    else
+    fi
+  	if [ $(echo $du | wc -c) -ne 7 ]; then
+  		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
+  		prompt_drive
+  	else
+	  	prompt_version
 		fi
 	}
 	function prompt_version {
@@ -368,7 +391,7 @@ function firmware_update_remote {
 	}
 	function execute {
     logo
-		cd /apollo/env/FCXInfra/var/fcxfw/$version && ./update_drive.sh kdu-$drive_unit && echo "The Update was Successful"
+		cd /apollo/env/FCXInfra/var/fcxfw/$version && ./update_drive.sh kdu-$du && echo "The Update was Successful"
 		go_back_or_exit
 	}
 	prompt_drive
@@ -378,16 +401,21 @@ function firmware_update_remote {
 function resetwifiremote {
 	function prompt_drive {
     logo
+    last=$du
 		echo -e $RS"\nWhat is the Drive Number That You Would like to Reset The Wifi on?"$CE
-			read drive_unit
-			if [ $(echo $drive_unit | wc -c) -ne 7 ]; then
-				echo "The Drive Number is a Six-Digit Number. Please Try Agan."
-				prompt_drive
-			else
-				prompt_version
-			fi
+		read du
+    if [[ $du = "last" ]]; then
+      du=$last
+    else
+    fi
+		if [ $(echo $du | wc -c) -ne 7 ]; then
+			echo "The Drive Number is a Six-Digit Number. Please Try Agan."
+			prompt_drive
+		else
+			prompt_version
+		fi
 		}
-	sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$drive_unit -c 'reset_wifi_config; exit;' -P 50
+	sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c 'reset_wifi_config; exit;' -P 50
   go_back_or_exit
 }
 
@@ -405,15 +433,25 @@ function dusc_util {
 
 function camera_logs {
   logo
+  last=$du
   echo -ne $RS"\nDrive #: "$CE;
   read -r du;
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
   cd /tmp && sudo -u kivasvs /apollo/env/FCXInfra/fwbin/get-hercules-logs.sh $du
 }
 
 function autoprovision {
   logo
+  last=$du
 	echo -ne $RS"\nGood Drive #: "$CE;
 	read -r du;
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
 	scp root@kdu-$du:/etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp;
 	mv /tmp/amazon.pem /etc/wpa_supplicant/;
 	mv /tmp/ksk.txt /etc/ksk/;
@@ -434,8 +472,13 @@ function subsystem_update {
 
 function timechange {
   logo
+  last=$du
   echo -ne $RS"\nGood Drive #: "$CE;
   read -r du;
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
   date -s $(ssh root@kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
 }
 
@@ -445,8 +488,13 @@ function edit_ksk {
 
 function timecheck {
   logo
+  last=$du
   echo -ne $RS"\nGood Drive #: "$CE;
   read -r du;
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
   ssh root@kdu-$du "timedatectl | grep -n 1";
   timedatectl | grep -n 1
   go_back_or_exit
@@ -466,8 +514,13 @@ function fw_log {
 
 function station_ssh {
   logo
+  last=$su
   echo -ne $RS"\nStation #: "$CE;
   read -r su;
+  if [[ $du = "last" ]]; then
+    su=$last
+  else
+  fi
   logo
   echo -ne $RS"\nFloor: "$CE;
   read -r fu;
@@ -481,16 +534,26 @@ function reboot_local {
 
 function reboot_remote {
   logo
+  last=$du
   echo -ne $RS"\nDrive: ";
   read -r du;
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
   ssh root@kdu-$du reboot
   go_back_or_exit
 }
 
 function transfer_aru {
   logo
+  last=$du
   echo -ne $RS"\nDrive: "$CE
   read du
+  if [[ $du = "last" ]]; then
+    du=$last
+  else
+  fi
   scp /tmp/ARU root@kdu-$du:/tmp/ARU
   go_back_or_exit
 }
