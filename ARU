@@ -483,7 +483,7 @@ function reboot_remote {
   logo
   echo -ne $RS"\nDrive: ";
   read -r du;
-  echo "reboot\n" | ssh root@kdu-$du
+  ssh root@kdu-$du reboot
   go_back_or_exit
 }
 
