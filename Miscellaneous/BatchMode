@@ -1,0 +1,24 @@
+function batch_mode {
+  clear
+  i=0
+  read -a drives -p "Drives : "
+  echo "Options";
+  echo "1. Ping The Drive";
+  echo "2. Diagnostics";
+  echo "3. AutoProvision";
+  read ANSWER;
+  if [[ $ANSWER == *"1"* ]]; then
+    com1=$(ping -c 3 $drive);
+  fi
+  if [[ $ANSWER == *"2"* ]]; then
+    com2=$(ssh root@$drive 'ls');
+  fi
+  if [[ $ANSWER == *"3"* ]]; then
+    com3=$(scp /etc/ksk/ksk.txt root@kdu-$drive:/etc/ksk/ksk.txt);
+  fi;
+  echo "     Drive #          Packet Loss"
+  for drive in ${drives[@]}; do
+    let "i=i+1"
+    echo $i"   "$drive"          "$(( 100 - $(ping -c 3 $drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"
+  done
+}
