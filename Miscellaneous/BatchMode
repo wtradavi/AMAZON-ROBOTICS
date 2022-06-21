@@ -1,24 +1,25 @@
 function batch_mode {
   clear
   i=0
-  read -a drives -p "Drives : "
-  echo "Options";
-  echo "1. Ping The Drive";
-  echo "2. Diagnostics";
-  echo "3. AutoProvision";
-  read ANSWER;
-  if [[ $ANSWER == *"1"* ]]; then
-    com1=$(ping -c 3 $drive);
-  fi
-  if [[ $ANSWER == *"2"* ]]; then
-    com2=$(ssh root@$drive 'ls');
-  fi
-  if [[ $ANSWER == *"3"* ]]; then
-    com3=$(scp /etc/ksk/ksk.txt root@kdu-$drive:/etc/ksk/ksk.txt);
-  fi;
-  echo "     Drive #          Packet Loss"
+  echo -n "Drives: "
+  read -A drives
+  columnize 10 "" "Drive" "Wifi"
   for drive in ${drives[@]}; do
     let "i=i+1"
-    echo $i"   "$drive"          "$(( 100 - $(ping -c 3 $drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"
+    #ksk1=$(md5sum etc/ksk/ksk.txt | cut -d " " -f 1)
+    #ksk2=$(md5sum etc2/ksk/ksk.txt | cut -d " " -f 1)
+    #pem1=$(md5sum etc/wpa_supplicant/amazon.pem | cut -d " " -f 1)
+    #pem2=$(md5sum etc2/wpa_supplicant/amazon.pem | cut -d " " -f 1)
+    #wpa1=$(md5sum etc/wpa_supplicant/wpa_supplicant.conf| cut -d " " -f 1)
+    #wpa2=$(md5sum etc2/wpa_supplicant/wpa_supplicant.conf | cut -d " " -f 1)
+    packet_loss=$(ping -w 1 -c 2 $drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
+    columnize 10 "$(echo -e $YS $i $CE)" "$drive" $(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)
   done
+  echo -n "Select: "
+  read -A selections
+  batch=()
+  for select in ${selections[@]}; do
+  batch+=(${drives[$select]})
+  done
+  echo ${batch[@]}
 }
