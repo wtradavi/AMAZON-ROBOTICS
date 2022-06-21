@@ -23,3 +23,10 @@ function batch_mode {
   done
   echo ${batch[@]}
 }
+
+
+#Need to create option to delete list and drives once completed
+#Need to enable putting in list option and drive option for any Command
+#Need to shift values for batch lists and drive lists so if index is empty it automatically moves up one
+
+$(if [[ $batchlist == "" ]]; then echo ${batches[1]}; else eval echo '${'$batchlist'[1]}'; fi)

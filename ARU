@@ -1,5 +1,5 @@
 set opt interactive_comments
-
+batchlist=
 function logo {
   FONTC=$YS
   LOGOC=$RS
@@ -26,19 +26,19 @@ function logo {
   columnize 3 " " "$(echo -e $RS '****NEW FEATURE**** ' $CE)" " "
   echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered!"$CE
   echo " "
-  echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    : "$CE
-  echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   : "$CE
-  echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  : "$CE
-  echo -e $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : : "$CE
-  echo -e $LOGOC"                  :     : :    : :    :  :     :    : :   :: "$CE
-  echo -e $LOGOC"                  :     : :    : :    : ::::::  ::::  :    : "$CE
-  echo -e $LOGOC"                                                                    "$CE
-  echo -e $LOGOC"              ::::::                                             "$CE
-  echo -e $LOGOC"              :     :  ::::  :::::   ::::  ::::: :  ::::   ::::  "$CE
-  echo -e $LOGOC"              :     : :    : :    : :    :   :   : :    : :      "$CE
-  echo -e $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE
-  echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE
-  echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE
+  echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    :     "$CE $GNS"               BATCH LISTS            "$CE
+  echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   :     "$CE $PS"               a)    $(if [[ $batchlist == "" ]]; then echo ${batches[1]}; else eval echo '${'$batchlist'[1]}'; fi)"$CE"                    "$YS"batch)"$CE"    Create a batch list"
+  echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  :     "$CE $PS"               b)    $(if [[ $batchlist == "" ]]; then echo ${batches[2]}; else eval echo '${'$batchlist'[2]}'; fi)"$CE
+  echo -e $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : :     "$CE $PS"               c)    $(if [[ $batchlist == "" ]]; then echo ${batches[3]}; else eval echo '${'$batchlist'[3]}'; fi)"$CE
+  echo -e $LOGOC"                  :     : :    : :    :  :     :    : :   ::     "$CE $PS"               d)    $(if [[ $batchlist == "" ]]; then echo ${batches[4]}; else eval echo '${'$batchlist'[4]}'; fi)"$CE
+  echo -e $LOGOC"                  :     : :    : :    : ::::::  ::::  :    :     "$CE $PS"               e)    $(if [[ $batchlist == "" ]]; then echo ${batches[5]}; else eval echo '${'$batchlist'[5]}'; fi)"$CE
+  echo -e $LOGOC"                                                                 "$CE $PS"               f)    $(if [[ $batchlist == "" ]]; then echo ${batches[6]}; else eval echo '${'$batchlist'[6]}'; fi)"$CE
+  echo -e $LOGOC"              ::::::                                             "$CE $PS"               g)    $(if [[ $batchlist == "" ]]; then echo ${batches[7]}; else eval echo '${'$batchlist'[7]}'; fi)"$CE
+  echo -e $LOGOC"              :     :  ::::  :::::   ::::  ::::: :  ::::   ::::  "$CE $PS"               h)    $(if [[ $batchlist == "" ]]; then echo ${batches[8]}; else eval echo '${'$batchlist'[8]}'; fi)"$CE
+  echo -e $LOGOC"              :     : :    : :    : :    :   :   : :    : :      "$CE $PS"               i)    $(if [[ $batchlist == "" ]]; then echo ${batches[9]}; else eval echo '${'$batchlist'[9]}'; fi)"$CE
+  echo -e $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE $PS"               j)    $(if [[ $batchlist == "" ]]; then echo ${batches[10]}; else eval echo '${'$batchlist'[10]}'; fi)"$CE
+  echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE $PS"               k)    $(if [[ $batchlist == "" ]]; then echo ${batches[11]}; else eval echo '${'$batchlist'[11]}'; fi)"$CE
+  echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE $PS"               l)    $(if [[ $batchlist == "" ]]; then echo ${batches[12]}; else eval echo '${'$batchlist'[12]}'; fi)"$CE
   echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"
   echo ""
 }
@@ -59,7 +59,7 @@ function menu_list {
 	columnize 3 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)"
 	columnize 3 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo "                                          " ; fi)"
 	columnize 3 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo "                                          " ; fi)"
-  echo -e "$RS" b"$CE- Go Back"
+  echo -e "$RS" ."$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
 	echo "Choose:"
   }
@@ -128,7 +128,7 @@ YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
 YNONLY="($YSy$CE/$YSn$CE)"
 PAKT="Press $YSany key$CE to"
 P0TE="Press $YS0$CE to exit..."
-PBTGB="Press $YS [b] $CE to go back..."
+PBTGB="Press $YS [.] $CE to go back..."
 NUM="Choose: "
 
 function read_input {
@@ -231,8 +231,47 @@ function options {
 		$r1
 	elif [[ "$ANSWER" = "19" ]]; then
 		$s1
-	elif [[ "$ANSWER" = "b" ]]; then
-		$back
+	elif [[ "$ANSWER" = "." ]]; then
+    batchlist=
+    $back
+  elif [[ "$ANSWER" = "a" ]]; then
+    batchlist="${batches[1]}"
+    menu
+  elif [[ "$ANSWER" = "b" ]]; then
+    batchlist="${batches[2]}"
+    menu
+  elif [[ "$ANSWER" = "c" ]]; then
+    batchlist="${batches[3]}"
+    menu
+  elif [[ "$ANSWER" = "d" ]]; then
+    batchlist="${batches[4]}"
+    menu
+  elif [[ "$ANSWER" = "e" ]]; then
+    batchlist="${batches[5]}"
+    menu
+  elif [[ "$ANSWER" = "f" ]]; then
+    batchlist="${batches[6]}"
+    menu
+  elif [[ "$ANSWER" = "g" ]]; then
+    batchlist="${batches[7]}"
+    menu
+  elif [[ "$ANSWER" = "h" ]]; then
+    batchlist="${batches[8]}"
+    menu
+  elif [[ "$ANSWER" = "i" ]]; then
+    batchlist="${batches[9]}"
+    menu
+  elif [[ "$ANSWER" = "j" ]]; then
+    batchlist="${batches[10]}"
+    menu
+  elif [[ "$ANSWER" = "k" ]]; then
+    batchlist="${batches[11]}"
+    menu
+  elif [[ "$ANSWER" = "l" ]]; then
+    batchlist="${batches[12]}"
+    menu
+  elif [[ "$ANSWER" = "batch" ]]; then
+    batch_mode
   elif [[ "$ANSWER" = "" ]]; then
     menu
 	else
@@ -246,17 +285,19 @@ function options {
 
 #---------Functions-----------------------------------------------------
 function go_back_or_exit {
-	printf "Press $YS [b] $CE to go back...\n"
+	printf "Press $YS [.] $CE to go back...\n"
 	printf "Press $YS any key $CE to exit\n"
   if [ "$HOST" = ar-movement-syr1-node1.syr1.amazon.com ]; then
     read -k 1 ANSWER
   else
     read -n 1 ANSWER
   fi
-	if [[ "$ANSWER" = "b" ]]; then
-		$back
+	if [[ "$ANSWER" = "." ]]; then
+    batchlist=
+    $back
 	else
     clear
+    batchlist=
 		exit
 	fi
 }
@@ -549,6 +590,36 @@ function transfer_aru {
 function aru {
   rm /tmp/ARU && vi /tmp/ARU && . /tmp/ARU
 }
+
+function batch_mode {
+  logo
+  echo -n "Create A Name for Your Batch List: "
+  read -r batch_name
+  batches+=($batch_name)
+  i=0
+  echo -n "Drives: "
+  read -A drives
+  logo
+  columnize 10 "" "Drive" "Wifi"
+  for drive in ${drives[@]}; do
+    let "i=i+1"
+    #ksk1=$(md5sum etc/ksk/ksk.txt | cut -d " " -f 1)
+    #ksk2=$(md5sum etc2/ksk/ksk.txt | cut -d " " -f 1)
+    #pem1=$(md5sum etc/wpa_supplicant/amazon.pem | cut -d " " -f 1)
+    #pem2=$(md5sum etc2/wpa_supplicant/amazon.pem | cut -d " " -f 1)
+    #wpa1=$(md5sum etc/wpa_supplicant/wpa_supplicant.conf| cut -d " " -f 1)
+    #wpa2=$(md5sum etc2/wpa_supplicant/wpa_supplicant.conf | cut -d " " -f 1)
+    packet_loss=$(ping -w 1 -c 2 $drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
+    columnize 10 "$(echo -e $YS $i $CE)" "$drive" $(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)
+  done
+  echo -n "Select: "
+  read -A selections
+  for select in ${selections[@]}; do
+  eval $batch_name'+=('${drives[$select]}')'
+  done
+  menu
+}
+
 
 #-------Execution--------------------------------------------------------------------------------------------------
 clear
