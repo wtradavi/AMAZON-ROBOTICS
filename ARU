@@ -412,14 +412,14 @@ function options {
 function go_back_or_exit {
 	printf "Press $YS [b] $CE to go back...\n"
 	printf "Press $YS any key $CE to exit\n"
-  if [ "$HOST" = ar-movement-syr1-node1.syr1.amazon.com ]; then
+  if [ "$HOSTNAME" = ar-movement-syr1-node1.syr1.amazon.com ]; then
     read -k 1 ANSWER
   else
     read -n 1 ANSWER
   fi
-	if [[ "$ANSWER" = "b" ]]; then
+	if [[ $ANSWER = b ]]; then
     batchlist=
-    $back
+    menu
 	else
     clear
     batchlist=
