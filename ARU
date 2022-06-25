@@ -387,7 +387,7 @@ function firmware_update_remote {
 	}
 	function execute {
     logo
-		cd /apollo/env/FCXInfra/var/fcxfw/$version && ./update_drive.sh kdu-$du && echo "The Update was Successful"
+		cd /apollo/env/FCXInfra/var/fcxfw/$version && sudo -u kivasvs ./update_drive.sh kdu-$du && echo "The Update was Successful"
 		go_back_or_exit
 	}
 	prompt_drive
