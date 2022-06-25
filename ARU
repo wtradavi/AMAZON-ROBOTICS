@@ -3,8 +3,6 @@ set opt interactive_comments
 batchlist=
 # List of Batch Lists
 batches=()
-# Temporary Selection of Drive Units for Commands
-du=()
 # Start off with No Selected Drives
 clear_selection
 
@@ -392,7 +390,7 @@ function options {
   elif [[ "$ANSWER" = "close" ]]; then
     delete_list
   elif [[ "$ANSWER" = "add" ]]; then
-    
+    add_drive
   elif [[ "$ANSWER" = "del" ]]; then
     delete_drive
   elif [[ "$ANSWER" = "all" ]]; then
@@ -436,9 +434,9 @@ function ping_drive {
   prompt_num
   logo
   last=$du
-  if ! [ ${du[@]} ]; then
-    echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
-    read -A du
+  if ! [[ $(echo ${du[@]} | grep '[0-9]') ]]; then
+  	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
+  	read - A du
   fi
   if [[ $du = "last" ]]; then
     du=($last)
@@ -720,8 +718,8 @@ function transfer_aru {
   go_back_or_exit
 }
 
-function aru {
-  rm /tmp/ARU && vi /tmp/ARU && . /tmp/ARU
+function aru2 {
+  rm /tmp/ARUv2 && vi /tmp/ARUv2 && . /tmp/ARUv2
 }
 
 function batch_mode {
@@ -730,16 +728,10 @@ function batch_mode {
   read -r batch_name
   batches+=($batch_name)
   i=0
-  mkdir /tmp/batches/$batch_name
-  touch /tmp/batches/$batch_name/drive_list
-  touch /tmp/batches/$batch_name/selected_drive_list
   echo -n "Drives: "
   read -A drives
-  for drive in ${drives[@]}; do
-    echo $drive >> /tmp/$batch_name/drive_list
-  done
   logo
-  columnize 10 "" "Drive" "Wifi"
+  columnize 10 "Drive" "Wifi"
   for drive in ${drives[@]}; do
     let "i=i+1"
     #ksk1=$(md5sum etc/ksk/ksk.txt | cut -d " " -f 1)
@@ -755,7 +747,6 @@ function batch_mode {
   read -A selections
   for select in ${selections[@]}; do
     eval $batch_name'+=('${drives[$select]}')'
-    echo $select >> /tmp/$batch_name/selected_drive_list
   done
   menu
 }
@@ -797,4 +788,4 @@ function select_all {
 #-------Execution--------------------------------------------------------------------------------------------------
 clear
 logo
-menu
+#menu
