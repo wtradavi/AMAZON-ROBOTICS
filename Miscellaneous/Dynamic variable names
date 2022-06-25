@@ -1,0 +1,18 @@
+# Dynamically named array
+my_variable_name="dyn_arr_names"
+eval $my_variable_name=\(\)
+
+# Adding by index to the array eg. dyn_arr_names[0]="bob"
+eval $my_variable_name[0]="bob"
+
+# Adding by pushing onto the array eg. dyn_arr_names+=(robert)
+eval $my_variable_name+=\(robert\)
+
+# Print value stored at index indirect
+echo ${!my_variable_name[0]}
+
+# Print value stored at index
+eval echo \${$my_variable_name[0]}
+
+# Get item count
+eval echo \${#$my_variable_name[@]}
