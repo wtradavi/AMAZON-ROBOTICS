@@ -436,7 +436,7 @@ function ping_drive {
   last=$du
   if ! [[ $(echo ${du[@]} | grep '[0-9]') ]]; then
   	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
-  	read - A du
+  	read -A du
   fi
   if [[ $du = "last" ]]; then
     du=($last)
@@ -444,7 +444,7 @@ function ping_drive {
   logo
   if [[ $ANSWER = 1 ]]; then
     for drive in ${du[@]}; do
-      echo -e $FONTC"This Drive Has Received "$CE $GNS$( 100 - $(ping -c 3 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1))"%"$CE $FONTC" of Packets that It Transmitted."$CE
+      echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $(ping -c 3 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"$CE $FONTC" of Packets that It Transmitted."$CE
     done
   elif [[ $ANSWER = 2 ]]; then
     for drive in ${du[@]}; do
