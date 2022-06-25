@@ -1,5 +1,12 @@
 set opt interactive_comments
+# Current Batch List
 batchlist=
+# List of Batch Lists
+batch_lists=()
+# Temporary Selection of Drive Units for Commands
+selected_drive_units=()
+# Start off with No Selected Drives
+clear_selection
 function logo {
   FONTC=$YS
   LOGOC=$RS
@@ -27,18 +34,18 @@ function logo {
   echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered!"$CE
   echo " "
   echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    :     "$CE $GNS"               BATCH LISTS            "$CE
-  echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   :     "$CE $PS"               a)    $(if [[ $batchlist == "" ]]; then echo ${batches[1]}; else eval echo '${'$batchlist'[1]}'; fi)"$CE"                    "$YS"batch)"$CE"    Create a batch list"
-  echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  :     "$CE $PS"               b)    $(if [[ $batchlist == "" ]]; then echo ${batches[2]}; else eval echo '${'$batchlist'[2]}'; fi)"$CE
-  echo -e $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : :     "$CE $PS"               c)    $(if [[ $batchlist == "" ]]; then echo ${batches[3]}; else eval echo '${'$batchlist'[3]}'; fi)"$CE
-  echo -e $LOGOC"                  :     : :    : :    :  :     :    : :   ::     "$CE $PS"               d)    $(if [[ $batchlist == "" ]]; then echo ${batches[4]}; else eval echo '${'$batchlist'[4]}'; fi)"$CE
-  echo -e $LOGOC"                  :     : :    : :    : ::::::  ::::  :    :     "$CE $PS"               e)    $(if [[ $batchlist == "" ]]; then echo ${batches[5]}; else eval echo '${'$batchlist'[5]}'; fi)"$CE
-  echo -e $LOGOC"                                                                 "$CE $PS"               f)    $(if [[ $batchlist == "" ]]; then echo ${batches[6]}; else eval echo '${'$batchlist'[6]}'; fi)"$CE
-  echo -e $LOGOC"              ::::::                                             "$CE $PS"               g)    $(if [[ $batchlist == "" ]]; then echo ${batches[7]}; else eval echo '${'$batchlist'[7]}'; fi)"$CE
-  echo -e $LOGOC"              :     :  ::::  :::::   ::::  ::::: :  ::::   ::::  "$CE $PS"               h)    $(if [[ $batchlist == "" ]]; then echo ${batches[8]}; else eval echo '${'$batchlist'[8]}'; fi)"$CE
-  echo -e $LOGOC"              :     : :    : :    : :    :   :   : :    : :      "$CE $PS"               i)    $(if [[ $batchlist == "" ]]; then echo ${batches[9]}; else eval echo '${'$batchlist'[9]}'; fi)"$CE
-  echo -e $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE $PS"               j)    $(if [[ $batchlist == "" ]]; then echo ${batches[10]}; else eval echo '${'$batchlist'[10]}'; fi)"$CE
-  echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE $PS"               k)    $(if [[ $batchlist == "" ]]; then echo ${batches[11]}; else eval echo '${'$batchlist'[11]}'; fi)"$CE
-  echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE $PS"               l)    $(if [[ $batchlist == "" ]]; then echo ${batches[12]}; else eval echo '${'$batchlist'[12]}'; fi)"$CE
+  echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "a1)"; elif [ $a2_enabled ]; then echo $YS"a2)"$CE; else echo $PS"a2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[1]}; else eval echo '${'$batchlist'[1]}'; fi)"$CE
+  echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "b1)"; elif [ $b2_enabled ]; then echo $YS"b2)"$CE; else echo $PS"b2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[2]}; else eval echo '${'$batchlist'[2]}'; fi)"$CE
+  echo -e $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "c1)"; elif [ $c2_enabled ]; then echo $YS"c2)"$CE; else echo $PS"c2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[3]}; else eval echo '${'$batchlist'[3]}'; fi)"$CE
+  echo -e $LOGOC"                  :     : :    : :    :  :     :    : :   ::     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "d1)"; elif [ $d2_enabled ]; then echo $YS"d2)"$CE; else echo $PS"d2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[4]}; else eval echo '${'$batchlist'[4]}'; fi)"$CE
+  echo -e $LOGOC"                  :     : :    : :    : ::::::  ::::  :    :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "e1)"; elif [ $e2_enabled ]; then echo $YS"e2)"$CE; else echo $PS"e2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[5]}; else eval echo '${'$batchlist'[5]}'; fi)"$CE
+  echo -e $LOGOC"                                                                 "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "f1)"; elif [ $f2_enabled ]; then echo $YS"f2)"$CE; else echo $PS"f2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[6]}; else eval echo '${'$batchlist'[6]}'; fi)"$CE
+  echo -e $LOGOC"              ::::::                                             "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "g1)"; elif [ $g2_enabled ]; then echo $YS"g2)"$CE; else echo $PS"g2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[7]}; else eval echo '${'$batchlist'[7]}'; fi)"$CE
+  echo -e $LOGOC"              :     :  ::::  :::::   ::::  ::::: :  ::::   ::::  "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "h1)"; elif [ $h2_enabled ]; then echo $YS"h2)"$CE; else echo $PS"h2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[8]}; else eval echo '${'$batchlist'[8]}'; fi)"$CE
+  echo -e $LOGOC"              :     : :    : :    : :    :   :   : :    : :      "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "i1)"; elif [ $i2_enabled ]; then echo $YS"i2)"$CE; else echo $PS"i2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[9]}; else eval echo '${'$batchlist'[9]}'; fi)"$CE
+  echo -e $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "j1)"; elif [ $j2_enabled ]; then echo $YS"j2)"$CE; else echo $PS"j2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[10]}; else eval echo '${'$batchlist'[10]}'; fi)"$CE
+  echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "k1)"; elif [ $k2_enabled ]; then echo $YS"k2)"$CE; else echo $PS"k2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[11]}; else eval echo '${'$batchlist'[11]}'; fi)"$CE
+  echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "l1)"; elif [ $l2_enabled ]; then echo $YS"l2)"$CE; else echo $PS"l2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batch_lists[12]}; else eval echo '${'$batchlist'[12]}'; fi)"$CE
   echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"
   echo ""
 }
@@ -52,14 +59,14 @@ function columnize {
 
 function menu_list {
 	logo
-	columnize 3 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)"
-	columnize 3 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)"
-	columnize 3 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)"
-	columnize 3 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)"
-	columnize 3 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)"
-	columnize 3 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo "                                          " ; fi)"
-	columnize 3 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo "                                          " ; fi)"
-  echo -e "$RS" ."$CE- Go Back"
+	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   new) $CE    Create a batch list"; fi)"
+	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS close) $CE    Delete current list"; fi)"
+	columnize 4 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   add) $CE    Add drive(s) to list"; fi)"
+	columnize 4 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   del) $CE    Remove drive(s) from list"; fi)"
+	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   all) $CE    Select all drives in list"; fi)"
+	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  none) $CE    Unselect all drives in list"; fi)" 
+	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
+  echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
 	echo "Choose:"
   }
@@ -128,7 +135,7 @@ YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
 YNONLY="($YSy$CE/$YSn$CE)"
 PAKT="Press $YSany key$CE to"
 P0TE="Press $YS0$CE to exit..."
-PBTGB="Press $YS [.] $CE to go back..."
+PBTGB="Press $YS [b] $CE to go back..."
 NUM="Choose: "
 
 function read_input {
@@ -231,47 +238,161 @@ function options {
 		$r1
 	elif [[ "$ANSWER" = "19" ]]; then
 		$s1
-	elif [[ "$ANSWER" = "." ]]; then
-    batchlist=
+	elif [[ "$ANSWER" = "b" ]]; then
+    unset batchlist
     $back
-  elif [[ "$ANSWER" = "a" ]]; then
-    batchlist="${batches[1]}"
+  elif [[ "$ANSWER" = "a1" ]]; then
+    batchlist=$(echo ${batch_lists[1]})
     menu
-  elif [[ "$ANSWER" = "b" ]]; then
-    batchlist="${batches[2]}"
+  elif [[ "$ANSWER" = "b1" ]]; then
+    batchlist=$(echo ${batch_lists[2]})
     menu
-  elif [[ "$ANSWER" = "c" ]]; then
-    batchlist="${batches[3]}"
+  elif [[ "$ANSWER" = "c1" ]]; then
+    batchlist=$(echo ${batch_lists[3]})
     menu
-  elif [[ "$ANSWER" = "d" ]]; then
-    batchlist="${batches[4]}"
+  elif [[ "$ANSWER" = "d1" ]]; then
+    batchlist=$(echo ${batch_lists[4]})
     menu
-  elif [[ "$ANSWER" = "e" ]]; then
-    batchlist="${batches[5]}"
+  elif [[ "$ANSWER" = "e1" ]]; then
+    batchlist=$(echo ${batch_lists[5]})
     menu
-  elif [[ "$ANSWER" = "f" ]]; then
-    batchlist="${batches[6]}"
+  elif [[ "$ANSWER" = "f1" ]]; then
+    batchlist=$(echo ${batch_lists[6]})
     menu
-  elif [[ "$ANSWER" = "g" ]]; then
-    batchlist="${batches[7]}"
+  elif [[ "$ANSWER" = "g1" ]]; then
+    batchlist=$(echo ${batch_lists[7]})
     menu
-  elif [[ "$ANSWER" = "h" ]]; then
-    batchlist="${batches[8]}"
+  elif [[ "$ANSWER" = "h1" ]]; then
+    batchlist=$(echo ${batch_lists[8]})
     menu
-  elif [[ "$ANSWER" = "i" ]]; then
-    batchlist="${batches[9]}"
+  elif [[ "$ANSWER" = "i1" ]]; then
+    batchlist=$(echo ${batch_lists[9]})
     menu
-  elif [[ "$ANSWER" = "j" ]]; then
-    batchlist="${batches[10]}"
+  elif [[ "$ANSWER" = "j1" ]]; then
+    batchlist=$(echo ${batch_lists[10]})
     menu
-  elif [[ "$ANSWER" = "k" ]]; then
-    batchlist="${batches[11]}"
+  elif [[ "$ANSWER" = "k1" ]]; then
+    batchlist=$(echo ${batch_lists[11]})
     menu
-  elif [[ "$ANSWER" = "l" ]]; then
-    batchlist="${batches[12]}"
+  elif [[ "$ANSWER" = "l1" ]]; then
+    batchlist=$(echo ${batch_lists[12]})
     menu
-  elif [[ "$ANSWER" = "batch" ]]; then
+  elif [[ "$ANSWER" = "a2" ]]; then
+    if [ $a2_enabled ]; then 
+      unset a2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[1]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[1]}'))
+      a2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "b2" ]]; then
+    if [ $b2_enabled ]; then 
+      unset b2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[2]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[2]}'))
+      b2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "c2" ]]; then
+    if [ $c2_enabled ]; then 
+      unset c2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[3]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[3]}'))
+      c2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "d2" ]]; then
+    if [ $d2_enabled ]; then 
+      unset d2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[4]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[4]}'))
+      d2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "e2" ]]; then
+    if [ $e2_enabled ]; then 
+      unset e2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[5]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[5]}'))
+      e2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "f2" ]]; then
+    if [ $f2_enabled ]; then 
+      unset f2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[6]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[6]}'))
+      f2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "g2" ]]; then
+    if [ $g2_enabled ]; then 
+      unset g2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[7]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[7]}'))
+      g2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "h2" ]]; then
+    if [ $h2_enabled ]; then 
+      unset h2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[8]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[8]}'))
+      h2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "i2" ]]; then
+    if [ $i2_enabled ]; then 
+      unset i2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[9]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[9]}'))
+      i2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "j2" ]]; then
+    if [ $j2_enabled ]; then 
+      unset j2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[10]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[10]}'))
+      j2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "k2" ]]; then
+    if [ $k2_enabled ]; then 
+      unset k2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[11]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[11]}'))
+      k2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "l2" ]]; then
+    if [ $l2_enabled ]; then 
+      unset l2_enabled
+      selected_drive_units=(${selected_drive_units[@]/$(eval echo '${'$batchlist'[12]}')})
+    else
+      selected_drive_units+=($(eval echo '${'$batchlist'[12]}'))
+      l2_enabled="true"
+    fi
+    menu
+  elif [[ "$ANSWER" = "new" ]]; then
     batch_mode
+  elif [[ "$ANSWER" = "close" ]]; then
+    delete_list
+  elif [[ "$ANSWER" = "all" ]]; then
+    select_all
+  elif [[ "$ANSWER" = "none" ]]; then
+    clear_selection
   elif [[ "$ANSWER" = "" ]]; then
     menu
 	else
@@ -292,7 +413,7 @@ function go_back_or_exit {
   else
     read -n 1 ANSWER
   fi
-	if [[ "$ANSWER" = "." ]]; then
+	if [[ "$ANSWER" = "b" ]]; then
     batchlist=
     $back
 	else
@@ -309,16 +430,22 @@ function ping_drive {
   prompt_num
   logo
   last=$du
-	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
-	read du
+  if ! [ $selected_drive_units ]; then
+    echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
+    read du
+  fi
   if [[ $du = "last" ]]; then
     du=$last
   fi
   logo
   if [[ $ANSWER = 1 ]]; then
-    echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $(ping -c 3 kdu-$du | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"$CE $FONTC" of Packets that It Transmitted."$CE
+    for drive in $selected_drive_units; do
+      echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $(ping -c 3 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"$CE $FONTC" of Packets that It Transmitted."$CE
+    done
   elif [[ $ANSWER = 2 ]]; then
-    ping -c 3 kdu-$du
+    for drive in $selected_drive_units; do
+      ping -c 3 kdu-$drive
+    done
   else
     echo -e $RS"Something Went Wrong"
     go_back_or_exit
@@ -595,7 +722,7 @@ function batch_mode {
   logo
   echo -n "Create A Name for Your Batch List: "
   read -r batch_name
-  batches+=($batch_name)
+  batch_lists+=($batch_name)
   i=0
   echo -n "Drives: "
   read -A drives
@@ -609,8 +736,8 @@ function batch_mode {
     #pem2=$(md5sum etc2/wpa_supplicant/amazon.pem | cut -d " " -f 1)
     #wpa1=$(md5sum etc/wpa_supplicant/wpa_supplicant.conf| cut -d " " -f 1)
     #wpa2=$(md5sum etc2/wpa_supplicant/wpa_supplicant.conf | cut -d " " -f 1)
-    packet_loss=$(ping -w 1 -c 2 $drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
-    columnize 10 "$(echo -e $YS $i $CE)" "$drive" $(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)
+    packet_loss=$(ping -w 1 -c 2 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
+    columnize 10 "$(echo -e $YS $i $CE)" "$drive" "$(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)"
   done
   echo -n "Select: "
   read -A selections
@@ -620,6 +747,27 @@ function batch_mode {
   menu
 }
 
+function delete_list {
+  batch_lists=(${batch_lists[@]/$batchlist})
+  unset batchlist
+  menu
+}
+
+function clear_selection {
+  selected_drive_units=()
+  for i in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
+    unset ${i}2_enabled
+  done
+  menu
+}
+
+function select_all {
+  selected_drive_units=($(eval echo '${'$batchlist'[4]}'))
+  for i in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
+    eval ${i}2_enabled="true"
+  done
+  menu
+}
 
 #-------Execution--------------------------------------------------------------------------------------------------
 clear
