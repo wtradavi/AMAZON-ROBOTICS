@@ -34,7 +34,7 @@ function logo {
   columnize 3 " " "$(echo -e $RS '****NEW FEATURE**** ' $CE)" " "
   echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered!"$CE
   echo " "
-  echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    :     "$CE $GNS"               BATCH LISTS            "$CE
+  echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    :     "$CE $GNS"               BATCH LISTS: $batchlist            "$CE
   echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "a1)"; elif [ $a2_enabled ]; then echo $YS"a2)"$CE; else echo $PS"a2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[1]}; else eval echo '${'$batchlist'[1]}'; fi)"$CE
   echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "b1)"; elif [ $b2_enabled ]; then echo $YS"b2)"$CE; else echo $PS"b2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[2]}; else eval echo '${'$batchlist'[2]}'; fi)"$CE
   echo -e $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "c1)"; elif [ $c2_enabled ]; then echo $YS"c2)"$CE; else echo $PS"c2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[3]}; else eval echo '${'$batchlist'[3]}'; fi)"$CE
