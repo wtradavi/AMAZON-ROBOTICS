@@ -1,4 +1,5 @@
 set opt interactive_comments
+exec 2> /dev/null
 # Current Batch List
 batchlist=
 # List of Batch Lists
@@ -58,6 +59,7 @@ function columnize {
 }
 
 function menu_list {
+  load_batch_lists
 	logo
 	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   new) $CE    Create a batch list"; fi)"
 	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS close) $CE    Delete current list"; fi)"
@@ -88,7 +90,7 @@ function drive_menu {
 	b="Diagnostics/DUSC";i="Reboot";p="";
 	c="Edit KSK File";j="AutoProvision";q="";
 	d="Error Codes";k="Correct Date & Time";r="";
-	e="Switch Port Connection";l="Subsytem Update";s="";
+	e="Switch Port Conn.";l="Subsytem Update";s="";
 	f="Check IP Address";m="";
 	g="Check Time & Date";n="";
 	#OPTIONS
@@ -115,7 +117,7 @@ function remote_menu {
 	d="Error Codes";k="SSH Into A Station";r="";
 	e="Reset Drive's Wifi";l="Firmware Error Logs";s="";
 	f="Put Drive To Sleep";m="Camera Logs";
-	g="Unregister Drive";n="Transfer Menu To Drive";
+	g="Unregister Drive";n="Send Menu To Drive";
 	#OPTIONS
 	a1=ping_drive;h1=reboot_remote;o1="";
 	b1=ssh_connect;i1=firmware_update_remote;p1="";
@@ -723,6 +725,7 @@ function aru2 {
 }
 
 function batch_mode {
+  set -x
   logo
   echo -n "Create A Name for Your Batch List: "
   read -r batch_name
@@ -748,38 +751,48 @@ function batch_mode {
   for select in ${selections[@]}; do
     eval $batch_name'+=('${drives[$select]}')'
   done
+  save_batch_lists
   menu
+  set +x
 }
 
 function load_batch_lists {
   batches=($(cat /tmp/batches))
   for i in ${batches[@]}; do
-    eval $i'+=('$(cat /tmp/$i)')'     
+    eval $i'=('$(cat /tmp/$i)')'     
   done
 }
 
 function save_batch_lists {
   echo $batches > /tmp/batches
   for i in $batches; do
-    echo $i > /tmp/$i
+    eval "echo \${$i}" > /tmp/$i
   done
 }
 
 function delete_list {
   batches=(${batches[@]/$batchlist})
+  save_batch_lists
+  rm /tmp/$batchlist
   unset batchlist
-  menu
+  reset
+  . /tmp/ARU
 }
 
 function delete_drive {
   for i in $du; do
     eval $batchlist'=(${'$batchlist'[@]/$i})'
   done
+  save_batch_lists
   menu
 }
 
 function add_drive {
+  logo
+  echo -n "Drives: "
+  read -A du
   eval $batchlist'+=($(eval echo '${du[@]}'))'
+  save_batch_lists
   menu
 }
 
