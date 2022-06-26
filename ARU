@@ -751,6 +751,24 @@ function batch_mode {
   menu
 }
 
+function load_batch_lists {
+  batches=($(cat /tmp/batches))
+  for i in ${batches[@]}; do
+    eval $i'+=('$(cat /tmp/$i)')'     
+  done
+}
+
+function save_batch_lists {
+  echo $batches > /tmp/batches
+  for i in $batches; do
+    echo $i > /tmp/$i
+  done
+}
+
+echo $batches > batch_file
+batches=($(cat batch_file))
+
+
 function delete_list {
   batches=(${batches[@]/$batchlist})
   unset batchlist
