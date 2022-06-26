@@ -434,7 +434,7 @@ function ping_drive {
   prompt_num
   logo
   last=$du
-  if ! [[ $(echo ${du[@]} | grep '[0-9]') ]]; then
+  if ! [ $(echo ${du[@]} | grep '[0-9]') ]; then
   	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
   	read -A du
   fi
