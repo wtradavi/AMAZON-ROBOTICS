@@ -434,8 +434,8 @@ function ping_drive {
   prompt_num
   logo
   last=$du
-  if ! [ $(echo ${du[@]} | grep '[0-9]') ]; then
-  	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
+  if ! [ $last ]; then
+    echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
   	read -A du
   fi
   if [[ $du = "last" ]]; then
@@ -765,10 +765,6 @@ function save_batch_lists {
   done
 }
 
-echo $batches > batch_file
-batches=($(cat batch_file))
-
-
 function delete_list {
   batches=(${batches[@]/$batchlist})
   unset batchlist
@@ -784,6 +780,7 @@ function delete_drive {
 
 function add_drive {
   eval $batchlist'+=($(eval echo '${du[@]}'))'
+  menu
 }
 
 function clear_selection {
@@ -806,4 +803,4 @@ function select_all {
 #-------Execution--------------------------------------------------------------------------------------------------
 clear
 logo
-#menu
+menu
