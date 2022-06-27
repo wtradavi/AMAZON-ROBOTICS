@@ -70,6 +70,7 @@ function menu_list {
 	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
   echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
+  
 	echo "Choose:"
   }
 
