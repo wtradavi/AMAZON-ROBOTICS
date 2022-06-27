@@ -7,10 +7,10 @@ batches=()
 # Start off with No Selected Drives
 clear_selection
 
+FONTC=$YS
+LOGOC=$RS
 
 function logo {
-  FONTC=$YS
-  LOGOC=$RS
   YS="\e[1;33m"
   BS="\e[0;34m"
   CE="\e[0m"
