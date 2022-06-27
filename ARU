@@ -87,21 +87,25 @@ function menu {
 function drive_menu {
 	back=menu
 	home=drive_menu
-	a="Ping a Drive";h="Reset Wifi";o="";
-	b="Diagnostics/DUSC";i="Reboot";p="";
-	c="Edit KSK File";j="AutoProvision";q="";
-	d="Error Codes";k="Correct Date & Time";r="";
-	e="Switch Port Conn.";l="Subsytem Update";s="";
-	f="Check IP Address";m="";
-	g="Check Time & Date";n="";
-	#OPTIONS
-	a1=ping_drive;h1=resetwifiremote;o1="";
-	b1=dusc_util;i1=reboot_local;p1="";
-	c1=edit_ksk;j1=autoprovision;q1="";
-	d1=not_installed;k1=timechange;r1="";
-	e1=not_installed;l1=subsystem_update;s1="";
-	f1=check_ip;m1="";
-	g1=timecheck;n1="";
+	a="Ping a Drive"; a1=ping_drive;
+  b="Diagnostics/DUSC"; b1=dusc_util;
+  c="Edit KSK File"; c1=edit_ksk;
+  d="Error Codes"; d1=not_installed;
+  e="Switch Port Conn."; e1=not_installed;
+  f="Check IP Address"; f1=check_ip;
+  g="Check Time & Date"; g1=timecheck;
+  h="Reset Wifi"; h1=resetwifiremote;
+	i="Reboot"; i1=reboot_local;
+	j="AutoProvision"; j1=autoprovision;
+	k="Correct Date & Time"; k1=timechange;
+	l="Subsytem Update"; l1=subsystem_update;
+	m=""; m1="";
+	n=""; n1="";
+  o=""; o1="";
+  p=""; p1="";
+  q=""; q1="";
+  r=""; r1="";
+  s=""; s1="";
 	menu_list
 	read_input
 	options
@@ -112,26 +116,29 @@ function drive_menu {
 function remote_menu {
 	back=menu
 	home=remote_menu
-	a="Ping a Drive";h="Reboot Drive";o="";
-	b="SSH Into A Drive";i="Firmware Update";p="";
-	c="Charge Drive";j="Diagnostics/DUSC";q="";
-	d="Error Codes";k="SSH Into A Station";r="";
-	e="Reset Drive's Wifi";l="Firmware Error Logs";s="";
-	f="Put Drive To Sleep";m="Camera Logs";
-	g="Unregister Drive";n="Send Menu To Drive";
-	#OPTIONS
-	a1=ping_drive;h1=reboot_remote;o1="";
-	b1=ssh_connect;i1=firmware_update_remote;p1="";
-	c1=charge_drive;j1=dusc_util;q1="";
-	d1=not_installed;k1=station_ssh;r1="";
-	e1=resetwifiremote;l1=fw_log;s1="";
-	f1=not_installed;m1=camera_logs;
-	g1=not_installed;n1=transfer_aru;
+	a="Ping a Drive"; a1=ping_drive;
+	b="SSH Into A Drive"; b1=ssh_connect;
+	c="Charge Drive"; c1=charge_drive;
+	d="Error Codes"; d1=not_installed;
+	e="Reset Drive's Wifi"; e1=resetwifiremote;
+	f="Put Drive To Sleep"; f1=not_installed;
+	g="Unregister Drive"; g1=not_installed;
+  h="Reboot Drive"; h1=reboot_remote;
+	i="Firmware Update"; i1=firmware_update_remote;
+  j="Diagnostics/DUSC"; j1=dusc_util;
+  k="SSH Into A Station"; k1=station_ssh;
+  l="Firmware Error Logs"; l1=fw_log;
+  m="Camera Logs"; m1=camera_logs;
+  n="Send Menu To Drive"; n1=transfer_aru;
+  o=""; o1="";
+  p=""; p1="";
+  q=""; q1="";
+  r=""; r1="";
+  s=""; s1="";
 	menu_list
 	read_input
 	options
 }
-
 #---------Prompts-----------------------------------------------------
 YNYES="( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
 YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
