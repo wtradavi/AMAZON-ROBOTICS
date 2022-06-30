@@ -1,5 +1,6 @@
 set opt interactive_comments
 exec 2> /dev/null
+load_profile
 # Current Batch List
 batchlist=
 # List of Batch Lists
@@ -33,21 +34,7 @@ function logo {
   echo ""
   columnize 3 " " "$(echo -e $RS '****NEW FEATURE**** ' $CE)" " "
   echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered"$CE
-  echo " "
-  echo -e $GNS"               BATCH LISTS: $batchlist            "$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "a1)"; elif [ $a2_enabled ]; then echo $YS"a2)"$CE; else echo $PS"a2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[1]}; else eval echo '${'$batchlist'[1]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "b1)"; elif [ $b2_enabled ]; then echo $YS"b2)"$CE; else echo $PS"b2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[2]}; else eval echo '${'$batchlist'[2]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "c1)"; elif [ $c2_enabled ]; then echo $YS"c2)"$CE; else echo $PS"c2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[3]}; else eval echo '${'$batchlist'[3]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "d1)"; elif [ $d2_enabled ]; then echo $YS"d2)"$CE; else echo $PS"d2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[4]}; else eval echo '${'$batchlist'[4]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "e1)"; elif [ $e2_enabled ]; then echo $YS"e2)"$CE; else echo $PS"e2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[5]}; else eval echo '${'$batchlist'[5]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "f1)"; elif [ $f2_enabled ]; then echo $YS"f2)"$CE; else echo $PS"f2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[6]}; else eval echo '${'$batchlist'[6]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "g1)"; elif [ $g2_enabled ]; then echo $YS"g2)"$CE; else echo $PS"g2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[7]}; else eval echo '${'$batchlist'[7]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "h1)"; elif [ $h2_enabled ]; then echo $YS"h2)"$CE; else echo $PS"h2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[8]}; else eval echo '${'$batchlist'[8]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "i1)"; elif [ $i2_enabled ]; then echo $YS"i2)"$CE; else echo $PS"i2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[9]}; else eval echo '${'$batchlist'[9]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "j1)"; elif [ $j2_enabled ]; then echo $YS"j2)"$CE; else echo $PS"j2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[10]}; else eval echo '${'$batchlist'[10]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "k1)"; elif [ $k2_enabled ]; then echo $YS"k2)"$CE; else echo $PS"k2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[11]}; else eval echo '${'$batchlist'[11]}'; fi)"$CE
-  echo -e $PS"               $(if  ! [ $batchlist ] ;then echo "l1)"; elif [ $l2_enabled ]; then echo $YS"l2)"$CE; else echo $PS"l2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[12]}; else eval echo '${'$batchlist'[12]}'; fi)"$CE
-  echo " "
+  cat $banner
 }
 
 function columnize {
@@ -60,13 +47,19 @@ function columnize {
 function menu_list {
   load_batch_lists
 	logo
-	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   new) $CE    Create a batch list"; fi)"
-	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS close) $CE    Delete current list"; fi)"
-	columnize 4 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   add) $CE    Add drive(s) to list"; fi)"
-	columnize 4 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   del) $CE    Remove drive(s) from list"; fi)"
-	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   all) $CE    Select all drives in list"; fi)"
-	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  none) $CE    Unselect all drives in list"; fi)" 
-	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
+  columnize 4 " " " " "$(echo -e $GNS"               BATCH LISTS: $batchlist            "$CE)"
+	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "a1)"; elif [ $a2_enabled ]; then echo $YS"a2)"$CE; else echo $PS"a2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[1]}; else eval echo '${'$batchlist'[1]}'; fi)"$CE" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   new) $CE    Create a batch list"; fi)"
+	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "b1)"; elif [ $b2_enabled ]; then echo $YS"b2)"$CE; else echo $PS"b2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[2]}; else eval echo '${'$batchlist'[2]}'; fi)"$CE" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS close) $CE    Delete current list"; fi)"
+	columnize 4 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "c1)"; elif [ $c2_enabled ]; then echo $YS"c2)"$CE; else echo $PS"c2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[3]}; else eval echo '${'$batchlist'[3]}'; fi)"$CE" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   add) $CE    Add drive(s) to list"; fi)"
+	columnize 4 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "d1)"; elif [ $d2_enabled ]; then echo $YS"d2)"$CE; else echo $PS"d2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[4]}; else eval echo '${'$batchlist'[4]}'; fi)"$CE" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   del) $CE    Remove drive(s) from list"; fi)"
+	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "e1)"; elif [ $e2_enabled ]; then echo $YS"e2)"$CE; else echo $PS"e2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[5]}; else eval echo '${'$batchlist'[5]}'; fi)"$CE" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   all) $CE    Select all drives in list"; fi)"
+	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "f1)"; elif [ $f2_enabled ]; then echo $YS"f2)"$CE; else echo $PS"f2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[6]}; else eval echo '${'$batchlist'[6]}'; fi)"$CE" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  none) $CE    Unselect all drives in list"; fi)" 
+	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "g1)"; elif [ $g2_enabled ]; then echo $YS"g2)"$CE; else echo $PS"g2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[7]}; else eval echo '${'$batchlist'[7]}'; fi)"$CE" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
+  columnize 4 "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$t; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "h1)"; elif [ $h2_enabled ]; then echo $YS"h2)"$CE; else echo $PS"h2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[8]}; else eval echo '${'$batchlist'[8]}'; fi)"$CE"
+  columnize 4 "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$u; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "i1)"; elif [ $i2_enabled ]; then echo $YS"i2)"$CE; else echo $PS"i2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[9]}; else eval echo '${'$batchlist'[9]}'; fi)"$CE"
+  columnize 4 "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $v > 0 ]]; then echo -e $FONTC"22"$CE" - "$v; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "j1)"; elif [ $j2_enabled ]; then echo $YS"j2)"$CE; else echo $PS"j2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[10]}; else eval echo '${'$batchlist'[10]}'; fi)"$CE"
+  columnize 4 "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $w > 0 ]]; then echo -e $FONTC"23"$CE" - "$w; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "k1)"; elif [ $k2_enabled ]; then echo $YS"k2)"$CE; else echo $PS"k2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[11]}; else eval echo '${'$batchlist'[11]}'; fi)"$CE"
+  columnize 4 "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $x > 0 ]]; then echo -e $FONTC"24"$CE" - "$x; else echo " " ; fi)" "$(if  ! [ $batchlist ] ;then echo "l1)"; elif [ $l2_enabled ]; then echo $YS"l2)"$CE; else echo $PS"l2)"$CE; fi) $(if ! [ $batchlist ]; then echo ${batches[12]}; else eval echo '${'$batchlist'[12]}'; fi)"$CE"
   echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
   
@@ -770,6 +763,14 @@ function load_batch_lists {
   done
 }
 
+function load_profile {
+  if [ -f /tmp/AMAZON-ROBOTICS/etc/$USER.conf]; then
+    . /tmp/AMAZON-ROBOTICS/etc/$USER.conf
+  else
+    . /tmp/AMAZON-ROBOTICS/etc/default.conf
+  fi
+}
+
 function save_batch_lists {
   echo $batches > /tmp/batches
   for i in $batches; do
@@ -818,6 +819,50 @@ function select_all {
   done
   menu
 }
+
+function list_banners {
+  if ! [[ $(ls /tmp/banners | sed -n "1p") = "" ]]; then echo "$YS 1) $CE $(ls /tmp/banners | sed -n "1p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "2p") = "" ]]; then echo "$YS 2) $CE $(ls /tmp/banners | sed -n "2p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "3p") = "" ]]; then echo "$YS 3) $CE $(ls /tmp/banners | sed -n "3p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "4p") = "" ]]; then echo "$YS 4) $CE $(ls /tmp/banners | sed -n "4p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "5p") = "" ]]; then echo "$YS 5) $CE $(ls /tmp/banners | sed -n "5p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "6p") = "" ]]; then echo "$YS 6) $CE $(ls /tmp/banners | sed -n "6p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "7p") = "" ]]; then echo "$YS 7) $CE $(ls /tmp/banners | sed -n "7p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "8p") = "" ]]; then echo "$YS 8) $CE $(ls /tmp/banners | sed -n "8p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "9p") = "" ]]; then echo "$YS 9) $CE $(ls /tmp/banners | sed -n "9p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "10p") = "" ]]; then echo "$YS 10) $CE $(ls /tmp/banners | sed -n "10p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "11p") = "" ]]; then echo "$YS 11) $CE $(ls /tmp/banners | sed -n "11p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "12p") = "" ]]; then echo "$YS 12) $CE $(ls /tmp/banners | sed -n "12p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "13p") = "" ]]; then echo "$YS 13) $CE $(ls /tmp/banners | sed -n "13p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "14p") = "" ]]; then echo "$YS 14) $CE $(ls /tmp/banners | sed -n "14p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "15p") = "" ]]; then echo "$YS 15) $CE $(ls /tmp/banners | sed -n "15p" | sed "s/.txt/ /")"; fi
+  if ! [[ $(ls /tmp/banners | sed -n "16p") = "" ]]; then echo "$YS 16) $CE $(ls /tmp/banners | sed -n "16p" | sed "s/.txt/ /")"; fi
+  echo " "
+  echo -n "Choose: "
+  read -r ANSWER
+  eval banner_file=\${$ANSWER}
+  cat $banner_file
+  echo "Is This The Banner That You Want? y/n"
+  read -r ANSWER
+  if [[ $ANSWER = "y" ]]; then
+    sed -i "/banner=/d" /tmp/AMAZON-ROBOTICS/etc/$USER.conf && echo "banner=$ANSWER" >> /tmp/AMAZON-ROBOTICS/etc/$USER.conf
+  else
+    list_banners
+}
+
+function customize_banner {
+  clear
+  x=0
+  for i in $(ls /tmp/banners); do
+    let "x=x+1"
+    eval $x=/tmp/banners/$i
+  done
+  if ! [ -f /tmp/AMAZON-ROBOTICS/etc/$USER.conf ]; then
+    touch /tmp/AMAZON-ROBOTICS/etc/$USER.conf
+  fi
+  list_banners
+}
+
 
 
 #-------Execution--------------------------------------------------------------------------------------------------
