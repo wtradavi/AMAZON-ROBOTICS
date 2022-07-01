@@ -63,7 +63,7 @@ function menu {
 
 
 function drive_menu {
-	back=menu
+	back=drive_menu
 	home=drive_menu
 	a="Ping a Drive";h="Reset Wifi";o="";
 	b="Diagnostics/DUSC";i="Reboot";p="";
@@ -88,7 +88,7 @@ function drive_menu {
 
 
 function remote_menu {
-	back=menu
+	back=remote_menu
 	home=remote_menu
 	a="Ping a Drive";h="Reboot Drive";o="";
 	b="SSH Into A Drive";i="Firmware Update";p="";
@@ -241,36 +241,26 @@ function go_back_or_exit {
   else
     read -n 1 ANSWER
   fi
-	if [[ "$ANSWER" = "b" ]]; then
-		$back
-	else
-    clear
-		exit
-	fi
+  if [[ "$ANSWER" = "b" ]]; then
+	$back
+  else
+	clear
+	exit
+  fi
 }
 
 function ping_drive {
   logo
-  echo -e $RS"1- Hide The Bullshit"$CE
-  echo -e $RS"2- Show Everything"$CE
-  prompt_num
   logo
   last=$du
-	echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
-	read du
+  echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
+  read du
   if [[ $du = "last" ]]; then
     du=$last
   fi
   logo
-  if [[ $ANSWER = 1 ]]; then
-    echo -e $FONTC"This Drive Has Received "$CE $GNS$(( 100 - $(ping -c 3 kdu-$du | grep received | cut -d "," -f 3 | cut -d "%" -f 1)))"%"$CE $FONTC" of Packets that It Transmitted."$CE
-  elif [[ $ANSWER = 2 ]]; then
-    ping -c 3 kdu-$du
-  else
-    echo -e $RS"Something Went Wrong"
-    go_back_or_exit
-  fi
-	go_back_or_exit
+  ping -c 3 kdu-$du
+  go_back_or_exit
 }
 
 function ssh_connect {
