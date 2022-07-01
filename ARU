@@ -25,22 +25,9 @@ function logo {
   echo ""
   columnize 3 " " "$(echo -e $RS '****NEW FEATURE**** ' $CE)" " "
   echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered!"$CE
-  echo " "
-  echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    : "$CE
-  echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   : "$CE
-  echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  : "$CE
-  echo -e $LOGOC"                  ::::::: :    : ::::::   :    :    : :  : : "$CE
-  echo -e $LOGOC"                  :     : :    : :    :  :     :    : :   :: "$CE
-  echo -e $LOGOC"                  :     : :    : :    : ::::::  ::::  :    : "$CE
-  echo -e $LOGOC"                                                                    "$CE
-  echo -e $LOGOC"              ::::::                                             "$CE
-  echo -e $LOGOC"              :     :  ::::  :::::   ::::  ::::: :  ::::   ::::  "$CE
-  echo -e $LOGOC"              :     : :    : :    : :    :   :   : :    : :      "$CE
-  echo -e $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE
-  echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE
-  echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE
-  echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"
-  echo ""
+  echo -e $RS 
+  cat /tmp/banners/bigMoney.txt
+  echo -e $CE
 }
 
 function columnize {
