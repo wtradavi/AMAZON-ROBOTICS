@@ -55,7 +55,7 @@ function columnize {
   columns=$1
   shift
   colwidth=$(echo $((COLUMNS / columns)))
-  printf "$(echo -e $(for i in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@";
+  printf "$(echo -e $(for var in $(seq 1 $columns); do echo -e "%-$(echo $colwidth)s "; done))\n" "$@";
 }
 
 function menu_list {
@@ -766,15 +766,15 @@ function batch_mode {
 
 function load_batch_lists {
   batches=($(cat /tmp/batches))
-  for i in ${batches[@]}; do
-    eval $i'=('$(cat /tmp/$i)')'     
+  for batch in ${batches[@]}; do
+    eval $batch'=('$(cat /tmp/$batch)')'     
   done
 }
 
 function save_batch_lists {
   echo $batches > /tmp/batches
-  for i in $batches; do
-    eval "echo \${$i}" > /tmp/$i
+  for batch in $batches; do
+    eval "echo \${$batch}" > /tmp/$batch
   done
 }
 
@@ -788,8 +788,8 @@ function delete_list {
 }
 
 function delete_drive {
-  for i in $du; do
-    eval $batchlist'=(${'$batchlist'[@]/$i})'
+  for drive in $du; do
+    eval $batchlist'=(${'$batchlist'[@]/$drive})'
   done
   save_batch_lists
   menu
@@ -806,16 +806,16 @@ function add_drive {
 
 function clear_selection {
   du=()
-  for i in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
-    eval unset ${i}2_enabled
+  for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
+    eval unset ${var}2_enabled
   done
   menu
 }
 
 function select_all {
   du=($(eval echo '${'$batchlist'[4]}'))
-  for i in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
-    eval ${i}2_enabled="true"
+  for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
+    eval ${var}2_enabled="true"
   done
   menu
 }
