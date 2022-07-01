@@ -1,4 +1,5 @@
 set opt interactive_comments
+banner=/tmp/bigMoney.txt
 
 function logo {
   FONTC=$YS
@@ -26,8 +27,8 @@ function logo {
   columnize 3 " " "$(echo -e $RS '****NEW FEATURE**** ' $CE)" " "
   echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered!"$CE
   echo -e $RS 
-  cat /tmp/banners/bigMoney.txt
-  echo -e $CE
+  cat $banner
+  echo -e $CE 
 }
 
 function columnize {
@@ -280,10 +281,10 @@ function ssh_connect {
   if [[ $du = "last" ]]; then
     du=$last
   fi
-	logo
-  scp /tmp/ARU root@kdu-$du:/tmp/ARU
-	ssh root@kdu-$du
-	menu
+  logo
+  scp /tmp/ARU $banner root@kdu-$du:/tmp
+  ssh root@kdu-$du
+  menu
 }
 
 function charge_drive {
