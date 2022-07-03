@@ -251,16 +251,26 @@ function go_back_or_exit {
 
 function ping_drive {
   logo
-  logo
   last=$du
+  echo -e "Enter $YS b $CE to go back.."
   echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
   read du
   if [[ $du = "last" ]]; then
     du=$last
   fi
+  if [[ $du = "b" ]]; then
+	menu
+  fi
   logo
-  ping -c 3 kdu-$du
-  go_back_or_exit
+  ping -w 1 -c 2 kdu-$du
+  echo " "
+  echo $RS"Another One? "$CE $YS"y/n:"$CE
+  read -r ANSWER
+  if [[ $ANSWER = "y" ]]; then
+	ping_drive
+  else
+	menu
+  fi
 }
 
 function ssh_connect {
