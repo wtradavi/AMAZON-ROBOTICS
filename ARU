@@ -813,7 +813,7 @@ function clear_selection {
 }
 
 function select_all {
-  du=($(eval echo '${'$batchlist'[4]}'))
+  du=($(eval echo '${'$batchlist'[@]}'))
   for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
     eval ${var}2_enabled="true"
   done
