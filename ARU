@@ -119,7 +119,7 @@ function remote_menu {
 	a="Ping a Drive"; opt_a1=ping_drive;
 	b="SSH Into A Drive"; opt_b1=ssh_connect;
 	c="Charge Drive"; opt_c1=charge_drive;
-	d="AutoProvision Drive(s)"; opt_d1=autoprovision_remote;
+	d="AutoProvision"; opt_d1=autoprovision_remote;
 	e="Reset Drive's Wifi"; opt_e1=resetwifiremote;
 	f="Put Drive To Sleep"; opt_f1=not_installed;
 	g="Unregister Drive"; opt_g1=not_installed;
