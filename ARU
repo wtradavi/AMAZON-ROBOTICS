@@ -737,7 +737,7 @@ function transfer_aru {
 }
 
 function aru {
-  rm /tmp/ARU && vi /tmp/ARU && . /tmp/ARU
+  rm /tmp/ARUv2 && vi /tmp/ARUv2 && . /tmp/ARUv2
 }
 
 function batch_mode {
