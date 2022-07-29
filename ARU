@@ -485,16 +485,55 @@ function ping_drive {
 
 function ssh_connect {
   logo
-  last=$du
-	echo -e $RS"\nWhat is the Drive Number That You Would like to SSH Into?"$CE
-	read du
-  if [[ $du = "last" ]]; then
-    du=$last
+  echo -e $RS"1- SSH Into New Drive(s)"$CE
+  echo -e $RS"2- SSH Into Selected Drive(s)"$CE
+  prompt_num
+  if [[ $ANSWER = 1 ]]; then
+      logo
+      echo -e $RS"\nWhat is the Drive Number(s) That You Would like to SSH Into?"$CE
+      read du
+      logo
+      echo -e $RS"\nWould You like to Transfer this Menu To The Drive(s)? y/n"$CE
+      read menu_y_or_no
+      if [[ $menu_y_or_no = 'y' ]] || [[ $menu_y_or_no = 'Y' ]]; then
+        for drive in ${du[@]}; do
+          echo -e $RS"\nCopying Menu to Drive $drive\n"$CE
+          scp /tmp/ARU root@kdu-$drive:/tmp/ARU
+          echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
+          ssh root@kdu-$drive
+        done     
+      elif [[ $menu_y_or_no = 'n' ]] || [[ $menu_y_or_no = 'N' ]]; then
+        for drive in ${du[@]}; do
+          echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
+          ssh root@kdu-$drive
+        done
+      else
+      echo -e $RS"Something Went Wrong"
+      go_back_or_exit
+      fi
+
+  elif [[ $ANSWER = 2 ]]; then
+      logo
+      echo -e $RS"\nWould You like to Transfer this Menu To The Drive(s)? y/n"$CE
+      read menu_y_or_no
+      if [[ $menu_y_or_no = 'y' ]] || [[ $menu_y_or_no = 'Y' ]]; then
+        for drive in ${du[@]}; do
+          echo -e $RS"\nCopying Menu to Drive $drive\n"$CE
+          scp /tmp/ARU root@kdu-$drive:/tmp/ARU
+          echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
+          ssh root@kdu-$drive
+        done
+      elif [[ $menu_y_or_no = 'n' ]] || [[ $menu_y_or_no = 'N' ]]; then
+        for drive in ${du[@]}; do
+          echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
+          ssh root@kdu-$drive
+        done
+      else
+        echo -e $RS"Something Went Wrong"
+        go_back_or_exit
+      fi
   fi
-	logo
-  scp /tmp/ARU root@kdu-$du:/tmp/ARU
-	ssh root@kdu-$du
-	menu
+  go_back_or_exit
 }
 
 function charge_drive {
