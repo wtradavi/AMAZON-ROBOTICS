@@ -589,8 +589,10 @@ function charge_drive {
 
 	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
 		for i in $du; do
+      echo "\n*In Order To Send This Drive To A Charger, You Must First Manage It In MMA*\n"
 			prompt_floor
 			prompt_charger
+      echo "\nOnce The Drive is Done Charging, the Charger Will Become Blocked and You Will have to In Service Them Both\n"
 			sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "scKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $i -charger $charger_unit -t $time && echo "\nThe Command Has Succesfully Been Sent\n"
 		done
 	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
