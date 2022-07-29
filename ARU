@@ -31,9 +31,7 @@ function logo {
   clear
   echo -e $GNS" Logged Into $HOSTNAME"$CE
   echo ""
-  columnize 3 " " "$(echo -e $RS '****NEW FEATURE**** ' $CE)" " "
-  echo -e $YS"Now, when typing a Drive or Station Number, just type"$CE $RS"last"$CE $YS"to automatically use the last drive you entered!"$CE
-  echo " "
+  echo ""
   echo -e $LOGOC"                    : :   :    :   ::   ::::::  ::::  :    :     "$CE $GNS"               BATCH LISTS: $batchlist            "$CE
   echo -e $LOGOC"                   :   :  ::  ::  :  :      :  :    : ::   :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "a1)"; elif [ $a2_enabled ]; then echo $YS"a2)"$CE; else echo $PS"a2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[1]}; else eval echo '${'$batchlist'[1]}'; fi)"$CE
   echo -e $LOGOC"                  :     : : :: : :    :    :   :    : : :  :     "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "b1)"; elif [ $b2_enabled ]; then echo $YS"b2)"$CE; else echo $PS"b2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[2]}; else eval echo '${'$batchlist'[2]}'; fi)"$CE
@@ -47,7 +45,9 @@ function logo {
   echo -e $LOGOC"              ::::::  :    : :::::  :    :   :   : :       ::::  "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "j1)"; elif [ $j2_enabled ]; then echo $YS"j2)"$CE; else echo $PS"j2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[10]}; else eval echo '${'$batchlist'[10]}'; fi)"$CE
   echo -e $LOGOC"              :   :   :    : :    : :    :   :   : :           : "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "k1)"; elif [ $k2_enabled ]; then echo $YS"k2)"$CE; else echo $PS"k2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[11]}; else eval echo '${'$batchlist'[11]}'; fi)"$CE
   echo -e $LOGOC"              :    :  :    : :    : :    :   :   : :    : :    : "$CE $PS"               $(if  ! [ $batchlist ] ;then echo "l1)"; elif [ $l2_enabled ]; then echo $YS"l2)"$CE; else echo $PS"l2)"$CE; fi)    $(if ! [ $batchlist ]; then echo ${batches[12]}; else eval echo '${'$batchlist'[12]}'; fi)"$CE
-  echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS"
+  echo -e $LOGOC"              :     :  ::::  :::::   ::::    :   :  ::::   ::::  "$CE" by DAVID TRAVERS,"
+  echo -e "                                                                     ORKHAN GULIYEV,"
+  echo -e "                                                                     DANIEL BRNE"  
   echo ""
 }
 
@@ -419,7 +419,7 @@ function options {
 
 
 #---------Functions-----------------------------------------------------
-function go_back_or_exit {c
+function go_back_or_exit {
   echo " "
 	printf "Press $YS [b] $CE to go back...\n"
 	printf "Press $YS any key $CE to exit\n"
@@ -857,9 +857,19 @@ function delete_drive {
 
 function add_drive {
   logo
+  rm /tmp/drives.txt
+  echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
-  read -A du
-  eval $batchlist'+=($(eval echo '${du[@]}'))'
+  cat > /tmp/drives.txt
+  sed -i "/Fau/d" /tmp/drives.txt
+	sed -i "/Disa/d" /tmp/drives.txt
+	sed -i "/\%/d" /tmp/drives.txt
+	sed -i "/Per/d" /tmp/drives.txt
+	sed -i "/Trap/d" /tmp/drives.txt
+  for i in $( cat /tmp/drives.txt); do 
+    drives+=($i); 
+  done
+  eval $batchlist'+=($(eval echo '${drives[@]}'))'
   save_batch_lists
   menu
 }
