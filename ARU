@@ -642,21 +642,29 @@ function firmware_update_remote {
 function resetwifiremote {
 	function prompt_drive {
     logo
-    last=$du
 		echo -e $RS"\nWhat is the Drive Number That You Would like to Reset The Wifi on?"$CE
 		read du
-    if [[ $du = "last" ]]; then
-      du=$last
-    fi
 		if [ $(echo $du | wc -c) -ne 7 ]; then
 			echo "The Drive Number is a Six-Digit Number. Please Try Agan."
 			prompt_drive
 		else
-			prompt_version
+			continue
 		fi
 		}
-	sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c 'reset_wifi_config; exit;' -P 50
-  go_back_or_exit
+	logo
+  echo -e $RS"Charge Selected Drive(s)? y/n"$CE
+  prompt_num
+
+	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+		for i in $du; do
+			echo "\nResetting WiFi on Drive $i\n"
+			sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c 'reset_wifi_config; exit;' -P 50
+		done
+	elif  [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+		prompt_drive 	
+		sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c 'reset_wifi_config; exit;' -P 50
+	fi
+	go_back_or_exit
 }
 
 function dusc_util {
@@ -769,13 +777,22 @@ function reboot_local {
 
 function reboot_remote {
   logo
-  last=$du
-  echo -ne $RS"\nDrive: ";
-  read -r du;
-  if [[ $du = "last" ]]; then
-    du=$last
+  logo
+  echo -e $RS"Charge Selected Drive(s)? y/n"$CE
+  prompt_num
+
+  if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+    for i in $du; do
+	echo "\nRebooting Drive $i\n"
+	ssh root@kdu-$i '/sbin/reboot & exit'
+    done
+  elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+    echo -ne $RS"\nDrive: ";
+    read -r du;
+    echo "\nRebooting Drive $i\n"
+    ssh root@kdu-$du '/sbin/reboot & logout'
   fi
-  ssh root@kdu-$du reboot
+  
   go_back_or_exit
 }
 
