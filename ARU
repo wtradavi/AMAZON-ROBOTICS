@@ -782,11 +782,13 @@ function reboot_remote {
   prompt_num
 
   if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+    logo
     for i in $du; do
-	echo "\nRebooting Drive $i\n"
-	ssh root@kdu-$i '/sbin/reboot & exit'
+      echo "\nRebooting Drive $i\n"
+      ssh root@kdu-$i '/sbin/reboot & exit'
     done
   elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+    logo
     echo -ne $RS"\nDrive: ";
     read -r du;
     echo "\nRebooting Drive $i\n"
