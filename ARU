@@ -790,26 +790,29 @@ function aru {
 }
 
 function batch_mode {
-  set -x
   logo
+  rm /tmp/drives.txt
   echo -n "Create A Name for Your Batch List: "
   read -r batch_name
   batches+=($batch_name)
-  i=0
+  echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
-  read -A drives
+  cat > /tmp/drives.txt
+  sed -i "/Faulted/d" /tmp/drives.txt
+	sed -i "/Disabled/d" /tmp/drives.txt
+	sed -i "/\%/d" /tmp/drives.txt
+	sed -i "/Person/d" /tmp/drives.txt
+	sed -i "/Trap/d" /tmp/drives.txt
+  for i in $( cat /tmp/drives.txt); do 
+    drives+=($i); 
+  done
   logo
+  num=0
   columnize 10 "Drive" "Wifi"
-  for drive in ${drives[@]}; do
-    let "i=i+1"
-    #ksk1=$(md5sum etc/ksk/ksk.txt | cut -d " " -f 1)
-    #ksk2=$(md5sum etc2/ksk/ksk.txt | cut -d " " -f 1)
-    #pem1=$(md5sum etc/wpa_supplicant/amazon.pem | cut -d " " -f 1)
-    #pem2=$(md5sum etc2/wpa_supplicant/amazon.pem | cut -d " " -f 1)
-    #wpa1=$(md5sum etc/wpa_supplicant/wpa_supplicant.conf| cut -d " " -f 1)
-    #wpa2=$(md5sum etc2/wpa_supplicant/wpa_supplicant.conf | cut -d " " -f 1)
+  for drive in $( cat /tmp/drives.txt); do
+    let "num=num+1"
     packet_loss=$(ping -w 1 -c 2 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
-    columnize 10 "$(echo -e $YS $i $CE)" "$drive" "$(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)"
+    columnize 10 "$(echo -e $YS $num $CE)" "$drive" "$(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)"
   done
   echo -n "Select: "
   read -A selections
@@ -817,8 +820,8 @@ function batch_mode {
     eval $batch_name'+=('${drives[$select]}')'
   done
   save_batch_lists
+  rm /tmp/drives.txt
   menu
-  set +x
 }
 
 function load_batch_lists {
@@ -841,7 +844,7 @@ function delete_list {
   rm /tmp/$batchlist
   unset batchlist
   reset
-  . /tmp/ARU
+  . /tmp/ARUv2
 }
 
 function delete_drive {
