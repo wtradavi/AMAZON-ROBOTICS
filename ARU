@@ -534,7 +534,7 @@ function ssh_connect {
         go_back_or_exit
       fi
   fi
-  go_back_or_exit
+  menu
 }
 
 function charge_drive {
