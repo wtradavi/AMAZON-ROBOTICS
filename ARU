@@ -499,7 +499,7 @@ function ssh_connect {
       if [[ $menu_y_or_no = 'y' ]] || [[ $menu_y_or_no = 'Y' ]]; then
         for drive in ${du[@]}; do
           echo -e $RS"\nCopying Menu to Drive $drive\n"$CE
-          scp /tmp/ARU root@kdu-$drive:/tmp/ARU
+          scp /tmp/ARUv2 root@kdu-$drive:/tmp/ARUv2
           echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
           ssh root@kdu-$drive
         done     
@@ -520,7 +520,7 @@ function ssh_connect {
       if [[ $menu_y_or_no = 'y' ]] || [[ $menu_y_or_no = 'Y' ]]; then
         for drive in ${du[@]}; do
           echo -e $RS"\nCopying Menu to Drive $drive\n"$CE
-          scp /tmp/ARU root@kdu-$drive:/tmp/ARU
+          scp /tmp/ARUv2 root@kdu-$drive:/tmp/ARUv2
           echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
           ssh root@kdu-$drive
         done
