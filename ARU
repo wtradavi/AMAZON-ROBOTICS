@@ -419,9 +419,11 @@ function options {
 
 
 #---------Functions-----------------------------------------------------
-function go_back_or_exit {
+function go_back_or_exit {c
+  echo " "
 	printf "Press $YS [b] $CE to go back...\n"
 	printf "Press $YS any key $CE to exit\n"
+  echo " "
   if [ "$HOSTNAME" = ar-movement-syr1-node1.syr1.amazon.com ]; then
     read -k 1 ANSWER
   else
