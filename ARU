@@ -439,35 +439,43 @@ function go_back_or_exit {
 
 function ping_drive {
   logo
-  echo -e $RS"1- Hide The Bullshit"$CE
-  echo -e $RS"2- Show Everything"$CE
+  echo -e $RS"1- Ping New Drive(s)"$CE
+  echo -e $RS"2- Ping Selected Drive(s)"$CE
   prompt_num
-  logo
-  if [[ $du = "last" ]]; then
-    continue
-  elif [[ $(echo $du) = "" ]]; then
-      echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
-      read -A du
-  fi
-  logo
+
   if [[ $ANSWER = 1 ]]; then
-    i=0
     logo
+    echo -e $RS"What is the Drive Number That You Would like to Ping?"$CE
+    read -A du
+    logo
+    i=0
     echo " "
     columnize 10 "Drive" "Wifi"
+
     for drive in ${du[@]}; do
       let "i=i+1"
       packet_loss=$(ping -w 1 -c 2 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
       columnize 10 "$(echo -e $YS $i $CE)" "$drive" "$(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)"
     done
+
     echo " "
     echo " "
+
   elif [[ $ANSWER = 2 ]]; then
+    i=0
+    logo
+    echo " "
+    columnize 10 "Drive" "Wifi"
+
     for drive in ${du[@]}; do
-      ping -c 3 kdu-$drive
-      echo " "
-      echo " "
+      let "i=i+1"
+      packet_loss=$(ping -w 1 -c 2 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
+      columnize 10 "$(echo -e $YS $i $CE)" "$drive" "$(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)"
     done
+
+    echo " "
+    echo " "
+
   else
     echo -e $RS"Something Went Wrong"
     go_back_or_exit
