@@ -540,34 +540,28 @@ function ssh_connect {
 
 function charge_drive {
 	function prompt_floor {
-    logo
+		logo
 		echo -e $RS"\nWhat Floor is The Drive On [i.e., 1-5]?"$CE
-  	read floor
-  	if [ $floor -ge 6 ]; then
-	  	clear
-	  	echo "You must enter a Number 1-5:"
-	  	charge_drive
-  	else
-		prompt_drive
+  		read floor
+  		if [ $floor -ge 6 ]; then
+	  		clear
+	  		echo "You must enter a Number 1-5:"
+	  		charge_drive
 		fi
 	}
 	function prompt_drive {
-    logo
-    last=$du
+    		logo
 		echo -e $RS"\nWhat is the Drive Number That You Would like to Send To The Charger?"$CE
-  	read du
-    if [[ $du = "last" ]]; then
-      du=$last
-    fi
-  	if [ $(echo $du | wc -c) -ne 7 ]; then
-  		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
-  		prompt_drive
-  	else
-	  	prompt_charger
+  		read du
+  		if [ $(echo $du | wc -c) -ne 7 ]; then
+  			echo "The Drive Number is a Six-Digit Number. Please Try Agan."
+  			prompt_drive
+  		else
+	  		prompt_charger
 		fi
 	}
 	function prompt_charger {
-    logo
+    		logo
 		echo -e $RS"\nWhat Charger Would You like to Send It To?"$CE
 		read charger_unit
 		if [ $charger_unit = "" ]; then
@@ -579,22 +573,32 @@ function charge_drive {
 		fi
 	}
 	function prompt_time {
-    logo
+    		logo
 		echo -e $RS"\nHow Long Do You Want It To Charge For?"$CE
 		read time
 		if [ $time -ge 180 ]; then
 		  	clear
-		  	echo "You must enter a Number 1-180s:"
+		  	echo "You must enter a Number 1-179:"
 		  	prompt_time
-	  	else
-			execute
 		fi
 	}
-	function execute {
-		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "saKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $du -charger $charger_unit -t $time && echo "The Command Has Succesfully Been Sent"
+
+	logo
+  echo -e $RS"Charge Selected Drive(s)? y/n"$CE
+  prompt_num
+
+	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+		for i in $du; do
+			prompt_floor
+			prompt_charger
+			sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "scKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $i -charger $charger_unit -t $time && echo "\nThe Command Has Succesfully Been Sent\n"
+		done
+	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+		prompt_floor
+		prompt_drive
+		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "scKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $du -charger $charger_unit -t $time && echo "\nDrive $du has Succesfully Charged\n"
 		go_back_or_exit
-	}
-	prompt_floor
+	fi
 }
 
 function firmware_update_remote {
@@ -798,11 +802,15 @@ function batch_mode {
   echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
   cat > /tmp/drives.txt
-  sed -i "/Fau/d" /tmp/drives.txt
-	sed -i "/Disa/d" /tmp/drives.txt
+  sed -i "/u/d" /tmp/drives.txt
+	sed -i "/s/d" /tmp/drives.txt
 	sed -i "/\%/d" /tmp/drives.txt
-	sed -i "/Per/d" /tmp/drives.txt
-	sed -i "/Trap/d" /tmp/drives.txt
+	sed -i "/e/d" /tmp/drives.txt
+	sed -i "/a/d" /tmp/drives.txt
+  sed -i "/n/d" /tmp/drives.txt
+  sed -i "/T/d" /tmp/drives.txt
+  sed -i "/D/d" /tmp/drives.txt
+  sed -i "/P/d" /tmp/drives.txt
   for i in $( cat /tmp/drives.txt); do 
     drives+=($i); 
   done
@@ -861,11 +869,15 @@ function add_drive {
   echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
   cat > /tmp/drives.txt
-  sed -i "/Fau/d" /tmp/drives.txt
-	sed -i "/Disa/d" /tmp/drives.txt
+  sed -i "/u/d" /tmp/drives.txt
+	sed -i "/s/d" /tmp/drives.txt
 	sed -i "/\%/d" /tmp/drives.txt
-	sed -i "/Per/d" /tmp/drives.txt
-	sed -i "/Trap/d" /tmp/drives.txt
+	sed -i "/e/d" /tmp/drives.txt
+	sed -i "/a/d" /tmp/drives.txt
+  sed -i "/n/d" /tmp/drives.txt
+  sed -i "/T/d" /tmp/drives.txt
+  sed -i "/D/d" /tmp/drives.txt
+  sed -i "/P/d" /tmp/drives.txt
   for i in $( cat /tmp/drives.txt); do 
     drives+=($i); 
   done
