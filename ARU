@@ -691,16 +691,9 @@ function camera_logs {
 
 function autoprovision {
   logo
-  last=$du
 	echo -ne $RS"\nGood Drive #: "$CE;
 	read -r du;
-  if [[ $du = "last" ]]; then
-    du=$last
-  fi
-	scp root@kdu-$du:/etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp;
-	mv /tmp/amazon.pem /etc/wpa_supplicant/;
-	mv /tmp/ksk.txt /etc/ksk/;
-	mv /tmp/wpa_supplicant.conf /etc/wpa_supplicant/
+	if ! [ -d /tmp/files ]; then mkdir /tmp/files; fi && scp root@kdu-$goodDU:/etc/wpa_supplicant/wpa_supplicant.conf  root@kdu-$goodDU:/etc/wpa_supplicant/amazon.pem  root@kdu-$goodDU:/etc/ksk/ksk.txt /tmp/files && mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf && mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem && mv /tmp/files/ksk.txt /etc/ksk/ksk.txt && echo "Rebooting Now....." && reboot
 }
 
 function subsystem_update {
