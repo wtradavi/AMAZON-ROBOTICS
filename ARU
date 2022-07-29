@@ -798,10 +798,10 @@ function batch_mode {
   echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
   cat > /tmp/drives.txt
-  sed -i "/Faulted/d" /tmp/drives.txt
-	sed -i "/Disabled/d" /tmp/drives.txt
+  sed -i "/Fau/d" /tmp/drives.txt
+	sed -i "/Disa/d" /tmp/drives.txt
 	sed -i "/\%/d" /tmp/drives.txt
-	sed -i "/Person/d" /tmp/drives.txt
+	sed -i "/Per/d" /tmp/drives.txt
 	sed -i "/Trap/d" /tmp/drives.txt
   for i in $( cat /tmp/drives.txt); do 
     drives+=($i); 
