@@ -119,7 +119,7 @@ function remote_menu {
 	a="Ping a Drive"; opt_a1=ping_drive;
 	b="SSH Into A Drive"; opt_b1=ssh_connect;
 	c="Charge Drive"; opt_c1=charge_drive;
-	d="Error Codes"; opt_d1=not_installed;
+	d="AutoProvision Drive(s)"; opt_d1=autoprovision_remote;
 	e="Reset Drive's Wifi"; opt_e1=resetwifiremote;
 	f="Put Drive To Sleep"; opt_f1=not_installed;
 	g="Unregister Drive"; opt_g1=not_installed;
@@ -605,12 +605,8 @@ function charge_drive {
 function firmware_update_remote {
 	function prompt_drive {
     logo
-    last=$du
   	echo -e $RS"\nWhat is the Drive Number That You Would like to Update?"$CE
   	read du
-    if [[ $du = "last" ]]; then
-      du=$last
-    fi
   	if [ $(echo $du | wc -c) -ne 7 ]; then
   		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
   		prompt_drive
@@ -680,18 +676,14 @@ function dusc_util {
 
 function camera_logs {
   logo
-  last=$du
   echo -ne $RS"\nDrive #: "$CE;
   read -r du;
-  if [[ $du = "last" ]]; then
-    du=$last
-  fi
   cd /tmp && sudo -u kivasvs /apollo/env/FCXInfra/fwbin/get-hercules-logs.sh $du
 }
 
 function autoprovision {
   logo
-	echo -ne $RS"\nGood Drive #: "$CE;
+	echo -ne $RS"\nGood Drive : "$CE;
 	read -r du;
 	if ! [ -d /tmp/files ]; then mkdir /tmp/files; fi && scp root@kdu-$goodDU:/etc/wpa_supplicant/wpa_supplicant.conf  root@kdu-$goodDU:/etc/wpa_supplicant/amazon.pem  root@kdu-$goodDU:/etc/ksk/ksk.txt /tmp/files && mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf && mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem && mv /tmp/files/ksk.txt /etc/ksk/ksk.txt && echo "Rebooting Now....." && reboot
 }
@@ -787,6 +779,38 @@ function reboot_remote {
   fi
   
   go_back_or_exit
+}
+
+function autoprovision_remote {
+	logo
+ 	echo -e $RS"AutoProvision Selected Drive(s)? y/n"$CE	
+	prompt_num
+	logo
+	echo -ne $RS"\nGood Drive: "$CE
+	read -r goodDrive
+	echo -e $RS"\nGathering All The Files from Drive $goodDrive\n"$CE
+	ssh root@kdu-$goodDrive "mkdir /tmp/files; cp /etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp/files"
+
+	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+		for i in $du; do
+			echo -e $RS"\nTransferring Files to Drive $i\n"$CE
+			scp root@kdu-$goodDrive:/tmp/files root@kdu-$i:/tmp/files
+			echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
+			ssh root@kdu-$i "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+		done
+	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+		logo
+		echo -ne $RS"\nDrive : "$CE
+		read -r du
+		echo -e $RS"\nTransferring Files to Drive $i\n"$CE
+		scp root@kdu-$goodDrive:/tmp/files root@kdu-$du:/tmp/files
+		echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
+		ssh root@kdu-$du "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+
+	else	
+		go_back_or_exit
+	fi
+	go_back_or_exit
 }
 
 function transfer_aru {
