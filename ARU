@@ -97,7 +97,7 @@ function drive_menu {
 	j="AutoProvision"; opt_j1=autoprovision;
 	k="Correct Date & Time"; opt_k1=timechange;
 	l="Subsytem Update"; opt_l1=subsystem_update;
-	m=""; opt_m1="";
+	m="Battery Status"; opt_m1=drive_batt;
 	n=""; opt_n1="";
   o=""; opt_o1="";
   p=""; opt_p1="";
@@ -840,6 +840,10 @@ function reboot_remote {
   fi
   
   go_back_or_exit
+}
+
+function drive_batt {
+    ip -s -d link show dev can0
 }
 
 function autoprovision_remote {
