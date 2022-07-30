@@ -1,4 +1,4 @@
-function template {
+function drive_template {
     logo
     echo -e $RS"SSH Selected Drive(s)? y/n"$CE
     prompt_num
@@ -11,6 +11,19 @@ function template {
         #command
     fi
 }
+
+function station_template {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    echo -e $RS"\nRebooting Station $su\n"$CE
+    #command
+    go_back_or_exit
+}
+
+
 function error_codes { 
     grep cause /var/log/dusc.log
     grep warn /var/log/dusc.log
@@ -32,4 +45,6 @@ function unstuck_drive {
         ssh root@kdu-$du "sudo mkdir -p /var/log/kiva; /sbin/reboot & exit"
     fi
 }
+
+
 

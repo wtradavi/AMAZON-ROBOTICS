@@ -144,8 +144,8 @@ function remote_menu {
   n="Reboot Station"; opt_n1=station_reboot;
   o="Check Station"; opt_o1=station_check;
   p="Reboot IDS"; opt_p1=reboot_ids;
-  q="Send Menu To Drive"; opt_q1=transfer_aru;
-  r=""; opt_s1="";
+  q="Reset Station Audio"; opt_q1=station_audio;
+  r="Send Menu To Drive"; opt_s1=transfer_aru;
   s=""; opt_s1="";
   t=""; opt_t1="";
   u=""; opt_u1="";
@@ -904,6 +904,17 @@ function reboot_ids {
     logo
     echo -e $RS"\nRebooting IDS on Station $su\n"$CE
     sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+    go_back_or_exit
+}
+
+function station_audio {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    echo -e $RS"\nRebooting Station $su\n"$CE
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
     go_back_or_exit
 }
 
