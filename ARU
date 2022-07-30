@@ -562,12 +562,12 @@ function ssh_connect {
           echo -e $RS"\nCopying Menu to Drive $drive\n"$CE
           scp /tmp/ARUv2 root@kdu-$drive:/tmp/ARUv2
           echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
-          ssh root@kdu-$drive
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$drive
         done     
       elif [[ $menu_y_or_no = 'n' ]] || [[ $menu_y_or_no = 'N' ]]; then
         for drive in ${du[@]}; do
           echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
-          ssh root@kdu-$drive
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$drive
         done
       else
       echo -e $RS"Something Went Wrong"
@@ -583,12 +583,12 @@ function ssh_connect {
           echo -e $RS"\nCopying Menu to Drive $drive\n"$CE
           scp /tmp/ARUv2 root@kdu-$drive:/tmp/ARUv2
           echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
-          ssh root@kdu-$drive
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$drive
         done
       elif [[ $menu_y_or_no = 'n' ]] || [[ $menu_y_or_no = 'N' ]]; then
         for drive in ${du[@]}; do
           echo -e $RS"\nStarting SSH Connection With Drive $drive\n"$CE
-          ssh root@kdu-$drive
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$drive
         done
       else
         echo -e $RS"Something Went Wrong"
@@ -773,7 +773,7 @@ function timechange {
   if [[ $du = "last" ]]; then
     du=$last
   fi
-  date -s $(ssh root@kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
+  date -s $(sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
 }
 
 function edit_ksk {
@@ -788,7 +788,7 @@ function timecheck {
   if [[ $du = "last" ]]; then
     du=$last
   fi
-  ssh root@kdu-$du "timedatectl | grep -n 1";
+  sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$du "timedatectl | grep -n 1";
   timedatectl | grep -n 1
   go_back_or_exit
 }
@@ -854,14 +854,14 @@ function autoprovision_remote {
 	echo -ne $RS"\nGood Drive: "$CE
 	read -r goodDrive
 	echo -e $RS"\nGathering All The Files from Drive $goodDrive\n"$CE
-	ssh root@kdu-$goodDrive "mkdir /tmp/files; cp /etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp/files"
+	sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$goodDrive "mkdir /tmp/files; cp /etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp/files"
 
 	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
 		for i in $du; do
 			echo -e $RS"\nTransferring Files to Drive $i\n"$CE
 			scp root@kdu-$goodDrive:/tmp/files root@kdu-$i:/tmp/files
 			echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
-			ssh root@kdu-$i "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+			sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$i "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
 		done
 	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
 		logo
@@ -870,7 +870,7 @@ function autoprovision_remote {
 		echo -e $RS"\nTransferring Files to Drive $i\n"$CE
 		scp root@kdu-$goodDrive:/tmp/files root@kdu-$du:/tmp/files
 		echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
-		ssh root@kdu-$du "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+		sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh kdu-$du "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
 
 	else	
 		go_back_or_exit
