@@ -19,24 +19,6 @@ function error_codes {
     grep ARIMA /var/log/dusc.log
 }
 
-function station_reboot {
-    logo
-    echo -ne $RS"\nStation #: "$CE;
-    read -r su;
-    fu=$su[1]
-    logo
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
-}
-
-function station_check {
-    logo
-    echo -ne $RS"\nStation #: "$CE;
-    read -r su;
-    fu=$su[1]
-    logo
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "checkStation.sh"
-}
-
 function unstuck_drive {
     logo
     echo -e $RS"SSH Selected Drive(s)? y/n"$CE
@@ -51,11 +33,3 @@ function unstuck_drive {
     fi
 }
 
-function reboot_ids {
-    logo
-    echo -ne $RS"\nStation #: "$CE;
-    read -r su;
-    fu=$su[1]
-    logo
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
-}
