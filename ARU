@@ -139,7 +139,7 @@ function remote_menu {
 	i="Firmware Update"; opt_i1=firmware_update_remote;
   j="Diagnostics/DUSC"; opt_j1=dusc_util;
   k="Firmware Error Logs"; opt_k1=fw_log;
-  l="Camera Logs";opt_ l1=camera_logs;
+  l="Camera Logs";opt_l1=camera_logs;
   m="SSH Into A Station"; opt_m1=station_ssh;
   n="Reboot Station"; opt_n1=station_reboot;
   o="Check Station"; opt_o1=station_check;
@@ -807,7 +807,9 @@ function station_ssh {
   read -r su;
   fu=$su[1]
   logo
+  echo -e $RS"\nStarting SSH Connection With Station $su\n"$CE
   sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com
+  menu
 }
 
 function reboot_local {
@@ -874,7 +876,9 @@ function station_reboot {
     read -r su;
     fu=$su[1]
     logo
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+    echo -e $RS"\nRebooting Station $su\n"$CE
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+    go_back_or_exit
 }
 
 function station_check {
@@ -883,7 +887,9 @@ function station_check {
     read -r su;
     fu=$su[1]
     logo
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "checkStation.sh"
+    echo -e $RS"\nRunning Check on Station $su\n"$CE
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "checkStation.sh"
+    go_back_or_exit
 }
 
 function reboot_ids {
@@ -892,7 +898,9 @@ function reboot_ids {
     read -r su;
     fu=$su[1]
     logo
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+    echo -e $RS"\nRebooting IDS on Station $su\n"$CE
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+    go_back_or_exit
 }
 
 function transfer_aru {
