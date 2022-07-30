@@ -124,6 +124,7 @@ function drive_menu {
 	read_input
 	options
 }
+ 
 function remote_menu {
 	back=menu
 	home=remote_menu
@@ -131,10 +132,10 @@ function remote_menu {
 	b="SSH Into A Drive"; opt_b1=ssh_connect;
 	c="Charge Drive"; opt_c1=charge_drive;
 	d="AutoProvision"; opt_d1=autoprovision_remote;
-	e="Reset Drive's Wifi"; opt_e1=resetwifiremote;
+	e="Reboot Drive"; opt_e1=reboot_remote;
 	f="Put Drive To Sleep"; opt_f1=not_installed;
 	g="Unregister Drive"; opt_g1=not_installed;
-  h="Reboot Drive"; opt_h1=reboot_remote;
+  h="Reset Drive's Wifi"; opt_h1=resetwifiremote;
 	i="Firmware Update"; opt_i1=firmware_update_remote;
   j="Diagnostics/DUSC"; opt_j1=dusc_util;
   k="Firmware Error Logs"; opt_k1=fw_log;
