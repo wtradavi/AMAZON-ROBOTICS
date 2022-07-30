@@ -134,10 +134,10 @@ function remote_menu {
 	d="AutoProvision"; opt_d1=autoprovision_remote;
 	e="Reboot Drive"; opt_e1=reboot_remote;
 	f="Put Drive To Sleep"; opt_f1=not_installed;
-	g="Unregister Drive"; opt_g1=not_installed;
-  h="Reset Drive's Wifi"; opt_h1=resetwifiremote;
+	g="Shutdown Drive"; opt_g1=shutdown_drive;
+  h="SubSystem Update"; opt_h1=remote_subsystem_update;
 	i="Firmware Update"; opt_i1=firmware_update_remote;
-  j="Diagnostics/DUSC"; opt_j1=dusc_util;
+  j="Diagnostics/DUSC"; opt_j1=remote_dusc;
   k="Firmware Error Logs"; opt_k1=fw_log;
   l="Camera Logs";opt_l1=camera_logs;
   m="SSH Into A Station"; opt_m1=station_ssh;
@@ -146,8 +146,8 @@ function remote_menu {
   p="Reboot IDS"; opt_p1=reboot_ids;
   q="Reset Station Audio"; opt_q1=station_audio;
   r="Send Menu To Drive"; opt_s1=transfer_aru;
-  s=""; opt_s1="";
-  t=""; opt_t1="";
+  s="Unregister Drive"; opt_s1=not_installed;
+  t="Reset Drive's Wifi"; opt_t1=resetwifiremote;
   u=""; opt_u1="";
   v=""; opt_v1="";
   w=""; opt_w1="";
@@ -735,6 +735,42 @@ function dusc_util {
     go_back_or_exit
 }
 
+
+function remote_dusc {
+    logo
+    echo -e $RS"SSH Selected Drive(s)? y/n"$CE
+    prompt_num
+
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for drive in ${du[@]}; do
+           logo
+            echo """                      Drive $i: DUSC Info
+
+                                    0=normal
+                                    1=Slowing
+                                    2=Limited
+                                    3=Stopping
+                                    4=immobilized unpowered"""
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c "dusc-util -m"
+            go_back_or_exit
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nWhat is the Drive Number(s) That You Would like to SSH Into?"$CE
+        read du
+        logo
+        echo """                         Drive $du: DUSC Info 
+        
+                                0=normal
+                                1=Slowing
+                                2=Limited
+                                3=Stopping
+                                4=immobilized unpowered"""
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c "dusc-util -m"
+        go_back_or_exit
+    fi
+}
+
 function camera_logs {
   logo
   echo -ne $RS"\nDrive #: "$CE;
@@ -785,9 +821,6 @@ function timecheck {
   last=$du
   echo -ne $RS"\nGood Drive #: "$CE;
   read -r du;
-  if [[ $du = "last" ]]; then
-    du=$last
-  fi
   sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 kdu-$du "timedatectl | grep -n 1";
   timedatectl | grep -n 1
   go_back_or_exit
@@ -846,6 +879,38 @@ function drive_batt {
     ip -s -d link show dev can0
 }
 
+function remote_subsystem_update {
+    logo
+    echo -e $RS"SSH Selected Drive(s)? y/n"$CE
+    prompt_num
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        logo;
+        echo ""
+        echo -e $RS"\nAvailable Components To Update:\n"$CE
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c "subsystem-update -l $sc"
+        echo ""
+        echo -ne $RS"Subsystem Component(--all): "$CE
+        read -r sc
+        for drive in ${du[@]}; do
+           sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c "subsystem-update -f $sc"
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo;
+        echo ""
+        logo
+        echo -ne $RS"\nDrive: "$CE
+        read du
+        echo ""
+        echo -e $RS"\nAvailable Components To Update:\n"$CE
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c "subsystem-update -l $sc"
+        echo ""
+        echo -ne $RS"Subsystem Component(--all): "$CE
+        read -r sc
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c "subsystem-update -f $sc"
+    fi
+    go_back_or_exit
+}
+
 function autoprovision_remote {
 	logo
  	echo -e $RS"AutoProvision Selected Drive(s)? y/n"$CE	
@@ -876,6 +941,23 @@ function autoprovision_remote {
 		go_back_or_exit
 	fi
 	go_back_or_exit
+}
+
+function shutdown_drive {
+    logo
+    echo -e $RS"SSH Selected Drive(s)? y/n"$CE
+    prompt_num
+
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for drive in ${du[@]}; do
+            echo -e $RS"Shutting Down Drive $i"$CE
+           sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c '/sbin/shutdown -h' &
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        echo -e $RS"Shutting Down Drive $du"$CE
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c '/sbin/shutdown -h' &
+    fi
+    go_back_or_exit
 }
 
 function station_reboot {
