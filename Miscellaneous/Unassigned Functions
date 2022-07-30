@@ -1,0 +1,61 @@
+function template {
+    logo
+    echo -e $RS"SSH Selected Drive(s)? y/n"$CE
+    prompt_num
+
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for drive in ${du[@]}; do
+           #command
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        #command
+    fi
+}
+function error_codes { 
+    grep cause /var/log/dusc.log
+    grep warn /var/log/dusc.log
+    grep error /var/log/dusc.log
+    grep fault /var/log/dusc.log
+    grep ARIMA /var/log/dusc.log
+}
+
+function station_reboot {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+}
+
+function station_check {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "checkStation.sh"
+}
+
+function unstuck_drive {
+    logo
+    echo -e $RS"SSH Selected Drive(s)? y/n"$CE
+    prompt_num
+
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for drive in ${du[@]}; do
+            ssh root@kdu-$i "sudo mkdir -p /var/log/kiva; /sbin/reboot & exit"
+        done 
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        ssh root@kdu-$du "sudo mkdir -p /var/log/kiva; /sbin/reboot & exit"
+    fi
+}
+
+function reboot_ids {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+}

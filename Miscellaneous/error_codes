@@ -1,5 +1,0 @@
-grep cause /var/log/dusc.log
-grep warn /var/log/dusc.log
-grep error /var/log/dusc.log
-grep fault /var/log/dusc.log
-grep ARIMA /var/log/dusc.log

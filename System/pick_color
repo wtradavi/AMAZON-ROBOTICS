@@ -1,3 +1,23 @@
+FONTC=$YS
+LOGOC=$RS
+YS="\e[1;33m"
+BS="\e[0;34m"
+CE="\e[0m"
+RS="\e[1;31m"
+BLS="\e[0;30m"
+DGYS="\e[1;30m"
+LBS="\e[1;34m"
+GNS="\e[0;32m"
+LGNS="\e[1;32m"
+CYS="\e[0;36m"
+LCYS="\e[1;36m"
+DRS="\e[0;31m"
+PS="\e[0;35m"
+LPS="\e[1;35m"
+BRS="\e[0;33m"
+LGYS="\e[0;37m"
+WHS="\e[1;37m" 
+
 function pick_color {
 	clear
   echo "Enter Your Text Here:"

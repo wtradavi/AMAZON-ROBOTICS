@@ -106,6 +106,22 @@ function drive_menu {
   q=""; opt_q1="";
   r=""; opt_r1="";
   s=""; opt_s1="";
+  t=""; opt_t1="";
+  u=""; opt_u1="";
+  v=""; opt_v1="";
+  w=""; opt_w1="";
+  x=""; opt_x1="";
+  y=""; opt_y1="";
+  z=""; opt_z1="";
+  aa=""; opt_aa1="";
+  ab=""; opt_ab1="";
+  ac=""; opt_ac1="";
+  ad=""; opt_ad1="";
+  ae=""; opt_ae1="";
+  af=""; opt_af1="";
+  ag=""; opt_ag1="";
+  ah=""; opt_ah1="";
+  ai=""; opt_ai1="";
 	menu_list
 	read_input
 	options
@@ -135,10 +151,27 @@ function remote_menu {
   q=""; opt_q1="";
   r=""; opt_r1="";
   s=""; opt_s1="";
+  t=""; opt_t1="";
+  u=""; opt_u1="";
+  v=""; opt_v1="";
+  w=""; opt_w1="";
+  x=""; opt_x1="";
+  y=""; opt_y1="";
+  z=""; opt_z1="";
+  aa=""; opt_aa1="";
+  ab=""; opt_ab1="";
+  ac=""; opt_ac1="";
+  ad=""; opt_ad1="";
+  ae=""; opt_ae1="";
+  af=""; opt_af1="";
+  ag=""; opt_ag1="";
+  ah=""; opt_ah1="";
+  ai=""; opt_ai1="";
 	menu_list
 	read_input
 	options
 }
+
 #---------Prompts-----------------------------------------------------
 YNYES="( $YS y $CE / $YS n $CE )( $YS Enter $CE =yes)"
 YNNO="($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
@@ -248,6 +281,38 @@ function options {
 		$opt_r1
 	elif [[ "$ANSWER" = "19" ]]; then
 		$opt_s1
+	elif [[ "$ANSWER" = "20" ]]; then
+		$opt_t1
+	elif [[ "$ANSWER" = "21" ]]; then
+		$opt_u1
+	elif [[ "$ANSWER" = "22" ]]; then
+		$opt_v1
+	elif [[ "$ANSWER" = "23" ]]; then
+		$opt_w1
+	elif [[ "$ANSWER" = "24" ]]; then
+		$opt_x1
+	elif [[ "$ANSWER" = "25" ]]; then
+		$opt_y1
+	elif [[ "$ANSWER" = "26" ]]; then
+		$opt_z1
+	elif [[ "$ANSWER" = "27" ]]; then
+		$opt_aa1
+	elif [[ "$ANSWER" = "28" ]]; then
+		$opt_ab1
+	elif [[ "$ANSWER" = "29" ]]; then
+		$opt_ac1
+	elif [[ "$ANSWER" = "30" ]]; then
+		$opt_ad1
+	elif [[ "$ANSWER" = "31" ]]; then
+		$opt_ae1
+	elif [[ "$ANSWER" = "32" ]]; then
+		$opt_af1
+	elif [[ "$ANSWER" = "33" ]]; then
+		$opt_ag1
+	elif [[ "$ANSWER" = "34" ]]; then
+		$opt_ah1
+	elif [[ "$ANSWER" = "35" ]]; then
+		$opt_ai1
 	elif [[ "$ANSWER" = "b" ]]; then
     unset batchlist
     $back
@@ -742,15 +807,9 @@ function fw_log {
 
 function station_ssh {
   logo
-  last=$su
   echo -ne $RS"\nStation #: "$CE;
   read -r su;
-  if [[ $du = "last" ]]; then
-    su=$last
-  fi
-  logo
-  echo -ne $RS"\nFloor: "$CE;
-  read -r fu;
+  fu=$su[1]
   logo
   sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com
 }
