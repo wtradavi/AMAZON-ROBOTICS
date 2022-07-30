@@ -828,14 +828,14 @@ function reboot_remote {
   if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
     logo
     for i in $du; do
-      echo "\nRebooting Drive $i\n"
+      echo -e $RS"\nRebooting Drive $i\n"$CE
       sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c '/sbin/reboot' &
     done
   elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
     logo
     echo -ne $RS"\nDrive: ";
     read -r du;
-    echo "\nRebooting Drive $du\n"
+    echo -e $RS"\nRebooting Drive $du\n"$CE
     sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c '/sbin/reboot' &
   fi
   
