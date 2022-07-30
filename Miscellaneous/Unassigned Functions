@@ -47,4 +47,19 @@ function unstuck_drive {
 }
 
 
+function shutdown_drive {
+    logo
+    echo -e $RS"SSH Selected Drive(s)? y/n"$CE
+    prompt_num
 
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for drive in ${du[@]}; do
+            echo -e $RS"Shutting Down Drive $i"$CE
+           sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c '/sbin/shutdown -h' &
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        echo -e $RS"Shutting Down Drive $du"$CE
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c '/sbin/shutdown -h' &
+    fi
+    go_back_or_exit
+}

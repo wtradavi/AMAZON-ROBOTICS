@@ -829,14 +829,14 @@ function reboot_remote {
     logo
     for i in $du; do
       echo "\nRebooting Drive $i\n"
-      ssh root@kdu-$i '/sbin/reboot & exit'
+      sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c '/sbin/reboot' &
     done
   elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
     logo
     echo -ne $RS"\nDrive: ";
     read -r du;
-    echo "\nRebooting Drive $i\n"
-    ssh root@kdu-$du '/sbin/reboot & logout'
+    echo "\nRebooting Drive $du\n"
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c '/sbin/reboot' &
   fi
   
   go_back_or_exit
