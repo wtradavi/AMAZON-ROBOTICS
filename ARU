@@ -82,8 +82,6 @@ function menu {
   fi
 }
 
-
-
 function drive_menu {
 	back=menu
 	home=drive_menu
@@ -126,9 +124,6 @@ function drive_menu {
 	read_input
 	options
 }
-
-
-
 function remote_menu {
 	back=menu
 	home=remote_menu
@@ -142,14 +137,14 @@ function remote_menu {
   h="Reboot Drive"; opt_h1=reboot_remote;
 	i="Firmware Update"; opt_i1=firmware_update_remote;
   j="Diagnostics/DUSC"; opt_j1=dusc_util;
-  k="SSH Into A Station"; opt_k1=station_ssh;
-  l="Firmware Error Logs"; opt_l1=fw_log;
-  m="Camera Logs";opt_ m1=camera_logs;
-  n="Send Menu To Drive"; opt_n1=transfer_aru;
-  o=""; opt_o1="";
-  p=""; opt_p1="";
-  q=""; opt_q1="";
-  r=""; opt_r1="";
+  k="Firmware Error Logs"; opt_k1=fw_log;
+  l="Camera Logs";opt_ l1=camera_logs;
+  m="SSH Into A Station"; opt_m1=station_ssh;
+  n="Reboot Station"; opt_n1=station_reboot;
+  o="Check Station"; opt_o1=station_check;
+  p="Reboot IDS"; opt_p1=reboot_ids;
+  q="Send Menu To Drive"; opt_q1=transfer_aru;
+  r=""; opt_s1="";
   s=""; opt_s1="";
   t=""; opt_t1="";
   u=""; opt_u1="";
@@ -870,6 +865,33 @@ function autoprovision_remote {
 		go_back_or_exit
 	fi
 	go_back_or_exit
+}
+
+function station_reboot {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+}
+
+function station_check {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "checkStation.sh"
+}
+
+function reboot_ids {
+    logo
+    echo -ne $RS"\nStation #: "$CE;
+    read -r su;
+    fu=$su[1]
+    logo
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.syr1-$( if [ $fu -le 5 ] &&  [ $fu -ge 2 ]; then echo "paKivaA0"$fu; elif [ $fu -eq 1 ]; then echo "saKivaA0"$fu; fi).ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
 }
 
 function transfer_aru {
