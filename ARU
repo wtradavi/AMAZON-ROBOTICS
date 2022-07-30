@@ -751,7 +751,7 @@ function remote_dusc {
                                     2=Limited
                                     3=Stopping
                                     4=immobilized unpowered"""
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c "dusc-util -m"
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c "dusc-util -m"
             go_back_or_exit
         done    
     elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
@@ -766,7 +766,7 @@ function remote_dusc {
                                 2=Limited
                                 3=Stopping
                                 4=immobilized unpowered"""
-        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c "dusc-util -m"
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c "dusc-util -m"
         go_back_or_exit
     fi
 }
@@ -809,7 +809,7 @@ function timechange {
   if [[ $du = "last" ]]; then
     du=$last
   fi
-  date -s $(sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
+  date -s $(sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
 }
 
 function edit_ksk {
@@ -821,7 +821,7 @@ function timecheck {
   last=$du
   echo -ne $RS"\nGood Drive #: "$CE;
   read -r du;
-  sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 kdu-$du "timedatectl | grep -n 1";
+  sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec  -t 10 kdu-$du "timedatectl | grep -n 1";
   timedatectl | grep -n 1
   go_back_or_exit
 }
@@ -862,14 +862,14 @@ function reboot_remote {
     logo
     for i in $du; do
       echo -e $RS"\nRebooting Drive $i\n"$CE
-      sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c '/sbin/reboot' &
+      sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c '/sbin/reboot' &
     done
   elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
     logo
     echo -ne $RS"\nDrive: ";
     read -r du;
     echo -e $RS"\nRebooting Drive $du\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c '/sbin/reboot' &
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c '/sbin/reboot' &
   fi
   
   go_back_or_exit
@@ -919,14 +919,14 @@ function autoprovision_remote {
 	echo -ne $RS"\nGood Drive: "$CE
 	read -r goodDrive
 	echo -e $RS"\nGathering All The Files from Drive $goodDrive\n"$CE
-	sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 kdu-$goodDrive "mkdir /tmp/files; cp /etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp/files"
+	sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$goodDrive "mkdir /tmp/files; cp /etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp/files"
 
 	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
 		for i in $du; do
 			echo -e $RS"\nTransferring Files to Drive $i\n"$CE
 			scp root@kdu-$goodDrive:/tmp/files root@kdu-$i:/tmp/files
 			echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
-			sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 kdu-$i "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+			sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
 		done
 	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
 		logo
@@ -935,7 +935,7 @@ function autoprovision_remote {
 		echo -e $RS"\nTransferring Files to Drive $i\n"$CE
 		scp root@kdu-$goodDrive:/tmp/files root@kdu-$du:/tmp/files
 		echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
-		sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 kdu-$du "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+		sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
 
 	else	
 		go_back_or_exit
