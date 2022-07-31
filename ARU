@@ -1108,6 +1108,14 @@ function delete_drive {
   for drive in $du; do
     eval $batchlist'=(${'$batchlist'[@]/$drive})'
   done
+  du=()
+  i=0
+  for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
+    let "i=i+1"
+    if [ $(eval echo $"${var}2_enabled") ]; then 
+        du+=($(eval echo '${'$batchlist'[$i]}'))
+    fi
+  done
   save_batch_lists
   menu
 }

@@ -79,3 +79,19 @@ function station_prompt {
     read -r su;
     fu=$su[1]
 }
+
+
+function delete_drive {
+  for drive in $du; do
+    eval $batchlist'=(${'$batchlist'[@]/$drive})'
+  done
+  i=0
+  for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
+    let "i=i+1"
+    if [ ${var}2_enabled = "true" ]; then 
+        du=(${du[@]/$(eval echo '${'$batchlist'[$i]}')})
+    fi
+  done
+  save_batch_lists
+  menu
+}
