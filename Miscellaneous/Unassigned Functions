@@ -50,4 +50,32 @@ function unstuck_drive {
 }
 
 
+function drive_prompt {
+    logo
+    echo -ne $RS"\nDrive(s): "$CE
+    read -A du
+}
 
+function choose_selected_prompt {
+    logo
+    echo -e $RS"\n$1 Selected Drive(s)? y/n"$CE
+    prompt_num
+}
+
+function transfer_menu_prompt {
+    echo -e $RS"\nWould You like to Transfer this Menu To The Drive(s)? y/n"$CE
+    read menu_y_or_no
+}
+
+function good_drive_prompt {
+    logo
+    echo -ne $RS"\nGood Drive #: "$CE;
+    read -r goodDrive;
+}
+
+function station_prompt {
+    logo
+    echo -ne $RS"\nStation : "$CE;
+    read -r su;
+    fu=$su[1]
+}

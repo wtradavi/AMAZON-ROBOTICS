@@ -182,6 +182,36 @@ function read_input {
 	clear
 }
 
+function drive_prompt {
+    logo
+    echo -e $RS"Drive(s): "$CE
+    read -A du
+}
+
+function choose_selected_prompt {
+    logo
+    echo -e $RS"\n$1 Selected Drive(s)? y/n"$CE
+    prompt_num
+}
+
+function transfer_menu_prompt {
+    echo -e $RS"\nWould You like to Transfer this Menu To The Drive(s)? y/n"$CE
+    read menu_y_or_no
+}
+
+function good_drive_prompt {
+    logo
+    echo -ne $RS"\nGood Drive #: "$CE;
+    read -r goodDrive;
+}
+
+function station_prompt {
+    logo
+    echo -ne $RS"\nStation : "$CE;
+    read -r su;
+    fu=$su[1]
+}
+
 function prompt_connection {
 	echo -e $RS"Are You Plugged Into A Drive?"$CE
 	printf "($YSy$CE/$YSn$CE)($YSEnter$CE=no)"
@@ -501,9 +531,7 @@ function go_back_or_exit {
 }
 
 function ping_drive {
-  logo
-  echo -e $RS"SSH Selected Drive(s)? y/n"$CE
-  prompt_num
+  choose_selected_prompt Ping
 
   if [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
     logo
@@ -546,9 +574,7 @@ function ping_drive {
 }
 
 function ssh_connect {
-  logo
-  echo -e $RS"SSH Selected Drive(s)? y/n"$CE
-  prompt_num
+  choose_selected_prompt SSH
 
   if [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
       logo
@@ -610,8 +636,8 @@ function charge_drive {
 		fi
 	}
 	function prompt_drive {
-    		logo
-		echo -e $RS"\nWhat is the Drive Number That You Would like to Send To The Charger?"$CE
+    	logo
+		  echo -e $RS"\nWhat is the Drive Number That You Would like to Send To The Charger?"$CE
   		read du
   		if [ $(echo $du | wc -c) -ne 7 ]; then
   			echo "The Drive Number is a Six-Digit Number. Please Try Agan."
@@ -803,12 +829,8 @@ function subsystem_update {
 
 function timechange {
   logo
-  last=$du
   echo -ne $RS"\nGood Drive #: "$CE;
   read -r du;
-  if [[ $du = "last" ]]; then
-    du=$last
-  fi
   date -s $(sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du "timedatectl| grep Universal | cut -c 39-54 | sed -e 's/-/./g' -e 's/ /-/g'") && hwclock --systohc
 }
 
@@ -840,7 +862,7 @@ function fw_log {
 
 function station_ssh {
   logo
-  echo -ne $RS"\nStation #: "$CE;
+  echo -ne $RS"\nStation : "$CE;
   read -r su;
   fu=$su[1]
   logo
@@ -1017,7 +1039,7 @@ function transfer_aru {
 }
 
 function aru {
-  rm /tmp/ARUv2 && vi /tmp/ARUv2 && . /tmp/ARUv2
+  rm /tmp/ARUv2 && vi /tmp/ARUv2 && reset &&  . /tmp/ARUv2
 }
 
 function batch_mode {
