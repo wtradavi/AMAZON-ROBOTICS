@@ -891,15 +891,15 @@ function autoprovision_remote {
 	sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$goodDrive "mkdir /tmp/files; cp /etc/ksk/ksk.txt /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/amazon.pem /tmp/files"
 
 	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
-		for i in $du; do
-			echo -e $RS"\nTransferring Files to Drive $i\n"$CE
-			scp root@kdu-$goodDrive:/tmp/files root@kdu-$i:/tmp/files
+		for drive in $du; do
+			echo -e $RS"\nTransferring Files to Drive $drive\n"$CE
+			scp root@kdu-$goodDrive:/tmp/files root@kdu-$drive:/tmp/files
 			echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
-			sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+			sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
 		done
 	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
 		drive_prompt
-		echo -e $RS"\nTransferring Files to Drive $i\n"$CE
+		echo -e $RS"\nTransferring Files to Drive $du\n"$CE
 		scp root@kdu-$goodDrive:/tmp/files root@kdu-$du:/tmp/files
 		echo -e $RS"\nPlacing Files In Correct Directories\n"$CE
 		sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
