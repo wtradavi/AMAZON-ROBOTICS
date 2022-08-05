@@ -61,13 +61,13 @@ function columnize {
 function menu_list {
   load_batch_lists
 	logo
-	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   new) $CE    Create a batch list"; fi)"
-	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS close) $CE    Delete current list"; fi)"
-	columnize 4 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   add) $CE    Add drive(s) to list"; fi)"
-	columnize 4 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   del) $CE    Remove drive(s) from list"; fi)"
-	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS   all) $CE    Select all drives in list"; fi)"
-	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$t; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  none) $CE    Unselect all drives in list"; fi)" 
-	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$u; else echo " " ; fi)" "$(if [[ $HOSTNAME = "ar-movement-syr1-node1.syr1.amazon.com" ]]; then echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
+	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   new) $CE    Create a batch list"; fi)"
+	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS close) $CE    Delete current list"; fi)"
+	columnize 4 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   add) $CE    Add drive(s) to list"; fi)"
+	columnize 4 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   del) $CE    Remove drive(s) from list"; fi)"
+	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   all) $CE    Select all drives in list"; fi)"
+	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$t; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  none) $CE    Unselect all drives in list"; fi)" 
+	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$u; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
   echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
   
@@ -75,7 +75,7 @@ function menu_list {
   }
 
 function menu {
-  if [ $HOSTNAME != "ar-movement-syr1-node1.syr1.amazon.com" ]; then
+  if ! [[ $HOSTNAME == *'node'* ]]; then 
     drive_menu;
   else
     remote_menu;
@@ -263,7 +263,7 @@ function not_installed {
 
 function options {
   if [[ "$ANSWER" = "0" ]]; then
-		if [ $HOSTNAME != "ar-movement-syr1-node1.syr1.amazon.com" ]; then
+		if ! [[ $HOSTNAME == *'node'* ]]; then 
       clear;
       exit;
     else
@@ -515,7 +515,7 @@ function go_back_or_exit {
 	printf "Press $YS [b] $CE to go back...\n"
 	printf "Press $YS any key $CE to exit\n"
   echo " "
-  if [ "$HOSTNAME" = ar-movement-syr1-node1.syr1.amazon.com ]; then
+  if ! [[ $HOSTNAME == *'node'* ]]; then 
     read -k 1 ANSWER
   else
     read -n 1 ANSWER
