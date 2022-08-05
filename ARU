@@ -138,7 +138,7 @@ function remote_menu {
 	e="Reboot Drive"; opt_e1=reboot_remote;
 	f="Put Drive To Sleep"; opt_f1=not_installed;
 	g="Shutdown Drive"; opt_g1=shutdown_drive_remote;
-  h="SubSystem Update"; opt_h1=remote_subsystem_update;
+  h="SubSystem Update"; opt_h1=subsystem_update_remote;
 	i="Firmware Update"; opt_i1=firmware_update_remote;
   j="Diagnostics/DUSC"; opt_j1=remote_dusc;
   k="Firmware Error Logs"; opt_k1=fw_log;
@@ -193,7 +193,7 @@ function drive_prompt {
 
 function choose_selected_prompt {
     logo
-    echo -e $RS"\n$1 Selected Drive(s)? y/n"$CE
+    echo -e $RS"\n$1 Selected Unit(s)? y/n\n"$CE
     prompt_num
 }
 
@@ -204,15 +204,14 @@ function transfer_menu_prompt {
 
 function good_drive_prompt {
     logo
-    echo -ne $RS"\nGood Drive #: "$CE;
+    echo -ne $RS"\nGood Drive: "$CE;
     read -r goodDrive;
 }
 
 function station_prompt {
     logo
     echo -ne $RS"\nStation : "$CE;
-    read -r su;
-    fu=$su[1]
+    read -A du
 }
 
 function prompt_connection {
@@ -839,9 +838,10 @@ function error_codes_remote {
           sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep fault /var/log/dusc.log'
           echo -e $RS"\n************    ARIMA    *******************\n"$CE
           sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep ARIMA /var/log/dusc.log'
-          echo "\n\n\n\n\n"
+          echo "\n"
         done
     fi
+    go_back_or_exit
 }
 
 
@@ -921,7 +921,7 @@ function drive_batt {
     ip -s -d link show dev can0
 }
 
-function remote_subsystem_update {
+function subsystem_update_remote {
     choose_selected_prompt
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
         logo;
@@ -1107,10 +1107,24 @@ function station_audio_remote {
     go_back_or_exit
 }
 
-function transfer_aru {
-  drive_prompt
-  scp /tmp/ARU root@kdu-$du:/tmp/ARU
-  go_back_or_exit
+function transfer_aru_remote {
+    logo
+    choose_selected_prompt
+
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for drive in ${du[@]}; do
+            echo -e $RS"\nTransferring This Menu To Drive $drive\n"$CE
+            scp /tmp/ARU root@kdu-$drive:/tmp/ARU
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nDrive(s)"$CE
+        read -A du
+        for drive in ${du[@]}; do
+            echo -e $RS"\nTransferring This Menu To Drive $drive\n"$CE
+            scp /tmp/ARU root@kdu-$drive:/tmp/ARU
+        done
+    fi
 }
 
 function aru {
