@@ -6,6 +6,8 @@ batchlist=
 batches=()
 # Start off with No Selected Drives
 clear_selection
+facility=$(echo $HOSTNAME | cut -d "-" -f 3)
+FACILITY=$(echo $HOSTNAME | cut -d "-" -f 3 | tr a-z A-Z)
 
 
 function logo {
@@ -68,10 +70,11 @@ function menu_list {
 	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   all) $CE    Select all drives in list"; fi)"
 	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$t; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  none) $CE    Unselect all drives in list"; fi)" 
 	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$u; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
+  echo " "
   echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
-  
-	echo "Choose:"
+  echo " "
+	echo -n "Choose:"
   }
 
 function menu {
@@ -666,12 +669,12 @@ function charge_drive {
 			prompt_floor
 			prompt_charger
       echo "\nOnce The Drive is Done Charging, the Charger Will Become Blocked and You Will have to In Service Them Both\n"
-			sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "scKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $i -charger $charger_unit -t $time && echo "\nThe Command Has Succesfully Been Sent\n"
+			sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w $FACILITY -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "scKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $i -charger $charger_unit -t $time && echo "\nThe Command Has Succesfully Been Sent\n"
 		done
 	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
 		prompt_floor
 		prompt_drive
-		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w SYR1 -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "scKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $du -charger $charger_unit -t $time && echo "\nDrive $du has Succesfully Charged\n"
+		sudo -u kivasvs /apollo/env/FCXInfra/fwbin/chargeDrive.py -u $USER -c AMZN -w $FACILITY -z $(if [ $floor -le 5 ] &&  [ $floor -ge 2 ]; then echo "paKivaA0"$floor; elif [ $floor -eq 1 ]; then echo "scKivaA0"$floor; else echo "You must enter a Number 1-5:"; charge_drive; fi) -drive $du -charger $charger_unit -t $time && echo "\nDrive $du has Succesfully Charged\n"
 		go_back_or_exit
 	fi
 }
@@ -982,7 +985,7 @@ function station_ssh {
   floor="paKivaA0$su[1]"
   logo
   echo -e $RS"\nStarting SSH Connection With Station $su\n"$CE
-  sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.syr1-$floor.ar.corp.amazon.com
+  sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.$facility-$floor.ar.corp.amazon.com
   menu
 }
 
@@ -991,7 +994,7 @@ function station_reboot {
     floor="paKivaA0$su[1]"
     logo
     echo -e $RS"\nRebooting Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$floor.ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
     go_back_or_exit
 }
 
@@ -1000,7 +1003,7 @@ function station_check {
     floor="paKivaA0$su[1]"
     logo
     echo -e $RS"\nRunning Check on Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$floor.ar.corp.amazon.com -c "checkStation.sh"
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "checkStation.sh"
     go_back_or_exit
 }
 
@@ -1009,7 +1012,7 @@ function reboot_ids {
     floor="paKivaA0$su[1]"
     logo
     echo -e $RS"\nRebooting IDS on Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$floor.ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
     go_back_or_exit
 }
 
@@ -1018,7 +1021,7 @@ function station_audio {
     floor="paKivaA0$su[1]"
     logo
     echo -e $RS"\nRebooting Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.syr1-$floor.ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
+    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
     go_back_or_exit
 }
 
