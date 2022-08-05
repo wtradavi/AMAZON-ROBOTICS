@@ -735,13 +735,16 @@ function resetwifiremote {
 	choose_selected_prompt
 
 	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
-		for i in $du; do
-			echo "\nResetting WiFi on Drive $i\n"
-			sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$i -c 'reset_wifi_config; exit;' -P 50
+		for drive in ${du[@]}; do
+			echo "\nResetting WiFi on Drive $drive\n"
+			sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$drive -c 'reset_wifi_config; exit;' -P 50
 		done
 	elif  [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
 		prompt_drive 	
-		sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$du -c 'reset_wifi_config; exit;' -P 50
+    for drive in ${du[@]}; do
+      echo "\nResetting WiFi on Drive $drive\n"
+		  sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -d kdu-$drive -c 'reset_wifi_config; exit;' -P 50
+    done
 	fi
 	go_back_or_exit
 }
@@ -765,27 +768,29 @@ function remote_dusc {
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
         for drive in ${du[@]}; do
            logo
-            echo """                      Drive $i: DUSC Info
+            echo """                      Drive $drive: DUSC Info
 
                                     0=normal
                                     1=Slowing
                                     2=Limited
                                     3=Stopping
                                     4=immobilized unpowered"""
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c "dusc-util -m"
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "dusc-util -m"
             go_back_or_exit
         done    
     elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
         drive_prompt
         logo
-        echo """                         Drive $du: DUSC Info 
-        
-                                0=normal
-                                1=Slowing
-                                2=Limited
-                                3=Stopping
-                                4=immobilized unpowered"""
-        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c "dusc-util -m"
+        for drive in ${du[@]}; do
+          echo """                         Drive $drive: DUSC Info 
+          
+                                  0=normal
+                                  1=Slowing
+                                  2=Limited
+                                  3=Stopping
+                                  4=immobilized unpowered"""
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "dusc-util -m"
+        done
         go_back_or_exit
     fi
 }
@@ -805,32 +810,36 @@ function error_codes_remote {
 
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
         for drive in ${du[@]}; do
-            echo -e $RS"\n************    Causes    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep cause /var/log/dusc.log'
-            echo -e $RS"\n************   Warnings    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep warn /var/log/dusc.log'
-            echo -e $RS"\n************    Errors    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep error /var/log/dusc.log'
-            echo -e $RS"\n************    Faults    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep fault /var/log/dusc.log'
-            echo -e $RS"\n************    ARIMA    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep ARIMA /var/log/dusc.log'
+          echo -e $RS"\n>>>>>>>>>>>> GATHERING LOGS FOR $drive <<<<<<<<<<<<<<<<<<"$CE
+          echo -e $RS"\n************    Causes    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep cause /var/log/dusc.log'
+          echo -e $RS"\n************   Warnings    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep warn /var/log/dusc.log'
+          echo -e $RS"\n************    Errors    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep error /var/log/dusc.log'
+          echo -e $RS"\n************    Faults    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep fault /var/log/dusc.log'
+          echo -e $RS"\n************    ARIMA    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep ARIMA /var/log/dusc.log'
+          echo "\n\n\n\n\n"
         done    
     elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
         logo
         echo -e $RS"\nDrive(s)"$CE
         read -A du
         for drive in ${du[@]}; do
-        echo -e $RS"\n************    Causes    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep cause /var/log/dusc.log'
-            echo -e $RS"\n************   Warnings    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep warn /var/log/dusc.log'
-            echo -e $RS"\n************    Errors    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep error /var/log/dusc.log'
-            echo -e $RS"\n************    Faults    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep fault /var/log/dusc.log'
-            echo -e $RS"\n************    ARIMA    *******************\n"$CE
-            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep ARIMA /var/log/dusc.log'
+          echo -e $RS"\n>>>>>>>>>>>> GATHERING LOGS FOR $drive <<<<<<<<<<<<<<<<<<"$CE
+          echo -e $RS"\n************    Causes    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep cause /var/log/dusc.log'
+          echo -e $RS"\n************   Warnings    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep warn /var/log/dusc.log'
+          echo -e $RS"\n************    Errors    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep error /var/log/dusc.log'
+          echo -e $RS"\n************    Faults    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep fault /var/log/dusc.log'
+          echo -e $RS"\n************    ARIMA    *******************\n"$CE
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$drive 'grep ARIMA /var/log/dusc.log'
+          echo "\n\n\n\n\n"
         done
     fi
 }
