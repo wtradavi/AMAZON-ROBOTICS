@@ -2,8 +2,7 @@
 
 function drive_template {
     logo
-    echo -e $RS"Selected Drive(s)? y/n"$CE
-    prompt_num
+    choose_selected_prompt
 
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
         for drive in ${du[@]}; do
@@ -21,12 +20,23 @@ function drive_template {
 
 function station_template {
     logo
-    echo -ne $RS"\nStation #: "$CE;
-    read -r su;
-    fu=$su[1]
-    logo
-    echo -e $RS"\nRebooting Station $su\n"$CE
-    #command
+    choose_selected_prompt
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRunning Command on Station $station\n"$CE
+            #command
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nStation(s)"$CE
+        read -A du
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRunning Command on Station $station\n"$CE
+            #command
+        done
+    fi
     go_back_or_exit
 }
 
@@ -64,4 +74,26 @@ function subsystem_update_remote {
         #command
         done
     fi
+}
+
+function station_audio_remote {
+    logo
+    choose_selected_prompt
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nFixing Audio on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nStation(s)"$CE
+        read -A du
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nFixing Audio on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
+        done
+    fi
+    go_back_or_exit
 }

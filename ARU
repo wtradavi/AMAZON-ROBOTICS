@@ -137,17 +137,17 @@ function remote_menu {
 	d="AutoProvision"; opt_d1=autoprovision_remote;
 	e="Reboot Drive"; opt_e1=reboot_remote;
 	f="Put Drive To Sleep"; opt_f1=not_installed;
-	g="Shutdown Drive"; opt_g1=shutdown_drive;
+	g="Shutdown Drive"; opt_g1=shutdown_drive_remote;
   h="SubSystem Update"; opt_h1=remote_subsystem_update;
 	i="Firmware Update"; opt_i1=firmware_update_remote;
   j="Diagnostics/DUSC"; opt_j1=remote_dusc;
   k="Firmware Error Logs"; opt_k1=fw_log;
   l="Camera Logs";opt_l1=camera_logs;
-  m="SSH Into A Station"; opt_m1=station_ssh;
-  n="Reboot Station"; opt_n1=station_reboot;
-  o="Check Station"; opt_o1=station_check;
-  p="Reboot IDS"; opt_p1=reboot_ids;
-  q="Reset Station Audio"; opt_q1=station_audio;
+  m="SSH Into A Station"; opt_m1=station_ssh_remote;
+  n="Reboot Station"; opt_n1=station_reboot_remote;
+  o="Check Station"; opt_o1=station_check_remote;
+  p="Reboot IDS"; opt_p1=station_reboot_ids_remote;
+  q="Reset Station Audio"; opt_q1=station_audio_remote;
   r="Send Menu To Drive"; opt_r1=transfer_aru;
   s="Unregister Drive"; opt_s1=not_installed;
   t="Reset Drive's Wifi"; opt_t1=resetwifiremote;
@@ -518,7 +518,7 @@ function go_back_or_exit {
 	printf "Press $YS [b] $CE to go back...\n"
 	printf "Press $YS any key $CE to exit\n"
   echo " "
-  if ! [[ $HOSTNAME == *'node'* ]]; then 
+  if [[ $HOSTNAME == *'node'* ]]; then 
     read -k 1 ANSWER
   else
     read -n 1 ANSWER
@@ -768,7 +768,7 @@ function remote_dusc {
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
         for drive in ${du[@]}; do
            logo
-            echo """                      Drive $drive: DUSC Info
+            echo -e $RS"""                      Drive $drive: DUSC Info$CE
 
                                     0=normal
                                     1=Slowing
@@ -782,7 +782,7 @@ function remote_dusc {
         drive_prompt
         logo
         for drive in ${du[@]}; do
-          echo """                         Drive $drive: DUSC Info 
+          echo -e $RS"""                         Drive $drive: DUSC Info$CE
           
                                   0=normal
                                   1=Slowing
@@ -900,16 +900,18 @@ function reboot_remote {
 
   if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
     logo
-    for i in $du; do
-      echo -e $RS"\nRebooting Drive $i\n"$CE
-      sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c '/sbin/reboot' &
+    for drive in ${du[@]}; do
+      echo -e $RS"\nRebooting Drive $drive\n"$CE
+      sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c '/sbin/reboot' &
     done
   elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
     logo
     echo -ne $RS"\nDrive: ";
-    read -r du;
-    echo -e $RS"\nRebooting Drive $du\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c '/sbin/reboot' &
+    read -A du;
+    for drive in ${du[@]}; do
+      echo -e $RS"\nRebooting Drive $drive\n"$CE
+      sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c '/sbin/reboot' &
+    done
   fi
   
   go_back_or_exit
@@ -925,12 +927,12 @@ function remote_subsystem_update {
         logo;
         echo ""
         echo -e $RS"\nAvailable Components To Update:\n"$CE
-        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c "subsystem-update -l $sc"
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du[1] -c "subsystem-update -l"
         echo ""
         echo -ne $RS"Subsystem Component(--all): "$CE
         read -r sc
         for drive in ${du[@]}; do
-           sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$i -c "subsystem-update -f $sc"
+           sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "subsystem-update -f $sc"
         done    
     elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
         logo;
@@ -938,11 +940,13 @@ function remote_subsystem_update {
         drive_prompt
         echo ""
         echo -e $RS"\nAvailable Components To Update:\n"$CE
-        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c "subsystem-update -l $sc"
+        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du[1] -c "subsystem-update -l"
         echo ""
         echo -ne $RS"Subsystem Component(--all): "$CE
         read -r sc
-        sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c "subsystem-update -f $sc"
+        for drive in ${du[@]}; do
+          sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "subsystem-update -f $sc"
+        done
     fi
     go_back_or_exit
 }
@@ -956,25 +960,27 @@ function autoprovision_remote {
 	scp -r root@kdu-$goodDrive:/tmp/files /tmp/files
 
 	if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
-		for drive in $du; do
+		for drive in ${du[@]}; do
 			echo -e $RS"\nTransferring Files to Drive $drive\n"$CE
 			scp -r /tmp/files root@kdu-$drive:/tmp/files
 			sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
 			echo -e $RS"\n**FINISHED**\n"$CE
-    		done
+    done
 	elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
 		drive_prompt
-		echo -e $RS"\nTransferring Files to Drive $du\n"$CE
-		scp -r /tmp/files root@kdu-$du:/tmp/files
-		sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$du -c "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
-		echo -e $RS"\n**FINISHED**\n"$CE
+    for drive in ${du[@]}; do
+      echo -e $RS"\nTransferring Files to Drive $drive\n"$CE
+      scp -r /tmp/files root@kdu-$drive:/tmp/files
+      sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "mv /tmp/files/ksk.txt /etc/ksk/ksk.txt; mv /tmp/files/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf; mv /tmp/files/amazon.pem /etc/wpa_supplicant/amazon.pem; /sbin/reboot & exit"
+      echo -e $RS"\n**FINISHED**\n"$CE
+    done
 	else	
 		go_back_or_exit
 	fi
 	go_back_or_exit
 }
 
-function shutdown_drive {
+function shutdown_drive_remote {
     choose_selected_prompt
 
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
@@ -989,48 +995,115 @@ function shutdown_drive {
     go_back_or_exit
 }
 
-function station_ssh {
-  station_prompt
-  floor="paKivaA0$su[1]"
-  logo
-  echo -e $RS"\nStarting SSH Connection With Station $su\n"$CE
-  sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$su.$facility-$floor.ar.corp.amazon.com
-  menu
-}
-
-function station_reboot {
-    station_prompt
-    floor="paKivaA0$su[1]"
+function station_ssh_remote {
     logo
-    echo -e $RS"\nRebooting Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+    choose_selected_prompt
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nStarting SSH Connection With Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$station.$facility-$floor.ar.corp.amazon.com
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nStation(s)"$CE
+        read -A du
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nStarting SSH Connection With Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/stnssh Station-$station.$facility-$floor.ar.corp.amazon.com
+        done
+    fi
     go_back_or_exit
 }
 
-function station_check {
-    station_prompt
-    floor="paKivaA0$su[1]"
+function station_reboot_remote {
     logo
-    echo -e $RS"\nRunning Check on Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "checkStation.sh"
+    choose_selected_prompt
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRebooting Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+            echo " "
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nStation(s)"$CE
+        read -A du
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRebooting Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "/opt/Station/rebootStation.sh"
+            echo " "
+        done
+    fi
     go_back_or_exit
 }
 
-function reboot_ids {
-    station_prompt
-    floor="paKivaA0$su[1]"
+function station_check_remote {
     logo
-    echo -e $RS"\nRebooting IDS on Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+    choose_selected_prompt
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRunning Check on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "checkStation.sh"
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nStation(s)"$CE
+        read -A du
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRunning Check on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "checkStation.sh"
+        done
+    fi
     go_back_or_exit
 }
 
-function station_audio {
-    station_prompt
-    floor="paKivaA0$su[1]"
+function station_station_reboot_ids_remote {
     logo
-    echo -e $RS"\nRebooting Station $su\n"$CE
-    sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$su.$facility-$floor.ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
+    choose_selected_prompt
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRebooting IDS on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nStation(s)"$CE
+        read -A du
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nRebooting IDS on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "cd /home/kiva && sudo -u kiva /opt/nike-ids/station/kill.sh && sudo -u kiva /opt/nike-ids/station/start.sh"
+        done
+    fi
+    go_back_or_exit
+}
+
+function station_audio_remote {
+    logo
+    choose_selected_prompt
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nFixing Audio on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nStation(s)"$CE
+        read -A du
+        for station in ${du[@]}; do
+            floor="paKivaA0$station[1]"
+            echo -e $RS"\nFixing Audio on Station $station\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/mstnexec -s Station-$station.$facility-$floor.ar.corp.amazon.com -c "sudo -u kiva /opt/nike-station/helper/fixDisplaysAndAudio.sh"
+        done
+    fi
     go_back_or_exit
 }
 
@@ -1041,7 +1114,7 @@ function transfer_aru {
 }
 
 function aru {
-  rm /tmp/ARUv2 && vi /tmp/ARUv2 && reset &&  . /tmp/ARUv2
+  rm /tmp/ARUv2 && vi /tmp/ARUv2 && . /tmp/ARUv2
 }
 
 function batch_mode {
@@ -1107,7 +1180,7 @@ function delete_list {
 }
 
 function delete_drive {
-  for drive in $du; do
+  for drive in ${du[@]}; do
     eval $batchlist'=(${'$batchlist'[@]/$drive})'
   done
   du=()
