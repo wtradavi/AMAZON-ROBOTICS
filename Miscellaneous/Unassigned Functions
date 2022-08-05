@@ -1,6 +1,8 @@
+####################       TEMPLATES         #######################################
+
 function drive_template {
     logo
-    echo -e $RS"SSH Selected Drive(s)? y/n"$CE
+    echo -e $RS"Selected Drive(s)? y/n"$CE
     prompt_num
 
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
@@ -9,9 +11,11 @@ function drive_template {
         done    
     elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
         logo
-        echo -e $RS"\nWhat is the Drive Number(s) That You Would like to SSH Into?"$CE
-        read du
+        echo -e $RS"\nDrive(s)"$CE
+        read -A du
+        for drive in ${du[@]}; do
         #command
+        done
     fi
 }
 
@@ -26,14 +30,8 @@ function station_template {
     go_back_or_exit
 }
 
+###########################      UNASSIGNED FUNCTIONS       ######################################
 
-function error_codes { 
-    grep cause /var/log/dusc.log
-    grep warn /var/log/dusc.log
-    grep error /var/log/dusc.log
-    grep fault /var/log/dusc.log
-    grep ARIMA /var/log/dusc.log
-}
 
 function unstuck_drive {
     logo

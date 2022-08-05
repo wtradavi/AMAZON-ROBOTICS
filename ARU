@@ -88,7 +88,7 @@ function drive_menu {
 	a="Ping a Drive"; opt_a1=ping_drive;
   b="Diagnostics/DUSC"; opt_b1=dusc_util;
   c="Edit KSK File"; opt_c1=edit_ksk;
-  d="Error Codes"; opt_d1=not_installed;
+  d="Error Codes"; opt_d1=error_codes;
   e="Switch Port Conn."; opt_e1=not_installed;
   f="Check IP Address"; opt_f1=check_ip;
   g="Check Time & Date"; opt_g1=timecheck;
@@ -148,7 +148,7 @@ function remote_menu {
   r="Send Menu To Drive"; opt_r1=transfer_aru;
   s="Unregister Drive"; opt_s1=not_installed;
   t="Reset Drive's Wifi"; opt_t1=resetwifiremote;
-  u=""; opt_u1="";
+  u="Drive Error Codes"; opt_u1=error_codes_remote;
   v=""; opt_v1="";
   w=""; opt_w1="";
   x=""; opt_x1="";
@@ -676,6 +676,19 @@ function charge_drive {
 	fi
 }
 
+function error_codes { 
+    echo -e $RS"\n************    Causes    *******************\n"$CE
+    grep cause /var/log/dusc.log
+    echo -e $RS"\n************   Warnings    *******************\n"$CE
+    grep warn /var/log/dusc.log
+    echo -e $RS"\n************    Errors    *******************\n"$CE
+    grep error /var/log/dusc.log
+    echo -e $RS"\n************    Faults    *******************\n"$CE
+    grep fault /var/log/dusc.log
+    echo -e $RS"\n************     ARIMA   *******************\n"$CE
+    grep ARIMA /var/log/dusc.log
+}
+
 function firmware_update_remote {
 	function prompt_drive {
     drive_prompt
@@ -781,6 +794,44 @@ function camera_logs {
   echo -e $RS"\n**In Order To View These Images, Use WinSCP to Transfer The Above File To Your PC**\n"$CE
   go_back_or_exit
 }
+
+function error_codes_remote {
+    logo
+    echo -e $RS"Selected Drive(s)? y/n"$CE
+    prompt_num
+
+    if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        for drive in ${du[@]}; do
+            echo -e $RS"\n************    Causes    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep cause /var/log/dusc.log'
+            echo -e $RS"\n************   Warnings    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep warn /var/log/dusc.log'
+            echo -e $RS"\n************    Errors    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep error /var/log/dusc.log'
+            echo -e $RS"\n************    Faults    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep fault /var/log/dusc.log'
+            echo -e $RS"\n************    ARIMA    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep ARIMA /var/log/dusc.log'
+        done    
+    elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
+        logo
+        echo -e $RS"\nDrive(s)"$CE
+        read -A du
+        for drive in ${du[@]}; do
+        echo -e $RS"\n************    Causes    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep cause /var/log/dusc.log'
+            echo -e $RS"\n************   Warnings    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep warn /var/log/dusc.log'
+            echo -e $RS"\n************    Errors    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep error /var/log/dusc.log'
+            echo -e $RS"\n************    Faults    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep fault /var/log/dusc.log'
+            echo -e $RS"\n************    ARIMA    *******************\n"$CE
+            sudo -u kivasvs /apollo/env/FCXInfra/bin/dussh -t 10 -d kdu-$du 'grep ARIMA /var/log/dusc.log'
+        done
+    fi
+}
+
 
 function autoprovision {
   good_drive_prompt
