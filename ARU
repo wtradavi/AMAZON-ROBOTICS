@@ -1063,7 +1063,7 @@ function station_check_remote {
     go_back_or_exit
 }
 
-function station_station_reboot_ids_remote {
+function station_reboot_ids_remote {
     logo
     choose_selected_prompt
     if [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
