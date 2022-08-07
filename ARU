@@ -1161,6 +1161,7 @@ function batch_mode {
   done
   save_batch_lists
   rm /tmp/drives.txt
+  unset drives
   menu
 }
 
@@ -1182,6 +1183,7 @@ function delete_list {
   batches=(${batches[@]/$batchlist})
   save_batch_lists
   rm /tmp/$batchlist
+  unset drives
   unset batchlist
   reset
   . /tmp/ARUv2
@@ -1205,6 +1207,7 @@ function delete_drive {
 
 function add_drive {
   logo
+  unset drives
   rm /tmp/drives.txt
   echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
