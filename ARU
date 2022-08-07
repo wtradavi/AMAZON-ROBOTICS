@@ -692,33 +692,28 @@ function error_codes {
 }
 
 function firmware_update_remote {
-	function prompt_drive {
-    drive_prompt
-  	if [ $(echo $du | wc -c) -ne 7 ]; then
-  		echo "The Drive Number is a Six-Digit Number. Please Try Agan."
-  		prompt_drive
-  	else
-	  	prompt_version
-		fi
-	}
-	function prompt_version {
-      logo
-		  echo -e $RS"\nWhat is the Current Version of Firmware You Are Updating The Drive To [Default=22.0]?"$CE
-	  	read version
-	  	if [[ $version -eq 0 ]]; then
-	  		version=22.0
-	  		execute
-	  	else
-		  	execute
-		fi
-	}
-	function execute {
     logo
-		cd /apollo/env/FCXInfra/var/fcxfw/$version && sudo -u kivasvs ./update_drive.sh kdu-$du && echo "The Update was Successful"
-		go_back_or_exit
-	}
-	prompt_drive
-	prompt_version
+    choose_selected_prompt
+
+    if ! [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        logo
+        echo -e $RS"\nDrive(s):"$CE
+        read -A du
+    fi
+
+    logo
+    echo -e $RS"\nWhat is the Current Version of Firmware You Are Updating The Drive To [Default=22.0]?"$CE
+    read version
+    if [[ $version -eq 0 ]]; then
+        version=22.0
+    fi
+
+    for drive in ${du[@]}; do
+        echo -e $RS"\nStarting Update on Drive $drive\n"$CE
+        cd /apollo/env/FCXInfra/var/fcxfw/$version && sudo -u kivasvs ./update_drive.sh kdu-$drive && echo "The Update was Successful"
+    done
+
+    go_back_or_exit
 }
 
 function resetwifiremote {
@@ -775,7 +770,6 @@ function remote_dusc {
                                     3=Stopping
                                     4=immobilized unpowered"""
             sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "dusc-util -m"
-            go_back_or_exit
         done    
     elif [[ $ANSWER = "n" ]] || [[ $ANSWER = "N" ]]; then
         drive_prompt
@@ -790,8 +784,8 @@ function remote_dusc {
                                   4=immobilized unpowered"""
           sudo -u kivasvs /apollo/env/FCXInfra/bin/mduexec -t 10 -d kdu-$drive -c "dusc-util -m"
         done
-        go_back_or_exit
     fi
+    go_back_or_exit
 }
 
 function camera_logs {
