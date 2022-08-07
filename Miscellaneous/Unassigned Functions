@@ -88,5 +88,21 @@ function create_drive_function {
 }
 
 
+function complete_drive {
+    logo
+    choose_selected_prompt
 
+    if ! [[ $ANSWER = "y" ]] || [[ $ANSWER = "Y" ]]; then
+        logo
+        echo -e $RS"\nDrive(s):"$CE
+        read -A du
+    fi
+
+    for drive in ${du[@]}; do
+        echo -e $RS"\nRunning Command To Drive $drive\n"$CE
+        #command
+    done
+
+    go_back_or_exit
+}
 
