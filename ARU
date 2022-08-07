@@ -70,7 +70,7 @@ function menu_list {
 	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    all) $CE    Select all drives in list"; fi)"
 	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$t; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   none) $CE    Unselect all drives in list"; fi)" 
 	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$u; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   done) $CE    Mark drive(s) as done"; fi)"
-  columnize 4 " " " " " " "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS review) $CE    Review completed drives"; fi)"
+  columnize 5 " " " " " " "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    review) $CE    Review completed drives"; fi)"
   echo " "
   echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
