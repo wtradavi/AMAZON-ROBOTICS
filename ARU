@@ -63,18 +63,19 @@ function columnize {
 function menu_list {
   load_batch_lists
 	logo
-	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   new) $CE    Create a batch list"; fi)"
-	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS close) $CE    Delete current list"; fi)"
-	columnize 4 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   add) $CE    Add drive(s) to list"; fi)"
-	columnize 4 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   del) $CE    Remove drive(s) from list"; fi)"
-	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   all) $CE    Select all drives in list"; fi)"
-	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$t; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  none) $CE    Unselect all drives in list"; fi)" 
-	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$u; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  done) $CE    Mark drive(s) as done"; fi)"
+	columnize 4 "$(if [[ $a > 0 ]]; then echo -e $FONTC" 1"$CE" - "$a; else echo " " ; fi)" "$(if [[ $h > 0 ]]; then echo -e $FONTC" 8"$CE" - "$h; else echo " " ; fi)" "$(if [[ $o > 0 ]]; then echo -e $FONTC"15"$CE" - "$o; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    new) $CE    Create a batch list"; fi)"
+	columnize 4 "$(if [[ $b > 0 ]]; then echo -e $FONTC" 2"$CE" - "$b; else echo " " ; fi)" "$(if [[ $i > 0 ]]; then echo -e $FONTC" 9"$CE" - "$i; else echo " " ; fi)" "$(if [[ $p > 0 ]]; then echo -e $FONTC"16"$CE" - "$p; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  close) $CE    Delete current list"; fi)"
+	columnize 4 "$(if [[ $c > 0 ]]; then echo -e $FONTC" 3"$CE" - "$c; else echo " " ; fi)" "$(if [[ $j > 0 ]]; then echo -e $FONTC"10"$CE" - "$j; else echo " " ; fi)" "$(if [[ $q > 0 ]]; then echo -e $FONTC"17"$CE" - "$q; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    add) $CE    Add drive(s) to list"; fi)"
+	columnize 4 "$(if [[ $d > 0 ]]; then echo -e $FONTC" 4"$CE" - "$d; else echo " " ; fi)" "$(if [[ $k > 0 ]]; then echo -e $FONTC"11"$CE" - "$k; else echo " " ; fi)" "$(if [[ $r > 0 ]]; then echo -e $FONTC"18"$CE" - "$r; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    del) $CE    Remove drive(s) from list"; fi)"
+	columnize 4 "$(if [[ $e > 0 ]]; then echo -e $FONTC" 5"$CE" - "$e; else echo " " ; fi)" "$(if [[ $l > 0 ]]; then echo -e $FONTC"12"$CE" - "$l; else echo " " ; fi)" "$(if [[ $s > 0 ]]; then echo -e $FONTC"19"$CE" - "$s; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    all) $CE    Select all drives in list"; fi)"
+	columnize 4 "$(if [[ $f > 0 ]]; then echo -e $FONTC" 6"$CE" - "$f; else echo " " ; fi)" "$(if [[ $m > 0 ]]; then echo -e $FONTC"13"$CE" - "$m; else echo " " ; fi)" "$(if [[ $t > 0 ]]; then echo -e $FONTC"20"$CE" - "$t; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   none) $CE    Unselect all drives in list"; fi)" 
+	columnize 4 "$(if [[ $g > 0 ]]; then echo -e $FONTC" 7"$CE" - "$g; else echo " " ; fi)" "$(if [[ $n > 0 ]]; then echo -e $FONTC"14"$CE" - "$n; else echo " " ; fi)" "$(if [[ $u > 0 ]]; then echo -e $FONTC"21"$CE" - "$u; else echo " " ; fi)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   done) $CE    Mark drive(s) as done"; fi)"
+  columnize 4 " " " " " " "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS review) $CE    Review completed drives"; fi)"
   echo " "
   echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
   echo " "
-	echo -n "Choose:"
+	echo -n "Choose: "
   }
 
 function menu {
@@ -502,6 +503,8 @@ function options {
     clear_selection
   elif [[ "$ANSWER" = "done" ]]; then
     complete_drive
+  elif [[ "$ANSWER" = "review" ]]; then
+    review_completed_drives
   elif [[ "$ANSWER" = "" ]]; then
     menu
 	else
@@ -1129,14 +1132,28 @@ function aru {
 
 function batch_mode {
   logo
+
+  #Starts Fresh by deleting old drives file
   rm /tmp/drives.txt
+
+  #Creates a name for a new list
   echo -n "Create A Name for Your Batch List: "
   read -r batch_name
+
+  #And adds the New List to a batch array containing all Lists
   batches+=($batch_name)
+
+  #Creates a header inside a new file for future drives that are completed
   columnize 3 "Drive" "Action Completed" "Additional Notes" > /tmp/$batch_name-completed_drives.txt
+
+  #Requests Drives that are to be added to List
   echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
+
+  #And writes them to a file
   cat > /tmp/drives.txt
+
+  #Filters all data in file to include only drive numbers
   sed -i "/u/d" /tmp/drives.txt
 	sed -i "/s/d" /tmp/drives.txt
 	sed -i "/\%/d" /tmp/drives.txt
@@ -1146,57 +1163,93 @@ function batch_mode {
   sed -i "/T/d" /tmp/drives.txt
   sed -i "/D/d" /tmp/drives.txt
   sed -i "/P/d" /tmp/drives.txt
+
+  #Creates an identical batch array for drives.txt file 
   for i in $( cat /tmp/drives.txt); do 
     drives+=($i); 
   done
   logo
+
+  #Visually Displays the drives and their internet connectivity
   num=0
   columnize 10 "Drive" "Wifi"
   for drive in $( cat /tmp/drives.txt); do
+    #Increase the number by one to label drive
     let "num=num+1"
+    #Set the connectivity of the drive to a variable
     packet_loss=$(ping -w 1 -c 2 kdu-$drive | grep received | cut -d "," -f 3 | cut -d "%" -f 1)
+    #Display the drive's connectivity (i.e., 1   654567   100%)
     columnize 10 "$(echo -e $YS $num $CE)" "$drive" "$(if [[ $packet_loss == *"100"* ]]; then echo -e $RS"$(( 100 - $packet_loss))%"$CE; else echo -e $GNS"$(( 100 - $packet_loss))%"$CE; fi)"
   done
+
+  #Prompts user to select from visual representation of connected drives
   echo -n "Select: "
   read -A selections
+
+  #And adds each selection to an array identical to the batch name selected previously
   for select in ${selections[@]}; do
     eval $batch_name'+=('${drives[$select]}')'
   done
+
+  #Resets the selections array
+  selections=()
+
+  #Saves all lists to a file to persist across new shells
   save_batch_lists
+
+  #Resets drive file and drive array
   rm /tmp/drives.txt
-  unset drives
+  drives=()
   menu
 }
 
 function load_batch_lists {
+  #Loads all batch lists from file into array
   batches=($(cat /tmp/batches))
+
+  #For every drive in a batch list file, we are adding it to batch list array
   for batch in ${batches[@]}; do
     eval $batch'=('$(cat /tmp/$batch)')'     
   done
 }
 
 function save_batch_lists {
+  #Saves all batches to batch file
   echo $batches > /tmp/batches
+
+  #And adds all drives in batch array to batch file
   for batch in $batches; do
     eval "echo \${$batch}" > /tmp/$batch
   done
 }
 
 function delete_list {
+  #Removes batch list from batches array
   batches=(${batches[@]/$batchlist})
+
+  #Saves all batch lists
   save_batch_lists
+
+  #Removes batchlist file and associated completed drives file
   rm /tmp/$batchlist
-  unset drives
-  unset batchlist
+  rm /tmp/$batchlist-completed_drives.txt
+
+  #Resets batchlist array
+  batchlist=()
   reset
   . /tmp/ARUv2
 }
 
 function delete_drive {
+  #Removes every selected drive from batchlist array
   for drive in ${du[@]}; do
     eval $batchlist'=(${'$batchlist'[@]/$drive})'
   done
+
+  #Resets drive selection array
   du=()
+
+  #Resets the current selection of drives to match their updated position in batchlist array
   i=0
   for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
     let "i=i+1"
@@ -1204,17 +1257,26 @@ function delete_drive {
         du+=($(eval echo '${'$batchlist'[$i]}'))
     fi
   done
+
+  #Saves all batch lists
   save_batch_lists
   menu
 }
 
 function add_drive {
   logo
-  unset drives
+  #Resets drives array
+  drives=()
+
+  #Removes drives file
   rm /tmp/drives.txt
+
+  #Prompts user for drives to add to drives file
   echo -e $RS"\n**Hit Ctrl-D to Complete the List**\n"$CE
   echo -n "Drives: "
   cat > /tmp/drives.txt
+
+  #Filters drives file so only drive numbers exist
   sed -i "/u/d" /tmp/drives.txt
 	sed -i "/s/d" /tmp/drives.txt
 	sed -i "/\%/d" /tmp/drives.txt
@@ -1224,16 +1286,25 @@ function add_drive {
   sed -i "/T/d" /tmp/drives.txt
   sed -i "/D/d" /tmp/drives.txt
   sed -i "/P/d" /tmp/drives.txt
+
+  #Adds all drives in drives file to drives array
   for i in $( cat /tmp/drives.txt); do 
     drives+=($i); 
   done
+
+  #Adds all drives from drives array to batchlist array
   eval $batchlist'+=($(eval echo '${drives[@]}'))'
+
+  #Saves all batch lists
   save_batch_lists
   menu
 }
 
 function clear_selection {
+  #Resets du array
   du=()
+
+  #Clears all selected drives 
   for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
     eval unset ${var}2_enabled
   done
@@ -1241,6 +1312,7 @@ function clear_selection {
 }
 
 function select_all {
+  #Selects all drives
   du=($(eval echo '${'$batchlist'[@]}'))
   for var in a b c d e f g h i j k l m n o p q r s t u v w x y z; do
     eval ${var}2_enabled="true"
@@ -1251,16 +1323,29 @@ function select_all {
 function complete_drive {
   for drive in ${du[@]}; do 
     logo
+    #Prompts user for Action Completed for each drive
     echo -e $RS"Action Completed For Drive $drive?\n"$CE
     read -r message
     logo
-    echo -e $RS"Any Additional For Drive $drive?\n"$CE
+
+    #Prompts user for any additional Notes for Drive
+    echo -e $RS"Any Additional Notes For Drive $drive?\n"$CE
     read -r notes
+     
+    #Adds completed drive info to completed drive file
     columnize 3 $drive $message $notes >> /tmp/$batchlist-completed_drives.txt
   done
+
+  delete_drive
+  clear_selection
   menu
 }
 
+function review_completed_drives {
+  logo
+  cat /tmp/$batchlist-completed_drives.txt
+  go_back_or_exit
+}
 
 #-------Execution--------------------------------------------------------------------------------------------------
 clear
