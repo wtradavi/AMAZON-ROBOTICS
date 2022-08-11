@@ -206,6 +206,11 @@ function menu {
 function drive_menu {
 	back=menu
 	home=drive_menu
+
+
+  IFS=',' read a1 opt_a1 <<< "Ping A Drive",ping_drive
+
+  
 	a="Ping a Drive"; opt_a1=ping_drive;
   b="Diagnostics/DUSC"; opt_b1=dusc_util;
   c="Edit KSK File"; opt_c1=edit_ksk;
