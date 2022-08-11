@@ -187,7 +187,7 @@ function menu_list {
 	columnize 4 $menu_item5 $menu_item12 $menu_item19 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    all) $CE    Select all drives in list"; fi)"
 	columnize 4 $menu_item6 $menu_item13 $menu_item20 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   none) $CE    Unselect all drives in list"; fi)" 
 	columnize 4 $menu_item7 $menu_item14 $menu_item21 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   done) $CE    Mark drive(s) as done"; fi)"
-  columnize 5 $menu_item22 $menu_item23 $menu_item24 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    review) $CE    Review completed drives"; fi)"
+  columnize 5 " " " " " " "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    review) $CE    Review completed drives"; fi)"
   echo " "
   echo -e "$RS" b"$CE- Go Back"
   echo -e "$RS" 0"$CE- Exit"
