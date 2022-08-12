@@ -70,13 +70,16 @@ function menu_list {
   num=0
   for letter in ${alphabet[@]}; do
       let "num=num+1"
+  if [[ $(eval echo '$'$letter) > 0 ]]; then 
       eval 'menu_item'$num'="$(if [[ $'$letter' = " " ]]; then echo " "; else echo -e $FONTC"  $num"$CE" - "$'$letter'; fi)"'
-      #eval 'menu_item'$num'="$(if [[ '$letter' > 0 ]]; then echo -e $FONTC"  '$num'"$CE" - "'$'$letter; else echo " " ; fi)"'
+  else
+      continue
+  fi
   done
 
   item_count=0
   for item in 'menu_item'{1..102}; do
-    if [[ $(eval echo '$'$item) = " " ]] ; then 
+    if [[ $(eval echo '$'$item) = "" ]] ; then 
       continue
     else
       let "item_count=item_count+1"
@@ -86,7 +89,7 @@ function menu_list {
   items_per_column=$(($total_menu_items/3))
 
             #for i in {1..$items_per_column}; do echo $i; done
-	logo
+    logo
 
   #Display Menu
 	columnize 4 $menu_item1 $menu_item8 $menu_item15 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    new) $CE    Create a batch list"; fi)"
