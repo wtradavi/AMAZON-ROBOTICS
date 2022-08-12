@@ -69,12 +69,12 @@ function menu_list {
   
   num=0
   for letter in ${alphabet[@]}; do
-      let "num=num+1"
-  if [[ $(eval echo '$'$letter) > 0 ]]; then 
-      eval 'menu_item'$num'="$(if [[ $'$letter' = " " ]]; then echo " "; else echo -e $FONTC"  $num"$CE" - "$'$letter'; fi)"'
-  else
-      continue
-  fi
+    let "num=num+1"
+    if [[ $(eval echo '$'$letter) > 0 ]]; then 
+        eval 'menu_item'$num'="$(if [[ $'$letter' = " " ]]; then echo " "; else echo -e $FONTC"  $num"$CE" - "$'$letter'; fi)"'
+    else
+        continue
+    fi
   done
 
   item_count=0
@@ -87,24 +87,62 @@ function menu_list {
   done
   total_menu_items=$item_count
   items_per_column=$(($total_menu_items/3))
+  last_item_first_column=$items_per_column
+  first_item_second_column=$(($last_item_first_column + 1))
+  last_item_second_column=$(($items_per_column * 2))
+  first_item_third_column=$(($last_item_second_column + 1))
+  last_item_third_column=$(($items_per_column * 3))
 
-            #for i in {1..$items_per_column}; do echo $i; done
+  PH=0
+  for item in {1..$last_item_first_column}; do 
+      let "PH=PH+1"
+      eval 'placeholder'$PH'=$menu_item'$item
+  done
+  PH=25
+  for item in {$first_item_second_column..$last_item_second_column}; do
+      let "PH=PH+1"
+      eval 'placeholder'$PH'=$menu_item'$item 
+  done
+  PH=50
+  for item in {$first_item_third_column..$last_item_third_column}; do 
+      let "PH=PH+1"
+      eval 'placeholder'$PH'=$menu_item'$item 
+  done
     logo
 
   #Display Menu
-	columnize 4 $menu_item1 $menu_item8 $menu_item15 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    new) $CE    Create a batch list"; fi)"
-	columnize 4 $menu_item2 $menu_item9 $menu_item16 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  close) $CE    Delete current list"; fi)"
-	columnize 4 $menu_item3 $menu_item10 $menu_item17 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    add) $CE    Add drive(s) to list"; fi)"
-	columnize 4 $menu_item4 $menu_item11 $menu_item18 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    del) $CE    Remove drive(s) from list"; fi)"
-	columnize 4 $menu_item5 $menu_item12 $menu_item19 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    all) $CE    Select all drives in list"; fi)"
-	columnize 4 $menu_item6 $menu_item13 $menu_item20 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   none) $CE    Unselect all drives in list"; fi)" 
-	columnize 4 $menu_item7 $menu_item14 $menu_item21 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   done) $CE    Mark drive(s) as done"; fi)"
-  columnize 5 " " " " " " "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    review) $CE    Review completed drives"; fi)"
-  echo " "
-  echo -e "$RS" b"$CE- Go Back"
-  echo -e "$RS" 0"$CE- Exit"
-  echo " "
-	echo -n "Choose: "
+	columnize 4 $placeholder1  $placeholder26  $placeholder51 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    new) $CE    Create a batch list"; fi)"
+    columnize 4 $placeholder2  $placeholder27  $placeholder52 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS  close) $CE    Delete current list"; fi)"
+    columnize 4 $placeholder3  $placeholder28  $placeholder53 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    add) $CE    Add drive(s) to list"; fi)"
+    columnize 4 $placeholder4  $placeholder29  $placeholder54 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    del) $CE    Remove drive(s) from list"; fi)"
+    columnize 4 $placeholder5  $placeholder30  $placeholder55 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    all) $CE    Select all drives in list"; fi)"
+    columnize 4 $placeholder6  $placeholder31  $placeholder56 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   none) $CE    Unselect all drives in list"; fi)" 
+    columnize 4 $placeholder7  $placeholder32  $placeholder57 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS   done) $CE    Mark drive(s) as done"; fi)"
+    if [[ $items_per_column > 8 ]]; then columnize 4 $placeholder9  $placeholder34  $placeholder59 "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    review) $CE    Review completed drives"; fi)"; else columnize 4 "$(echo -e $BLS"."$CE)" "$(echo -e $BLS"."$CE)" "$(echo -e $BLS"."$CE)" "$(if [[ $HOSTNAME == *'node'* ]]; then  echo -e "$YS    review) $CE    Review completed drives"; fi)"; fi
+    if [[ $items_per_column > 9 ]]; then 
+        columnize 4 $placeholder9  $placeholder34  $placeholder59
+        if [[ $items_per_column > 10 ]]; then columnize 4 $placeholder10  $placeholder35  $placeholder60; fi
+        if [[ $items_per_column > 11 ]]; then columnize 4 $placeholder11  $placeholder36  $placeholder61; fi
+        if [[ $items_per_column > 12 ]]; then columnize 4 $placeholder12  $placeholder37  $placeholder62; fi
+        if [[ $items_per_column > 13 ]]; then columnize 4 $placeholder13  $placeholder38  $placeholder63; fi
+        if [[ $items_per_column > 14 ]]; then columnize 4 $placeholder14  $placeholder39  $placeholder64; fi
+        if [[ $items_per_column > 15 ]]; then columnize 4 $placeholder15  $placeholder40  $placeholder65; fi
+        if [[ $items_per_column > 16 ]]; then columnize 4 $placeholder16  $placeholder41  $placeholder66; fi
+        if [[ $items_per_column > 17 ]]; then columnize 4 $placeholder17  $placeholder42  $placeholder67; fi
+        if [[ $items_per_column > 18 ]]; then columnize 4 $placeholder18  $placeholder43  $placeholder68; fi
+        if [[ $items_per_column > 19 ]]; then columnize 4 $placeholder19  $placeholder44  $placeholder69; fi
+        if [[ $items_per_column > 20 ]]; then columnize 4 $placeholder20  $placeholder45  $placeholder70; fi
+        if [[ $items_per_column > 21 ]]; then columnize 4 $placeholder21  $placeholder46  $placeholder71; fi
+        if [[ $items_per_column > 22 ]]; then columnize 4 $placeholder22  $placeholder47  $placeholder72; fi
+        if [[ $items_per_column > 23 ]]; then columnize 4 $placeholder23  $placeholder48  $placeholder73; fi
+        if [[ $items_per_column > 24 ]]; then columnize 4 $placeholder24  $placeholder49  $placeholder74; fi
+        if [[ $items_per_column > 25 ]]; then columnize 4 $placeholder25  $placeholder50  $placeholder75; fi
+    fi
+    echo " "
+    echo -e "$RS" b"$CE- Go Back"
+    echo -e "$RS" 0"$CE- Exit"
+    echo " "
+    echo -n "Choose: "
   }
 
 function menu {
@@ -119,8 +157,6 @@ function drive_menu {
 	back=menu
 	home=drive_menu
 
-
-  IFS=',' read a1 opt_a1 <<< "Ping A Drive",ping_drive
 
   
 	a="Ping a Drive"; opt_a1=ping_drive;
