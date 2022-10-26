@@ -777,10 +777,10 @@ function firmware_update_remote {
     fi
 
     logo
-    echo -e $RS"\nWhat is the Current Version of Firmware You Are Updating The Drive To [Default=22.0]?"$CE
+    echo -e $RS"\nWhat is the Current Version of Firmware You Are Updating The Drive To [Default=22.3.1]?"$CE
     read version
     if [[ $version -eq 0 ]]; then
-        version=22.0
+        version=22.3.1
     fi
 
     for drive in ${du[@]}; do
@@ -1214,6 +1214,8 @@ function batch_mode {
   batches+=($batch_name)
 
   #Creates a header inside a new file for future drives that are completed
+  touch /tmp/$batch_name-completed_drives.txt
+  chmod ugo+rwx /tmp/$batch_name-completed_drives.txt
   columnize 3 "Drive" "Action Completed" "Additional Notes" > /tmp/$batch_name-completed_drives.txt
 
   #Requests Drives that are to be added to List
@@ -1221,6 +1223,8 @@ function batch_mode {
   echo -n "Drives: "
 
   #And writes them to a file
+  touch /tmp/drives.txt
+  chmod ugo+rwx /tmp/drives.txt
   cat > /tmp/drives.txt
 
   #Filters all data in file to include only drive numbers
@@ -1285,10 +1289,14 @@ function load_batch_lists {
 
 function save_batch_lists {
   #Saves all batches to batch file
+  touch /tmp/batches
+  chmod ugo+rwx /tmp/batches
   echo $batches > /tmp/batches
 
   #And adds all drives in batch array to batch file
   for batch in $batches; do
+    touch /tmp/$batch
+    chmod ugo+rwx /tmp/$batch
     eval "echo \${$batch}" > /tmp/$batch
   done
 }
