@@ -707,15 +707,15 @@ function firmware_update_remote {
     fi
 
     logo
-    echo -e $RS"\nWhat is the Current Version of Firmware You Are Updating The Drive To [Default=22.0]?"$CE
+    echo -e $RS"\nWhat is the Current Version of Firmware You Are Updating The Drive To [Default=22.4]?"$CE
     read version
     if [[ $version -eq 0 ]]; then
-        version=22.0
+        version=22.4
     fi
 
     for drive in ${du[@]}; do
         echo -e $RS"\nStarting Update on Drive $drive\n"$CE
-        cd /apollo/env/FCXInfra/var/fcxfw/$version && sudo -u kivasvs ./update_drive.sh kdu-$drive && echo "The Update was Successful"
+        sudo -u kivasvs /apollo/env/ARHWScripts/bin/updateDriveFirmware.py -stage prod.NAFulfillment -r $version.tar.gz -d kdu-$drive && echo "The Update was Successful"
     done
 
     go_back_or_exit
